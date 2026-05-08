@@ -69,29 +69,74 @@ class KhachHangController extends Controller
         }
     }
 
+    // public function check(Request $request)
+    // {
+    //     $user = Auth::guard('sanctum')->user();
+    //     if ($user) {
+    //         $agent = new Agent();
+    //         $device     = $agent->device();
+    //         $os         = $agent->platform();
+    //         $browser    = $agent->browser();
+
+    //         $check_user =  DB::table('personal_access_tokens')
+    //             ->where('id', $user->currentAccessToken()->id)
+    //             ->first();
+
+    //         if ($check_user->tokenable_type === "App\\Models\\KhachHang") {
+    //             $user  = Auth::guard('khach_hang')->user();
+    //             DB::table('personal_access_tokens')
+    //                 ->where('id', $user->currentAccessToken()->id)
+    //                 ->update([
+    //                     'ip'            =>  request()->ip(),
+    //                     'device'        =>  $device,
+    //                     'os'            =>  $os,
+    //                     'trinh_duyet'   =>  $browser,
+    //                 ]);
+    //             return response()->json([
+    //                 'email'             =>  $user->email,
+    //                 'ho_ten_client'     =>  $user->ho_ten,
+    //                 'list'              =>  $user->tokens,
+    //                 'id'                =>  $user->id
+    //             ], 200);
+    //         }
+
+    //         return response()->json([
+    //             'message'   =>  'Bạn cần đăng nhập!',
+    //             'status'    =>  false,
+    //         ], 401);
+    //     } else {
+    //         return response()->json([
+    //             'message'   =>  'Bạn cần đăng nhập!',
+    //             'status'    =>  false,
+    //         ], 401);
+    //     }
+    // }
     public function check(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
+        
         if ($user) {
-            $agent = new Agent();
-            $device     = $agent->device();
-            $os         = $agent->platform();
-            $browser    = $agent->browser();
+            $currentToken = $user->currentAccessToken();
 
-            $check_user =  DB::table('personal_access_tokens')
-                ->where('id', $user->currentAccessToken()->id)
-                ->first();
+            if ($currentToken && $currentToken->tokenable_type === "App\\Models\\KhachHang") {
+                
+                // (Tuỳ chọn) Lấy thông tin thiết bị, nếu bạn chưa cài package Agent thì có thể ẩn 3 dòng này đi
+                // $agent = new \Jenssegers\Agent\Agent();
+                // $device = $agent->device();
+                // $os = $agent->platform();
+                // $browser = $agent->browser();
 
-            if ($check_user->tokenable_type === "App\\Models\\KhachHang") {
-                $user  = Auth::guard('khach_hang')->user();
-                DB::table('personal_access_tokens')
-                    ->where('id', $user->currentAccessToken()->id)
+                // Cập nhật thông tin IP vào bảng token
+                \DB::table('personal_access_tokens')
+                    ->where('id', $currentToken->id)
                     ->update([
                         'ip'            =>  request()->ip(),
-                        'device'        =>  $device,
-                        'os'            =>  $os,
-                        'trinh_duyet'   =>  $browser,
+                        // 'device'        =>  $device ?? null,
+                        // 'os'            =>  $os ?? null,
+                        // 'trinh_duyet'   =>  $browser ?? null,
                     ]);
+
+                // Trả về dữ liệu cho VueJS
                 return response()->json([
                     'email'             =>  $user->email,
                     'ho_ten_client'     =>  $user->ho_ten,
@@ -101,15 +146,15 @@ class KhachHangController extends Controller
             }
 
             return response()->json([
-                'message'   =>  'Bạn cần đăng nhập!',
+                'message'   =>  'Token không hợp lệ!',
                 'status'    =>  false,
             ], 401);
-        } else {
-            return response()->json([
-                'message'   =>  'Bạn cần đăng nhập!',
-                'status'    =>  false,
-            ], 401);
-        }
+        } 
+
+        return response()->json([
+            'message'   =>  'Bạn cần đăng nhập!',
+            'status'    =>  false,
+        ], 401);
     }
 
     public function logout()

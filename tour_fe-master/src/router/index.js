@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"; // cài vue-router: npm install vue-router@next --save
 import checkLogin from "./checkLogin";
+import checkLoginClient from "./checkLoginClient";
 
 const routes = [
     {
@@ -59,7 +60,7 @@ const routes = [
         path: '/yeu-cau',
         component: () => import('../components/Client/YeuCau/index.vue'),
         meta: { layout: 'client' },
-        beforeEnter: checkLogin
+        beforeEnter: checkLoginClient
     },
 
     //admin

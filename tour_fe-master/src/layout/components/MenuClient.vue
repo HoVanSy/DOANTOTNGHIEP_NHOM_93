@@ -22,7 +22,7 @@
 								<router-link to="/client/danh-sach-hoa-don">
 								<a style="color: darkblue;" class="nav-link"
 									href=""><i
-										class="fa-solid fa-bag-shopping"></i> Giỏ Hàng</a>
+										class="fa-solid fa-bag-shopping"></i> Hoá Đơn</a> 
 								</router-link>
 							</li>
 							<li class="nav-item">
