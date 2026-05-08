@@ -17,5 +17,9 @@ class HoaDon extends Model
         "so_luong_nguoi_lon",
         "so_luong_tre_em",
         "tinh_trang"
-    ];
+    ]; 
+    public function chiTietHoaDons()
+    {
+        return $this->hasMany(ChiTietHoaDon::class, 'id_hoa_don', 'id');
+    }
 }

@@ -20,7 +20,7 @@
               <select v-model="yeuCau.hoa_don_id" class="form-control" required>
                 <option value="">-- Chọn hóa đơn --</option>
                 <option v-for="hd in hoaDonChuaHuy" :key="hd.id" :value="hd.id">
-                  {{ hd.ma_hoa_don }} - {{ hd.tour?.tieu_de }}
+                  {{ hd.chi_tiet_hoa_dons[0]?.tour?.tieu_de || 'Chưa có thông tin tour' }}
                 </option>
               </select>
             </div>
@@ -71,9 +71,9 @@
               <td>{{ yc.ly_do }}</td>
               <td>{{ yc.ngay_khoi_hanh_moi ? formatDate(yc.ngay_khoi_hanh_moi) : '-' }}</td>
               <td>
-                <span v-if="yc.trang_thai === 'cho_xu_ly'" class="badge bg-warning">Chờ xử lý</span>
-                <span v-else-if="yc.trang_thai === 'da_duyet'" class="badge bg-success">Đã duyệt</span>
-                <span v-else class="badge bg-secondary">Từ chối</span>
+                <span v-if="yc.trang_thai == 0" class="badge bg-warning text-dark">Chờ xử lý</span>
+                <span v-else-if="yc.trang_thai == 1" class="badge bg-success">Đã duyệt</span>
+                <span v-else-if="yc.trang_thai == 2" class="badge bg-secondary">Từ chối</span>
               </td>
               <td>{{ yc.ghi_chu || '-' }}</td>
               <td>{{ formatDate(yc.created_at) }}</td>
@@ -113,20 +113,32 @@ export default {
   },
   methods: {
     loadData() {
-      // Load hoa don
-      baseRequest.get('client/hoa-don/lay-danh-sach')
+      //Load danh sách hóa đơn
+      baseRequest.post('client/hoa-don/lay-danh-sach-hoa-don/data')
         .then((res) => {
-          if (res.data.status) {
-            this.hoaDonChuaHuy = res.data.data.filter(hd => hd.trang_thai !== 'da_huy');
+          const rawData = res.data.danh_sach_hoa_don;
+          
+          if (Array.isArray(rawData)) {
+            // Lọc ra các hóa đơn chưa bị hủy
+            this.hoaDonChuaHuy = rawData.filter(hd => hd.tinh_trang !== 2 && hd.tinh_trang !== 'da_huy');
+          } else {
+            console.error("Lỗi: Không tìm thấy mảng danh_sach_hoa_don", res.data);
+            this.hoaDonChuaHuy = [];
           }
-        });
-      // Load lich su yeu cau
+        })
+        .catch((err) => console.error("Lỗi API hóa đơn:", err));
+
+      // Load lịch sử yêu cầu 
       baseRequest.get('client/yeu-cau-huy/lay-danh-sach')
         .then((res) => {
-          if (res.data.status) {
-            this.lichSuYeuCau = res.data.data;
+          const rawData = res.data.data;
+          if (Array.isArray(rawData)) {
+            this.lichSuYeuCau = rawData;
+          } else {
+            this.lichSuYeuCau = [];
           }
-        });
+        })
+        .catch((err) => console.error("Lỗi API lịch sử:", err));
     },
     guiYeuCau() {
       if (!this.yeuCau.hoa_don_id || !this.yeuCau.ly_do) {

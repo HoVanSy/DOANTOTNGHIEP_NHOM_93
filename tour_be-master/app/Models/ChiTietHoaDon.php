@@ -16,4 +16,8 @@ class ChiTietHoaDon extends Model
         "thanh_tien",
         "tinh_trang"
     ];
+    public function tour()
+    {
+        return $this->belongsTo(Tour::class, 'id_tour', 'id');
+    }
 }

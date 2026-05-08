@@ -2,30 +2,34 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class YeuCauHuy extends Model
 {
-    protected $table = 'yeu_cau_huy';
+    use HasFactory;
+
+    protected $table = 'yeu_cau_huy'; 
 
     protected $fillable = [
-        'ma_hd',
-        'ma_kh',
-        'loai_yc',
-        'ly_do_yc',
-        'trang_thai_yc',
-        'ghi_chu_yc',
-        'ngay_kh_moi',
+        'hoa_don_id', 
+        'khach_hang_id', 
+        'loai_yeu_cau', 
+        'ly_do', 
+        'ngay_khoi_hanh_moi', 
+        'trang_thai', 
+        'ghi_chu'
     ];
 
+    // Móc nối để lấy thông tin Hóa Đơn
     public function hoaDon()
     {
-        return $this->belongsTo(HoaDon::class);
+        return $this->belongsTo(HoaDon::class, 'hoa_don_id', 'id');
     }
 
+    // Móc nối để lấy thông tin Khách Hàng (nếu cần dùng cho Admin)
     public function khachHang()
     {
-        return $this->belongsTo(KhachHang::class);
+        return $this->belongsTo(KhachHang::class, 'khach_hang_id', 'id');
     }
 }

@@ -72,18 +72,18 @@ class HoaDonController extends Controller
         }
     }
 
-    public function getDataHoaDon()
+    public function getDataHoaDon(Request $request)
     {
-        $khach_hang =   Auth::guard('sanctum')->user();
-        $data = HoaDon::join('khach_hangs', 'hoa_dons.id_khach_hang', 'khach_hangs.id')
-            ->join('chi_tiet_hoa_dons', 'hoa_dons.id', 'chi_tiet_hoa_dons.id_hoa_don')
-            ->join('tours', 'tours.id', 'chi_tiet_hoa_dons.id_tour')
-            ->where('khach_hangs.id', $khach_hang->id)
-            ->select('hoa_dons.*', 'khach_hangs.ho_ten', 'tours.id as id_tour', 'tours.tieu_de')
-            ->get();
+        $khachHang = \Illuminate\Support\Facades\Auth::guard('sanctum')->user();
+        
+        $data = HoaDon::where('id_khach_hang', $khachHang->id)
+                      ->with('chiTietHoaDons.tour') 
+                      ->orderBy('created_at', 'desc')
+                      ->get();
+
         return response()->json([
-            'status'               => true,
-            'danh_sach_hoa_don'    =>  $data,
+            'status' => true,
+            'danh_sach_hoa_don' => $data
         ]);
     }
 
