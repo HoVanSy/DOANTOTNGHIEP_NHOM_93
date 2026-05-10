@@ -29,12 +29,26 @@
                                             {{ value.ten_tinh_thanh }}
                                         </option>
                                     </select>
-                                    <!-- <div class="text-end mt-2">
-                                        <button v-on:click="searchTour()"
-                                            class="btn btn-primary bg-gradient-scooter">
-                                             <i class="ms-2 fa-solid fa-magnifying-glass"></i>
-                                        </button>
-                                    </div> -->
+                                </div>
+                                <div class="start-to-stop mb-3">
+                                    <h5 class="point-start-title s-title">Giá từ (VNĐ)</h5>
+                                    <input v-model="thong_tin.min_price" @input="searchTour()" type="number" class="form-control Filter" placeholder="Giá tối thiểu">
+                                </div>
+                                <div class="start-to-stop mb-3">
+                                    <h5 class="point-start-title s-title">Giá đến (VNĐ)</h5>
+                                    <input v-model="thong_tin.max_price" @input="searchTour()" type="number" class="form-control Filter" placeholder="Giá tối đa">
+                                </div>
+                                <div class="start-to-stop mb-3">
+                                    <h5 class="point-start-title s-title">Ngày khởi hành</h5>
+                                    <input v-model="thong_tin.ngay_khoi_hanh" @change="searchTour()" type="date" class="form-control Filter">
+                                </div>
+                                <div class="start-to-stop mb-3">
+                                    <h5 class="point-start-title s-title">Số ngày</h5>
+                                    <input v-model="thong_tin.so_ngay" @input="searchTour()" type="number" class="form-control Filter" placeholder="Số ngày">
+                                </div>
+                                <div class="start-to-stop mb-3">
+                                    <h5 class="point-start-title s-title">Số người</h5>
+                                    <input v-model="thong_tin.so_nguoi" @input="searchTour()" type="number" class="form-control Filter" placeholder="Số người">
                                 </div>
                             </div>
                         </div>
@@ -44,8 +58,8 @@
             <div class="col-12 col-lg-9">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-header bg-gradient-scooter">
-                            <h4 class="text-center text-white mt-2">Chúng tôi tìm thấy <strong>{{
+                        <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+                            <h4 class="text-center text-dark mt-2">Chúng tôi tìm thấy <strong>{{
                                 list_danh_sach_tour.length }}</strong> tours
                                 cho Quý khách. </h4>
                         </div>
@@ -84,7 +98,7 @@
                                                             <h5>{{ formatToVND(v.gia_nguoi_lon) }}</h5>
                                                         </span>
                                                         <div class="btn-book "><a href="#" title="Đặt ngay"
-                                                                class="btn btn-primary bg-gradient-scooter form-control btn-sm btnOptionTour">Đặt
+                                                                class="btn btn-primary form-control btn-sm btnOptionTour">Đặt
                                                                 ngay</a>
                                                         </div>
                                                     </div>
@@ -263,8 +277,8 @@ export default {
     font-size: 1.1rem;
     /* Kích thước chữ của tiêu đề nhỏ */
     font-weight: 600;
-    color: #007acc;
-    /* Màu xanh nổi bật */
+    color: #495057;
+    /* Màu xám tối đơn giản */
     margin-bottom: 10px;
 }
 
@@ -280,9 +294,9 @@ export default {
 }
 
 .dropdown.Filter:hover {
-    border-color: #007acc;
+    border-color: #6c757d;
     /* Thay đổi màu viền khi hover */
-    box-shadow: 0 2px 5px rgba(0, 122, 204, 0.2);
+    box-shadow: 0 2px 5px rgba(108, 117, 125, 0.2);
     /* Đổ bóng */
 }
 

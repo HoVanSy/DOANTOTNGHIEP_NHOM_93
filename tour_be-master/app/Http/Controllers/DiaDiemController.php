@@ -201,14 +201,15 @@ class DiaDiemController extends Controller
             $key2 = "%" . $request->tinh_thanh . "%";
             $query->where('ten_tinh_thanh', 'like', $key2);
         }
-        //$data = $query->select('dia_diems.*', 'tinh_thanhs.ten_tinh_thanh')->get();
-        $data = $query->get();
+        if (!empty($request->min_price)) {
+            $query->where('gia_tien', '>=', $request->min_price);
+        }
+        if (!empty($request->max_price)) {
+            $query->where('gia_tien', '<=', $request->max_price);
+        }
+        // Note: ngay_khoi_hanh, so_ngay, so_nguoi not available in DiaDiem model
+        $data = $query->select('dia_diems.*', 'tinh_thanhs.ten_tinh_thanh')->get();
 
-        // $data   = DiaDiem::join('tinh_thanhs', 'tinh_thanhs.id','dia_diems.id_tinh_thanh')
-        //                     ->where('ten_tinh_thanh', 'like', $key)
-        //                     ->Where('loai_dia_diem', $request->loai_dd)
-        //                     ->Where('ten_tinh_thanh', 'like', $key)
-        //                     ->get();
         return response()->json([
             'status'    =>  true,
             'tim_kiem'  =>  $data
