@@ -1,9 +1,9 @@
 <template>
   <div class="container-fluid mt-4">
     <div class="card shadow">
-      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">QUẢN LÝ YÊU CẦU HỦY / ĐỔI LỊCH</h5>
-        <button @click="loadData" class="btn btn-sm btn-light">🔄 Làm mới</button>
+      <div class="card-header bg-white text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">QUẢN LÝ YÊU CẦU HỦY / ĐỔI LỊCH</h4>
+        <button @click="loadData" class="btn btn-sm btn-light">Làm mới</button>
       </div>
       <div class="card-body">
         <div class="table-responsive">

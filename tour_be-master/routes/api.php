@@ -18,7 +18,7 @@ use App\Http\Controllers\Api\ChatbotController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\YeuCauHuyController;
 use App\Http\Controllers\BlogController;
-
+use App\Http\Controllers\ThongKeController;
 
 Route::get('/blog/lay-du-lieu', [BlogController::class, 'getDataClient']);
 Route::get('/blog/chi-tiet/{id}', [BlogController::class, 'getChiTietBlog']);
@@ -122,8 +122,13 @@ Route::group(['prefix'  =>  '/admin'], function () {
     Route::get('/yeu-cau-huy/lay-du-lieu', [YeuCauHuyController::class, 'getYeuCauAdmin']);
     Route::post('/yeu-cau-huy/duyet', [YeuCauHuyController::class, 'duyetYeuCau']);
     Route::post('/yeu-cau-huy/tu-choi', [YeuCauHuyController::class, 'tuChoiYeuCau']);
-});
 
+    // Thong ke bao cao
+    Route::get('/thong-ke/tong-quan', [ThongKeController::class, 'getThongKeTongQuan']);
+    Route::get('/thong-ke/doanh-thu', [ThongKeController::class, 'getThongKeDoanhThu']);
+    // Test route
+    Route::get('/test-thong-ke', [ThongKeController::class, 'getThongKeTongQuan']);
+});
 
 // Client
 Route::group(['prefix'  =>  '/account-client'], function () {
@@ -136,7 +141,8 @@ Route::group(['prefix'  =>  '/account-client'], function () {
 
 Route::get('/client/lay-du-lieu-tinh-thanh', [TinhThanhController::class, 'getDataClient']);
 Route::get('/tour/lay-du-lieu-client', [Tour::class, 'getDataClient']);
-//client
+
+// client
 Route::group(['prefix'  =>  '/client'], function () {
     Route::post('/hoa-don/dat-tour', [HoaDonController::class, 'datTour']);
     Route::group(['prefix'  =>  '/gio-hang'], function () {
@@ -157,9 +163,21 @@ Route::group(['prefix'  =>  '/client'], function () {
         Route::post('/doi-trang-thai', [HoaDonController::class, 'doiTinhTrangHoaDonClient']);
         Route::post('/lay-thong-tin-chi-tiet-hoa-don/data', [HoaDonController::class, 'getDataCTHD']);
     });
+    Route::group(['prefix'  =>  '/vnpay'], function () {
+// Route::post('/create', [VNPAYController::class, 'store']);
+// Route::get('/return', [VNPAYController::class, 'vnpayReturn']);
+    });
     Route::group(['prefix'  =>  '/tim-kiem-tour'], function () {
         Route::get('/lay-du-lieu', [DiaDiemController::class, 'getDataClient']);
         Route::post('/lay-du-lieu-tim-kiem', [DiaDiemController::class, 'getDataClientTimKiem']);
     });
 });
+
 Route::post('/chatbot/question', [ChatbotController::class, 'handleQuestion']);
+
+// // Route xử lý tạo thanh toán (Gửi sang VNPay) - Có Middleware Auth để bảo mật
+// Route::post('/client/vnpay/create', [VNPAYController::class, 'createPayment'])->middleware('auth:sanctum');
+
+// // Route nhận kết quả trả về từ VNPay - Không dùng Middleware Auth vì VNPAY sẽ gọi trực tiếp
+// Route::get('/client/vnpay/return', [VNPAYController::class, 'vnpayReturn']);
+// Route::resource('payment', VNPAYController::class);

@@ -5,6 +5,7 @@ import checkLoginClient from "./checkLoginClient";
 const routes = [
     {
         path : '/',
+        alias: '/client/trang-chu',
         component: ()=>import('../components/Client/TrangChu/index.vue'),  
         meta : {layout : 'client'}  
     },
@@ -117,6 +118,11 @@ const routes = [
     {
         path : '/admin/yeucauhuy',
         component: ()=>import('../components/Admin/YeuCauHuy/index.vue'),
+        beforeEnter: checkLogin
+    },
+    {
+        path : '/admin/thongkebaocao',
+        component: ()=>import('../components/Admin/ThongKeBaoCao/index.vue'),
         beforeEnter: checkLogin
     },
 ]

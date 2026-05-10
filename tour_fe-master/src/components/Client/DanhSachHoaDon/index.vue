@@ -52,10 +52,11 @@
                                         </a>
                                         
                                         <div v-else-if="v.tinh_trang == 0" class="d-flex order-actions">
-                                            <a type="button" title="Xác Nhận" @click="xacNhanHoaDon(v)"
-                                                class="ms-2 bg-light-success">
-                                                <i class="fa-solid fa-check text-success"></i>
+                                            <a type="button" title="Thanh Toán VNPAY" @click="thanhToanVNPAY(v.id)" 
+                                                class="ms-2 bg-light-primary text-primary border border-primary d-flex align-items-center justify-content-center">
+                                                <img src="https://stcd02206177151.cloud.edgevnpay.vn/assets/images/logo-icon/logo-primary.svg" width="22" alt="VNPAY">
                                             </a>
+
                                             <a type="button" v-on:click="Object.assign(huy_hoa_don, v)" title="Hủy"
                                                 data-bs-toggle="modal" data-bs-target="#huyModal"
                                                 class="ms-2 bg-light-danger">
@@ -140,6 +141,21 @@ export default {
                 })
                 .catch((err) => {
                     console.error("Lỗi API tải hóa đơn:", err);
+                });
+        },
+
+        thanhToanVNPAY(idHoaDon) {
+            baseRequest.post('client/vnpay/create', { hoa_don_id: idHoaDon })
+                .then((res) => {
+                    if (res.data.status) {
+                        window.location.href = res.data.url;
+                    } else {
+                        toaster.error(res.data.message);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Lỗi tạo thanh toán:", err);
+                    toaster.error("Không thể kết nối đến cổng thanh toán VNPAY!");
                 });
         },
 

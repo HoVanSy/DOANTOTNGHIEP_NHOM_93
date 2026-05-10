@@ -16,7 +16,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div style="max-height: 100px" class="card-header">
-          <h5 class="text-center text-dark">Danh Sách Blog</h5>
+          <h5 class="text-center text-dar k">Danh Sách Blog</h5>
           <div class="input-group mb-3">
             <input v-model="key_search" type="text" class="form-control search-control" placeholder="Nhập thông tin cần tìm" @keyup.enter="searchBlog()"/>
             <button @click="searchBlog()" class="btn btn-primary">

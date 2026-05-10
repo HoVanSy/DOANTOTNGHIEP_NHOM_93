@@ -25,6 +25,7 @@ class HoaDonSeeder extends Seeder
                 'so_luong_nguoi_lon' => 2,
                 'so_luong_tre_em' => 1,
                 'tinh_trang' => 1,
+                'created_at' => now()->subMonths(5),
             ],
             [
                 'ma_hoa_don' => 'HD002',
@@ -33,6 +34,7 @@ class HoaDonSeeder extends Seeder
                 'so_luong_nguoi_lon' => 1,
                 'so_luong_tre_em' => 0,
                 'tinh_trang' => 1,
+                'created_at' => now()->subMonths(4),
             ],
             [
                 'ma_hoa_don' => 'HD003',
@@ -41,6 +43,7 @@ class HoaDonSeeder extends Seeder
                 'so_luong_nguoi_lon' => 2,
                 'so_luong_tre_em' => 2,
                 'tinh_trang' => 2,
+                'created_at' => now()->subMonths(3),
             ],
             [
                 'ma_hoa_don' => 'HD004',
@@ -49,6 +52,7 @@ class HoaDonSeeder extends Seeder
                 'so_luong_nguoi_lon' => 2,
                 'so_luong_tre_em' => 1,
                 'tinh_trang' => 1,
+                'created_at' => now()->subMonths(2),
             ],
             [
                 'ma_hoa_don' => 'HD005',
@@ -57,6 +61,7 @@ class HoaDonSeeder extends Seeder
                 'so_luong_nguoi_lon' => 1,
                 'so_luong_tre_em' => 0,
                 'tinh_trang' => 3,
+                'created_at' => now()->subMonths(1),
             ],
         ]);
     }
