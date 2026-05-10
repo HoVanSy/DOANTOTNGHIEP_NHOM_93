@@ -36,7 +36,7 @@
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/yeu-thich" class="nav-link custom-link rounded px-3 py-2">
+                            <router-link to="/client/wishlist" class="nav-link custom-link rounded px-3 py-2">
                                 <i class="fa-solid fa-heart me-1"></i> Yêu thích
                             </router-link>
                         </li>
