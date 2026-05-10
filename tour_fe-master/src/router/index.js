@@ -48,6 +48,12 @@ const routes = [
     },
 
     {
+        path : '/client/wishlist',
+        component: ()=>import('../components/Client/Wishlist/index.vue'),  
+        meta : {layout : 'client'}
+    },
+
+    {
         path : '/client/danh-sach-hoa-don',
         component: ()=>import('../components/Client/DanhSachHoaDon/index.vue'),  
         meta : {layout : 'client'}  

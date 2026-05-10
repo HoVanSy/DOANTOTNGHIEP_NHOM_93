@@ -1,189 +1,145 @@
 <template>
-    <div class="row">
-        <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
+    <div>
+        <div id="carouselExampleControls" class="carousel slide mb-5" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img :src="slide1" class="d-block w-100" alt="...">
+                    <img :src="slide1" class="d-block w-100 object-fit-cover banner-img" alt="Slide 1">
                 </div>
                 <div class="carousel-item">
-                    <img :src="slide2" class="d-block w-100" alt="...">
+                    <img :src="slide2" class="d-block w-100 object-fit-cover banner-img" alt="Slide 2">
                 </div>
                 <div class="carousel-item">
-                    <img :src="slide3" class="d-block w-100" alt="...">
+                    <img :src="slide3" class="d-block w-100 object-fit-cover banner-img" alt="Slide 3">
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-                data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-                data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-    </div>
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-lg-12">
-                <router-link to="/client/danh-sach-tour">
-                    <button type="button" class="btn btn-info form-control px-5 bg-gradient-scooter text-dark ms-auto">
-                        <h2 class="mt-2">TÌM KIẾM TOUR CỦA BẠN<i class="fa-solid fa-magnifying-glass ms-2 py-3"></i>
-                        </h2>
-                    </button>
-                </router-link>
-            </div>
-        </div>
 
-    </div>
+        <div class="container">
+            <div class="row mb-5 mt-4">
+                <div class="col-12">
+                    <div class="search-banner rounded-4 p-5 text-center shadow-sm border">
+                        <h4 class="fw-bold text-dark mb-4">Bạn đã sẵn sàng cho chuyến đi tiếp theo?</h4>
+                        <router-link to="/client/danh-sach-tour" class="btn btn-primary rounded-pill px-5 py-3 fw-medium search-btn">
+                            <i class="fa-solid fa-magnifying-glass me-2 text-white"></i> <span class="text-white">Khám Phá Toàn Bộ Tour Ngay</span>
+                        </router-link>
+                    </div>
+                </div>
+            </div>
 
-    <div class="container mt-5">
-        <h2>ƯU ĐÃI</h2>
-        <div class="row row-cols-1 row-cols-md-1 row-cols-lg-3 row-cols-xl-3">
-            <div class="col">
-                <div class="card">
-                    <img :src="offer1" class="card-img-top" alt="...">
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img :src="offer2" class="card-img-top" alt="...">
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img :src="offer3" class="card-img-top" alt="...">
-                </div>
-            </div>
-        </div>
-        <hr>
-        <h2>KHÁM PHÁ</h2>
-        <hr>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-xl-4">
-            <div class="col">
-                <router-link to="/client/danh-sach-tour">
-                    <div class="card bg-dark text-white">
-                        <img src="../image/image4.jpg" class="card-img" alt="...">
-                        <div class="card-img-overlay">
-                            <h4 class="card-title text-white" style="margin-top: 330px;">Du lịch kết hợp hành hương</h4>
+            <div class="mb-5">
+                <h3 class="fw-bold text-dark mb-4 text-center text-uppercase">Ưu Đãi Hấp Dẫn</h3>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden promo-card">
+                            <img :src="offer1" class="card-img-top" alt="Offer 1">
                         </div>
                     </div>
-                </router-link>
-            </div>
-            <div class="col">
-                <router-link to="/client/danh-sach-tour">
-                    <div class="card bg-dark text-white">
-                        <img src="../image/image2.jpg" class="card-img" alt="...">
-                        <div class="card-img-overlay">
-                            <h4 class="card-title text-white" style="margin-top: 330px;">Tour trải nghiệm mới mẻ, relax</h4>
+                    <div class="col">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden promo-card">
+                            <img :src="offer2" class="card-img-top" alt="Offer 2">
                         </div>
                     </div>
-                </router-link>
-            </div>
-            <div class="col">
-                <router-link to="/client/danh-sach-tour">
-                    <div class="card bg-dark text-white">
-                        <img src="../image/image6.jpg" class="card-img" alt="...">
-                        <div class="card-img-overlay">
-                            <h4 class="card-title text-white" style="margin-top: 330px;">Trải nghiệm du lịch hạng sang
-                            </h4>
-                        </div>
-                    </div>
-                </router-link>
-            </div>
-            <div class="col">
-                <router-link to="/client/danh-sach-tour">
-                    <div class="card bg-dark text-white">
-                        <img src="../image/image1.jpg" class="card-img" alt="...">
-                        <div class="card-img-overlay">
-                            <h4 class="card-title text-white" style="margin-top: 330px;">Tour mới - Hành trình độc đáo
-                            </h4>
-                        </div>
-                    </div>
-                </router-link>
-            </div>
-        </div>
-        <h2>DANH SÁCH TOUR</h2>
-        <hr>
-        <div class="row">
-            <template v-for="(v, k) in list_tour">
-                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto" v-if="k < 8" :key="k">
-                    <div class="card border-end shadow-none">
-                        <a v-bind:href="'/client/chi-tiet-tour/' + v.id">
-                            <img v-bind:src="v.link_anh" class="card-img-top" alt="" style="height: 172px;">
-                        </a>
-                        <div class="card-body">
-                            <h5 style="height: 60px;" class="card-title mx-auto">{{ v.tieu_de }}</h5>
-                            <p style="height: 165px;" class="card-text">{{ v.mo_ta }}</p>
-                            <hr>
-                            <div class="d-flex align-items-center gap-2">
-                                <a style="width: 330px;" v-bind:href="'/client/chi-tiet-tour/' + v.id"
-                                    class="btn btn-outline-info px-5"><i class="fa-solid fa-arrow-right"></i>Xem Chi
-                                    Tiết</a>
-                            </div>
-                        </div>
-                        <!-- <div class="card-footer bg-white"> <small class="text-muted">
-                                <h6>Last updated 3 mins ago</h6>
-                            </small>
-                        </div> -->
-                    </div>
-                </div>
-            </template>
-        </div>
-        <div class="row text-end mb-4">
-            <div class="col">
-                <router-link to="/client/danh-sach-tour">
-                    <button type="button" class="btn btn-outline-primary px-5">Xem tất cả <i
-                            class="fa-solid fa-arrow-right ms-1"></i></button>
-                </router-link>
-            </div>
-        </div>
-        <!-- <h2>GÓI ƯU ĐÃI ĐẶC BIỆT</h2>
-        <hr>
-        <div class="col">
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="https://media.travel.com.vn/LastMinute/lm_240620080927_681129_TRANG%20AN%20(4).jpg"
-                            class="card-img-top" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.</p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                    <div class="col">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden promo-card">
+                            <img :src="offer3" class="card-img-top" alt="Offer 3">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <h2>ĐIỂM ĐẾN YÊU THÍCH</h2>
-        <hr>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-            <div class="col">
-                <div class="card radius-10">
-                    <div class="card-body" style="position: relative;">
-                        <div class="d-flex align-items-center">
-                            <h6>Ghi chi đó ghi</h6>
-                        </div>
-                        <img src="https://media.travel.com.vn/LastMinute/lm_240620080927_681129_TRANG%20AN%20(4).jpg"
-                            class="card-img-top" alt="...">
-                        <div class="resize-triggers">
-                            <div class="expand-trigger mt-2">
-                                <div style="width: 311px; height: 143px;">
-                                    <h6>Ghi chi đó ghi</h6>
+
+            <div class="mb-5">
+                <h3 class="fw-bold text-dark mb-4 text-center text-uppercase">Khám Phá Hành Trình</h3>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                    <div class="col">
+                        <router-link to="/client/danh-sach-tour" class="text-decoration-none">
+                            <div class="card bg-dark text-white border-0 rounded-4 overflow-hidden category-card h-100">
+                                <img src="../image/image4.jpg" class="card-img object-fit-cover h-100 opacity-75" alt="Category">
+                                <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
+                                    <h5 class="card-title fw-bold text-light mb-0">Du lịch hành hương</h5>
                                 </div>
                             </div>
-                            <div class="contract-trigger"></div>
+                        </router-link>
+                    </div>
+                    <div class="col">
+                        <router-link to="/client/danh-sach-tour" class="text-decoration-none">
+                            <div class="card bg-dark text-white border-0 rounded-4 overflow-hidden category-card h-100">
+                                <img src="../image/image2.jpg" class="card-img object-fit-cover h-100 opacity-75" alt="Category">
+                                <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
+                                    <h5 class="card-title fw-bold text-light mb-0">Trải nghiệm Relax</h5>
+                                </div>
+                            </div>
+                        </router-link>
+                    </div>
+                    <div class="col">
+                        <router-link to="/client/danh-sach-tour" class="text-decoration-none">
+                            <div class="card bg-dark text-white border-0 rounded-4 overflow-hidden category-card h-100">
+                                <img src="../image/image6.jpg" class="card-img object-fit-cover h-100 opacity-75" alt="Category">
+                                <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
+                                    <h5 class="card-title fw-bold text-light mb-0">Du lịch hạng sang</h5>
+                                </div>
+                            </div>
+                        </router-link>
+                    </div>
+                    <div class="col">
+                        <router-link to="/client/danh-sach-tour" class="text-decoration-none">
+                            <div class="card bg-dark text-white border-0 rounded-4 overflow-hidden category-card h-100">
+                                <img src="../image/image1.jpg" class="card-img object-fit-cover h-100 opacity-75" alt="Category">
+                                <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
+                                    <h5 class="card-title fw-bold text-light mb-0">Hành trình độc đáo</h5>
+                                </div>
+                            </div>
+                        </router-link>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <h3 class="fw-bold text-dark mb-0 text-uppercase">Tour Mới Nhất</h3>
+                    <router-link to="/client/danh-sach-tour" class="text-primary text-decoration-none fw-medium hover-primary">
+                        Xem tất cả <i class="fa-solid fa-arrow-right ms-1"></i>
+                    </router-link>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                    <div class="col" v-for="(v, k) in list_tour.slice(0, 8)" :key="v.id || k">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden tour-card">
+                            <div class="position-relative tour-img-wrapper">
+                                <img :src="v.link_anh" class="card-img-top tour-img" alt="Ảnh Tour">
+                            </div>
+                            <div class="card-body d-flex flex-column p-3">
+                                <h6 class="card-title fw-bold text-dark mb-2 tour-title">
+                                    <router-link :to="'/client/chi-tiet-tour/' + v.id" class="text-decoration-none text-dark hover-primary">
+                                        {{ v.tieu_de }}
+                                    </router-link>
+                                </h6>
+                                <p class="card-text text-secondary font-13 text-clamp-3 mb-3">{{ v.mo_ta }}</p>
+                                
+                                <div class="mt-auto pt-3 border-top text-center">
+                                    <router-link :to="'/client/chi-tiet-tour/' + v.id" class="btn btn-outline-primary rounded-pill w-100 fw-medium font-14">
+                                        Xem Chi Tiết
+                                    </router-link>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> -->
+
+    
+
+        </div>
     </div>
 </template>
+
 <script>
 import baseRequest from "../../../core/baseRequestClient";
 import { createToaster } from "@meforma/vue-toaster";
@@ -194,6 +150,7 @@ import offer1 from '../../../layout/imgaes/ưu đãi 1.png';
 import offer2 from '../../../layout/imgaes/ưu đãi 2.png';
 import offer3 from '../../../layout/imgaes/ưu đãi 3.png';
 const toaster = createToaster({ position: "top-right" });
+
 export default {
     data() {
         return {
@@ -229,4 +186,86 @@ export default {
     },
 }
 </script>
-<style></style>
+
+<style scoped>
+/* Tiện ích tùy chỉnh */
+.font-13 { font-size: 13px; }
+.font-14 { font-size: 14px; }
+
+/* Banner ảnh Carousel */
+.banner-img {
+    height: 450px; 
+}
+
+/* Đổ bóng cho text đè lên ảnh */
+.text-shadow {
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+/* Hiệu ứng di chuột cho các liên kết chữ */
+.hover-primary {
+    transition: color 0.3s ease;
+}
+.hover-primary:hover {
+    color: #0d6efd !important;
+}
+
+/* Hiệu ứng thẻ Promo Card */
+.promo-card {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+.promo-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Hiệu ứng thẻ Category Khám Phá */
+.category-card {
+    height: 250px;
+    cursor: pointer;
+}
+.category-card img {
+    transition: transform 0.5s ease;
+}
+.category-card:hover img {
+    transform: scale(1.1);
+}
+
+/* Hiệu ứng thẻ Tour Card */
+.tour-card {
+    transition: all 0.3s ease;
+}
+.tour-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+.tour-img-wrapper {
+    height: 180px;
+    overflow: hidden;
+}
+.tour-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.tour-card:hover .tour-img {
+    transform: scale(1.1);
+}
+
+.text-clamp-3 {
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.tour-title {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.5em; /* Giữ khung luôn cố định dù chữ có 1 dòng */
+}
+</style>

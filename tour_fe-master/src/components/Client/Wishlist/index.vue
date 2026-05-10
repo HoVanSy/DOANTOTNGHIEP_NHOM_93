@@ -7,14 +7,14 @@
       <router-link to="/dang-nhap" class="btn btn-primary mt-3">Đăng nhập</router-link>
     </div>
 
-    <div v-else-if="list_wishlist.length === 0" class="text-center py-5">
+    <div v-else-if="listWishlist.length === 0" class="text-center py-5">
       <i class="fa-solid fa-heart text-muted fa-4x mb-3"></i>
       <h4 class="text-muted">Chưa có tour yêu thích nào</h4>
       <router-link to="/danh-sach-tour" class="btn btn-primary mt-3">Khám phá tour</router-link>
     </div>
 
     <div v-else class="row">
-      <div class="col-md-3 mb-4" v-for="(item, index) in list_wishlist" :key="index">
+      <div class="col-md-3 mb-4" v-for="(item, index) in listWishlist" :key="index">
         <div class="card h-100 shadow-sm">
           <img :src="item.tour?.link_anh || 'https://via.placeholder.com/300x200'" class="card-img-top" style="height: 180px; object-fit: cover;" alt="">
           <div class="card-body">
@@ -41,7 +41,7 @@ import baseRequest from "../../../core/baseRequestClient";
 export default {
   data() {
     return {
-      list_wishlist: []
+      listWishlist: []
     }
   },
   computed: {
@@ -59,7 +59,7 @@ export default {
       baseRequest.get('client/wishlist/lay-du-lieu')
         .then((res) => {
           if (res.data.status) {
-            this.list_wishlist = res.data.data;
+            this.listWishlist = res.data.data;
           }
         });
     },

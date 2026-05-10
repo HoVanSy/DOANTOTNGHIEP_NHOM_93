@@ -171,6 +171,12 @@ Route::group(['prefix'  =>  '/client'], function () {
         Route::get('/lay-du-lieu', [DiaDiemController::class, 'getDataClient']);
         Route::post('/lay-du-lieu-tim-kiem', [DiaDiemController::class, 'getDataClientTimKiem']);
     });
+    Route::group(['prefix'  =>  '/wishlist'], function () {
+        Route::get('/lay-du-lieu', [WishlistController::class, 'getWishlist'])->middleware('auth:sanctum');
+        Route::post('/them', [WishlistController::class, 'addToWishlist'])->middleware('auth:sanctum');
+        Route::post('/xoa', [WishlistController::class, 'removeFromWishlist'])->middleware('auth:sanctum');
+        Route::post('/kiem-tra', [WishlistController::class, 'checkWishlist'])->middleware('auth:sanctum');
+    });
 });
 
 Route::post('/chatbot/question', [ChatbotController::class, 'handleQuestion']);

@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Wishlist extends Model
 {
-    protected $table = 'wishlist';
+    protected $table = 'wishlists';
 
     protected $fillable = [
-        'ma_kh',
-        'ma_tour',
+        'khach_hang_id',
+        'tour_id',
     ];
 
     public function khachHang()

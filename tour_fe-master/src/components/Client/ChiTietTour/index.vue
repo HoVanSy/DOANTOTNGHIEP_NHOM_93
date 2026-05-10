@@ -181,19 +181,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <button @click="themVaoGioHang()" type="button"
-                                    style="border-width: 5px; height: 70px; border-radius: 20px; font-size: 15px; width: 183px;"
-                                    class="btn btn-outline-secondary">Thêm Vào Giỏ Hàng</button>
+                            <div class="col-md-4">
+                                <button @click="themVaoWishlist()" type="button"
+                                    style="border-width: 3px; height: 70px; border-color: #003C71; background-color: white; border-radius: 10px; font-weight: 550; font-size: 15px; width: 100%;"
+                                    class="btn">
+                                    <i></i>Yêu Thích
+                                </button>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <button @click="themVaoGioHang()" type="button"
+                                    style="border-width: 3px; height: 70px; border-color: #003C71; background-color: white; border-radius: 10px; font-weight: 550; font-size: 15px; width: 100%;"
+                                    class="btn">Thêm Vào Giỏ Hàng</button>
+                            </div>
+                            <div class="col-md-4">
                                 <!-- <router-link :to="'/client/hoa-don/' + id_tour" target="_blank"> -->
                                 <button @click="datTour()" type="button"
-                                    style="border-width: 5px; height: 70px; border-color: #003C71; background-color: white; border-radius: 20px; font-weight: 550; font-size: 15px; width: 183px;"
+                                    style="border-width: 3px; height: 70px; border-color: #003C71; background-color: white; border-radius: 10px; font-weight: 550; font-size: 15px; width: 100%;"
                                     class="btn">Đặt Ngay
                                 </button>
                                 <!-- </router-link> -->
                             </div>
+                            
+                        
                         </form>
                     </div>
                 </div>
@@ -397,6 +406,7 @@ export default {
             hoadon: {},
             id_tour: 0,
             cttour: {},
+            is_login: false,
             ten_hien_thi: 'Họ tên',
             email: 'Email'
         }
@@ -508,12 +518,12 @@ export default {
             return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
         formatDate(date) {
-            if (!date) return ''; // Kiểm tra nếu không có ngày
+            if (!date) return ''; 
             const d = new Date(date);
             const day = String(d.getDate()).padStart(2, '0'); // Lấy ngày, thêm số 0 nếu cần
             const month = String(d.getMonth() + 1).padStart(2, '0'); // Tháng + 1, thêm số 0
-            const year = d.getFullYear(); // Lấy năm
-            return `${day}/${month}/${year}`; // Trả về chuỗi định dạng dd/mm/yyyy
+            const year = d.getFullYear(); 
+            return `${day}/${month}/${year}`; // 
         },
         checkLogin() {
             axios
@@ -528,6 +538,33 @@ export default {
                         this.ten_hien_thi = localStorage.getItem('ho_ten_client');
                     }
                 });
+        },
+        themVaoWishlist() {
+            if (this.is_login) {
+                var payload = {
+                    'tour_id': this.tour[0].id_tour,
+                };
+                axios
+                    .post("http://127.0.0.1:8000/api/client/wishlist/them", payload, {
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem("token_client")
+                        }
+                    })
+                    .then((res) => {
+                        if (res.data.status) {
+                            toaster.success(res.data.message);
+                            this.$router.push('/client/wishlist');
+                        } else {
+                            toaster.error(res.data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        toaster.error("Có lỗi xảy ra khi thêm vào wishlist!");
+                    });
+            } else {
+                toaster.error("Bạn cần đăng nhập trước!");
+                this.$router.push('/client/dang-nhap');
+            }
         },
         themVaoGioHang() {
             if (this.is_login) {
@@ -553,6 +590,9 @@ export default {
                         } else {
                             toaster.error(res.data.message)
                         }
+                    })
+                    .catch((error) => {
+                        toaster.error("Có lỗi xảy ra khi thêm vào giỏ hàng!");
                     });
             } else {
                 toaster.error("Bạn cần đăng nhập trước!");
