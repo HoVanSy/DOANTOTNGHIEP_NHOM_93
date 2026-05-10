@@ -137,6 +137,8 @@ Route::group(['prefix'  =>  '/account-client'], function () {
     Route::post('/check', [KhachHangController::class, 'check']);
     Route::get('/logout', [KhachHangController::class, 'logout']);
     Route::get('/kiem-tra-token-client', [KhachHangController::class, 'checkToken']);
+    Route::get('/profile', [KhachHangController::class, 'getProfile'])->middleware('auth:sanctum');
+    Route::post('/update-profile', [KhachHangController::class, 'updateProfile'])->middleware('auth:sanctum');
 });
 
 Route::get('/client/lay-du-lieu-tinh-thanh', [TinhThanhController::class, 'getDataClient']);

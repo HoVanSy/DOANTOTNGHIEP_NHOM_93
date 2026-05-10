@@ -36,6 +36,13 @@ const routes = [
     },
 
     {
+        path : '/client/trang-ca-nhan',
+        component: ()=>import('../components/Client/TrangCaNhan/index.vue'),  
+        meta : {layout : 'client'},
+        beforeEnter: checkLoginClient
+    },
+
+    {
         path : '/client/dat-tour',
         component: ()=>import('../components/Client/DatTour/index.vue'),  
         meta : {layout : 'client'}  

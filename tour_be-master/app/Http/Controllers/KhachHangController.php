@@ -203,6 +203,73 @@ class KhachHangController extends Controller
         }
     }
 
+    public function getProfile(Request $request)
+    {
+        $user = Auth::guard('sanctum')->user();
+        if (!$user || !($user instanceof \App\Models\KhachHang)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Bạn cần đăng nhập!',
+            ], 401);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'id' => $user->id,
+                'ho_ten' => $user->ho_ten,
+                'email' => $user->email,
+                'so_dien_thoai' => $user->so_dien_thoai,
+                'dia_chi' => $user->dia_chi,
+                'ngay_sinh' => $user->ngay_sinh,
+                'gioi_tinh' => $user->gioi_tinh,
+            ]
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::guard('sanctum')->user();
+        if (!$user || !($user instanceof \App\Models\KhachHang)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Bạn cần đăng nhập!',
+            ], 401);
+        }
+
+        $request->validate([
+            'ho_ten' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:khach_hangs,email,' . $user->id,
+            'so_dien_thoai' => 'nullable|string|max:20',
+            'dia_chi' => 'nullable|string|max:500',
+            'ngay_sinh' => 'nullable|date',
+            'gioi_tinh' => 'nullable|in:0,1,2',
+        ]);
+
+        $user->update([
+            'ho_ten' => $request->ho_ten,
+            'email' => $request->email,
+            'so_dien_thoai' => $request->so_dien_thoai,
+            'dia_chi' => $request->dia_chi,
+            'ngay_sinh' => $request->ngay_sinh,
+            'gioi_tinh' => $request->gioi_tinh,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Cập nhật thông tin cá nhân thành công!',
+            'data' => [
+                'id' => $user->id,
+                'ho_ten' => $user->ho_ten,
+                'email' => $user->email,
+                'so_dien_thoai' => $user->so_dien_thoai,
+                'dia_chi' => $user->dia_chi,
+                'ngay_sinh' => $user->ngay_sinh,
+                'gioi_tinh' => $user->gioi_tinh,
+            ]
+        ]);
+    }
+
     public function getdata()
     {
         $id_chuc_nang   = 35;
