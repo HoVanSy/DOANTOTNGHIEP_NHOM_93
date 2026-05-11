@@ -1,213 +1,176 @@
 <template>
-    <div style="height: 800px;" class="container">
-        <div class="row">
-            <div class="col-12 col-lg-3">
-                <div class="card1" style="height: 0px;">
-                    <div class="card1-body">
-                        <div class="">
-                            <h4 class=" text-black text-center">Tìm kiếm</h4>
+    <div class="bg-light py-4 min-vh-100">
+        <div class="container">
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <h3 class="fw-bold text-dark text-uppercase mb-0">DANH SÁCH TOUR</h3>
+                    <nav aria-label="breadcrumb">
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-lg-3">
+                    <div class="card border-0 shadow-sm rounded-4 sticky-top z-1" style="top: 80px;">
+                        <div class="card-header bg-white border-bottom pt-4 pb-3">
+                            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-filter me-2 text-primary"></i>Bộ Lọc Nâng Cao</h5>
                         </div>
-                        <hr>
-                        <div class="fm-menu mt-2">
-                            <div class="list-group list-group-flush">
-                                <div class="start-to-stop mb-3">
-                                    <h5 class="point-start-title s-title">Loại hình tour</h5><select
-                                        v-model="thong_tin.loai_dd" @change="searchTour()"
-                                        class="form-control dropdown Filter" name="TourKindId">
-                                        <option value="">Tất cả</option>
-                                        <option value="1">Khách sạn</option>
-                                        <option value="2">Nhà Hàng</option>
-                                        <option value="3">Địa điểm tham quan</option>
-                                    </select>
-                                </div>
-                                <div class="start-to-stop mb-3 ">
-                                    <h5 class="point-start-title s-title">Chọn tỉnh đến</h5>
-                                    <select v-model="thong_tin.tinh_thanh" @change="searchTour()"
-                                        class="form-control dropdown Filter">
-                                        <option value="">Tất cả</option>
-                                        <option v-for="(value, index) in danh_sach_tinh_thanh" :key="index">
-                                            {{ value.ten_tinh_thanh }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="start-to-stop mb-3">
-                                    <h5 class="point-start-title s-title">Giá từ (VNĐ)</h5>
-                                    <input v-model="thong_tin.min_price" @input="searchTour()" type="number" class="form-control Filter" placeholder="Giá tối thiểu">
-                                </div>
-                                <div class="start-to-stop mb-3">
-                                    <h5 class="point-start-title s-title">Giá đến (VNĐ)</h5>
-                                    <input v-model="thong_tin.max_price" @input="searchTour()" type="number" class="form-control Filter" placeholder="Giá tối đa">
-                                </div>
-                                <div class="start-to-stop mb-3">
-                                    <h5 class="point-start-title s-title">Ngày khởi hành</h5>
-                                    <input v-model="thong_tin.ngay_khoi_hanh" @change="searchTour()" type="date" class="form-control Filter">
-                                </div>
-                                <div class="start-to-stop mb-3">
-                                    <h5 class="point-start-title s-title">Số ngày</h5>
-                                    <input v-model="thong_tin.so_ngay" @input="searchTour()" type="number" class="form-control Filter" placeholder="Số ngày">
-                                </div>
-                                <div class="start-to-stop mb-3">
-                                    <h5 class="point-start-title s-title">Số người</h5>
-                                    <input v-model="thong_tin.so_nguoi" @input="searchTour()" type="number" class="form-control Filter" placeholder="Số người">
-                                </div>
+                        <div class="card-body p-4">
+                            
+                            <div class="mb-4">
+                                <label class="fw-semibold text-secondary mb-2 font-14"><i class="fa-solid fa-list-check me-2"></i>Loại hình tour</label>
+                                <select v-model="thong_tin.loai_dd" @change="searchTour()" class="form-select border-0 bg-light rounded-3">
+                                    <option value="">Tất cả loại hình</option>
+                                    <option value="1">Khách sạn nghỉ dưỡng</option>
+                                    <option value="2">Nhà Hàng - Ẩm thực</option>
+                                    <option value="3">Địa điểm tham quan</option>
+                                </select>
                             </div>
+
+                            <div class="mb-4">
+                                <label class="fw-semibold text-secondary mb-2 font-14"><i class="fa-solid fa-location-dot me-2"></i>Điểm đến</label>
+                                <select v-model="thong_tin.tinh_thanh" @change="searchTour()" class="form-select border-0 bg-light rounded-3">
+                                    <option value="">Tất cả tỉnh thành</option>
+                                    <option v-for="(value, index) in danh_sach_tinh_thanh" :key="index" :value="value.ten_tinh_thanh">
+                                        {{ value.ten_tinh_thanh }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="fw-semibold text-secondary mb-2 font-14"><i class="fa-regular fa-calendar-days me-2"></i>Ngày đi dự kiến</label>
+                                <input v-model="thong_tin.ngay_khoi_hanh" @change="searchTour()" type="date" class="form-control border-0 bg-light rounded-3 text-secondary">
+                            </div>
+
+
+                            <button @click="resetFilter()" class="btn btn-outline-secondary w-100 rounded-pill fw-medium py-2">Xóa bộ lọc</button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-lg-9">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
-                            <h4 class="text-center text-dark mt-2">Chúng tôi tìm thấy <strong>{{
-                                list_danh_sach_tour.length }}</strong> tours
-                                cho Quý khách. </h4>
-                        </div>
-                        <hr>
-                        <div class="table-responsive-chieudoc" style="max-height: 600px;">
-                            <div class="row mt-3">
-                                <template v-for="(v, k) in list_danh_sach_tour" :key="k">
-                                    <div class="row g-0">
-                                        <div class="col-md-4">
-                                            <img v-bind:src="v.link_anh" style="height: 190px;" alt="..."
-                                                class="card-img">
+
+                <div class="col-lg-9">
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+                        <span class="text-dark fw-medium">Chúng tôi tìm thấy <b class="text-primary fs-5">{{ list_danh_sach_tour.length }}</b> kết quả phù hợp.</span>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                        <div class="col" v-for="(v, k) in list_danh_sach_tour" :key="v.id || k">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden tour-card">
+                                
+                                <div class="position-relative tour-img-wrapper">
+                                    <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)">
+                                        <img :src="v.link_anh || 'https://via.placeholder.com/300x200'" class="card-img-top tour-img" alt="Ảnh Tour">
+                                        <div class="position-absolute top-0 start-0 m-2">
+                                            <span v-if="v.loai_dia_diem == 1" class="badge bg-info text-dark rounded-pill px-3 py-2 shadow-sm"><i class="fa-solid fa-hotel me-1"></i> Khách sạn</span>
+                                            <span v-else-if="v.loai_dia_diem == 2" class="badge bg-warning text-dark rounded-pill px-3 py-2 shadow-sm"><i class="fa-solid fa-utensils me-1"></i> Nhà hàng</span>
+                                            <span v-else-if="v.loai_dia_diem == 3" class="badge bg-success rounded-pill px-3 py-2 shadow-sm"><i class="fa-solid fa-camera me-1"></i> Tham quan</span>
                                         </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <router-link to="">
-                                                    <h5 class="card-title">{{ v.ten_dia_diem }}</h5>
-                                                </router-link>
-                                                <p class="card-text">Rio de Janeiro được mệnh danh là thành phố giữa núi
-                                                    và biển
-                                                    với những bãi biển cát trắng trải dài, thảm thực vật của Vườn quốc
-                                                    gia Tijuca và Vườn bách thảo, đỉnh núi Corcovado (với bức tượng chúa
-                                                    Kitô nổi tiếng.</p>
-                                                <div class="row">
-                                                    <div class="col-lg-6 mt-3">
-                                                        <h6>Nơi đến: {{ v.ten_tinh_thanh }}</h6>
-                                                        <div class="col-lg-12 ">
-                                                            <h6 v-if="v.loai_dia_diem == 1">Loại địa điểm: Khách sạn
-                                                            </h6>
-                                                            <h6 v-if="v.loai_dia_diem == 2">Loại địa điểm: Nhà hàng</h6>
-                                                            <h6 v-if="v.loai_dia_diem == 3">Loại địa điểm: Tham quan
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <span class="text-center">
-                                                            <h5>{{ formatToVND(v.gia_nguoi_lon) }}</h5>
-                                                        </span>
-                                                        <div class="btn-book "><a href="#" title="Đặt ngay"
-                                                                class="btn btn-primary form-control btn-sm btnOptionTour">Đặt
-                                                                ngay</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </router-link>
+                                </div>
+
+                                <div class="card-body d-flex flex-column p-3">
+                                    <div class="mb-2">
+                                        <span class="text-secondary font-13"><i class="fa-solid fa-location-dot me-1 text-primary"></i> {{ v.ten_tinh_thanh }}</span>
                                     </div>
-                                    <hr>
-                                </template>
-                            </div>
-                        </div>
-                        <!-- <div class="row mt-3">
-                            <template v-for="(v, k) in list_danh_sach_tour" :key="k">
-                                <div class="col-md-4 col-lg-4 col-xl-4 mx-auto">
-                                    <div class="card border-end shadow-none">
-                                        <a v-bind:href="'/client/chi-tiet-tour/' + v.id_tinh_thanh">
-                                            <img v-bind:src="v.link_anh" style="height: 165px;"
-                                                class="img-fluid w-100 mt-3" alt="">
-                                            <div></div>
-                                        </a>
-                                        <div class="card-body">
-                                            <router-link to="/client/chi-tiet-tour">
-                                                <h5 style="height: 60px;" class="card-text tour-item__title mb-1">
-                                                    {{ v.ten_dia_diem }}</h5>
-                                            </router-link>
-                                            <p style="height: 150px;" class="card-text">Rio de Janeiro được mệnh danh là
-                                                thành phố giữa núi và biển
-                                                với những bãi biển cát trắng trải dài, thảm thực vật của Vườn quốc gia
-                                                Tijuca và Vườn bách thảo, đỉnh núi Corcovado (với bức tượng chúa Kitô
-                                                nổi
-                                                tiếng)</p>
-                                            <p class="tour-item__departure mb-3">
-                                            <h6>Nơi đến: {{ v.ten_tinh_thanh }}</h6><span class="font-weight-bold">
-                                            </span>
-                                            </p>
-                                            
-                                                <div class="col-lg-12 text-nowrap">
-                                                    <p>
-                                                        <h6 v-if="v.loai_dia_diem == 1">Loại địa điểm: Khách sạn</h6>
-                                                        <h6 v-if="v.loai_dia_diem == 2">Loại địa điểm: Nhà hàng</h6>
-                                                        <h6 v-if="v.loai_dia_diem == 3">Loại địa điểm: Tham quan</h6>
-                                                    </p>
-                                                </div>
-                                            <hr>
-                                            <div class="tour-item__price w-100">
-                                                <div class="tour-item__price__wrapper">
-                                                    <div class="row">
-                                                        <div class="tour-item__price--current fix-leftalign"><span
-                                                                class="tour-item__price--current__number pe-2 mb-0"><h5>4.990.000&nbsp;₫ </h5></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tour-item__price--current mt-2">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="btn-book "><a href="#" title="Đặt ngay"
-                                                                        class="btn btn-primary bg-gradient-scooter form-control btn-sm btnOptionTour">Đặt
-                                                                        ngay</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    
+                                    <h6 class="card-title fw-bold text-dark mb-2 tour-title">
+                                        <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="text-decoration-none text-dark hover-primary">
+                                            {{ v.ten_dia_diem || v.tieu_de }}
+                                        </router-link>
+                                    </h6>
+                                    
+                                    <p class="card-text text-secondary font-13 text-clamp-2 mb-3">
+                                        {{ v.mo_ta || 'Khám phá những trải nghiệm tuyệt vời cùng với hành trình đặc biệt này...' }}
+                                    </p>
+
+                                    
+                                    
+                                    <div class="mt-auto pt-3 border-top d-flex gap-2">
+                                        <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="btn btn-outline-primary rounded-pill flex-grow-1 fw-medium font-14">
+                                            Xem Chi Tiết
+                                        </router-link>
+                                        
+                                        <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="btn btn-primary rounded-pill px-4 fw-medium font-14">
+                                            Đặt Ngay
+                                        </router-link>
                                     </div>
                                 </div>
-                            </template>
-                        </div> -->
+                            </div>
+                        </div>
                     </div>
+
+                    <div v-if="list_danh_sach_tour.length === 0" class="text-center bg-white p-5 rounded-4 shadow-sm mt-4">
+                        <img src="https://cdn-icons-png.flaticon.com/512/7486/7486754.png" alt="No data" style="width: 150px; opacity: 0.5;" class="mb-3">
+                        <h5 class="text-secondary">Rất tiếc, không tìm thấy tour nào phù hợp với yêu cầu của bạn.</h5>
+                        <p class="text-muted">Vui lòng thử điều chỉnh lại bộ lọc hoặc từ khóa tìm kiếm.</p>
+                        <button @click="resetFilter()" class="btn btn-outline-primary rounded-pill mt-3 px-4">Xóa toàn bộ lọc</button>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 <script>
-import baseRequest from "../../../core/baseRequest";
+import baseRequest from "../../../core/baseRequestClient"; // Nhớ trỏ về baseRequestClient nhé
 import { createToaster } from "@meforma/vue-toaster";
 const toaster = createToaster({ position: "top-right" });
+
 export default {
     data() {
         return {
-            tt_tim_kiem: {},
             list_danh_sach_tour: [],
-            diem_den: {},
-            thong_tin: {},
             danh_sach_tinh_thanh: [],
-            // list_danh_sach_tour     :   [],
+            thong_tin: {
+                loai_dd: '',
+                tinh_thanh: '',
+                min_price: '',
+                max_price: '',
+                ngay_khoi_hanh: '',
+                so_ngay: '',
+                so_nguoi: '',
+                keyword: ''
+            },
         }
     },
     mounted() {
-        this.loadDataDanhSach();
+        // Bắt lấy keyword từ URL (nếu user gõ từ thanh tìm kiếm ở Navbar)
+        if (this.$route.query.keyword) {
+            this.thong_tin.keyword = this.$route.query.keyword;
+        }
+
         this.loadDataTinhThanh();
+        
+        // Gọi hàm search ngay lần đầu tiên để lấy dữ liệu (có hoặc không có keyword)
+        this.searchTour();
+    },
+    // Chạy lại searchTour nếu URL thay đổi (VD: User lại gõ tìm kiếm tiếp trên Navbar)
+    watch: {
+        '$route.query.keyword': function (newKeyword) {
+            this.thong_tin.keyword = newKeyword || '';
+            this.searchTour();
+        }
     },
     methods: {
-        loadDataDanhSach() {
-            baseRequest
-                .get('client/tim-kiem-tour/lay-du-lieu')
-                .then((res) => {
-                    this.list_danh_sach_tour = res.data.dia_diem_client;
-                    console.log(this.list_danh_sach_tour)
-                });
-        },
         searchTour() {
+            // Thay đổi đường dẫn API nếu backend của bạn khác nhé
             baseRequest
                 .post('client/tim-kiem-tour/lay-du-lieu-tim-kiem', this.thong_tin)
                 .then((res) => {
-                    if (res.data.status) {
-                        this.list_danh_sach_tour = res.data.tim_kiem;
+                    // Cập nhật lại list theo dữ liệu API trả về
+                    if (res.data.status || res.data.tim_kiem) {
+                        this.list_danh_sach_tour = res.data.tim_kiem || res.data.dia_diem_client; 
+                    } else {
+                        // Nếu không tìm thấy hoặc API trả lỗi
+                        this.list_danh_sach_tour = [];
                     }
+                })
+                .catch((err) => {
+                    console.error("Lỗi lấy dữ liệu:", err);
+                    this.list_danh_sach_tour = [];
                 });
         },
         loadDataTinhThanh() {
@@ -217,114 +180,86 @@ export default {
                     this.danh_sach_tinh_thanh = res.data.tinh_thanh;
                 });
         },
-        // locDanhSach() {
-        //     baseRequest
-        //          .post('client/tim-kiem-tour/lay-du-lieu-den', this.diem_den)
-        //          .then((res) => {
-        //             if(res.data.status){
-        //                 this.list_danh_sach_tour = res.data.dia_diem_client_den;
-        //             }else{
-        //                 toaster.error('Thông báo<br>' + res.data.message);
-        //             }
-        //          });
-        //  },
-
+        resetFilter() {
+            this.thong_tin = {
+                loai_dd: '',
+                tinh_thanh: '',
+                min_price: '',
+                max_price: '',
+                ngay_khoi_hanh: '',
+                so_ngay: '',
+                so_nguoi: '',
+                keyword: ''
+            };
+            this.$router.push({ name: 'TimKiemTour' }); // Xóa keyword trên URL
+            this.searchTour();
+        },
         formatToVND(number) {
-            number = parseInt(number);
+            number = parseInt(number) || 0;
             return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
     },
 }
 </script>
-<style>
-.table-responsive-chieudoc {
-    overflow-y: auto;
-    /* Cho phép cuộn dọc */
-    overflow-x: hidden;
-    /* Ẩn cuộn ngang */
-}
 
+<style scoped>
+/* Tiện ích tùy chỉnh kích thước chữ */
+.font-12 { font-size: 12px; }
+.font-13 { font-size: 13px; }
+.font-14 { font-size: 14px; }
 
-/* Style cho thẻ card */
-.card1 {
-    background: transparent;
-    /* Màu nền sáng */
-    border-radius: 10px;
-    /* Bo tròn góc */
+/* Tùy chỉnh input form select */
+.form-select:focus, .form-control:focus {
     box-shadow: none;
-    /* Đổ bóng nhẹ */
-    padding: 20px;
-    margin-top: 20px;
+    border: 1px solid #0d6efd !important;
 }
 
-/* Style cho tiêu đề */
-.card1 h4 {
-    font-size: 1.5rem;
-    /* Kích thước chữ */
-    font-weight: bold;
-    /* Chữ đậm */
-    color: #343a40;
-    /* Màu chữ tối */
-    margin-bottom: 10px;
+/* Hiệu ứng di chuột đổi màu xanh cho tiêu đề tour */
+.hover-primary {
+    transition: color 0.3s ease;
+}
+.hover-primary:hover {
+    color: #0d6efd !important;
 }
 
-/* Style cho các phần tử con bên trong */
-.card1-body {
-    padding: 20px;
-}
-
-.s-title {
-    font-size: 1.1rem;
-    /* Kích thước chữ của tiêu đề nhỏ */
-    font-weight: 600;
-    color: #495057;
-    /* Màu xám tối đơn giản */
-    margin-bottom: 10px;
-}
-
-/* Style cho dropdown */
-.dropdown.Filter {
-    border-radius: 8px;
-    /* Bo góc cho dropdown */
-    border: 1px solid #ced4da;
-    /* Viền màu trung tính */
-    padding: 10px;
+/* Hiệu ứng nẩy lên và đổ bóng cho cả khung Card Tour */
+.tour-card {
     transition: all 0.3s ease;
-    /* Hiệu ứng khi hover */
+}
+.tour-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
 }
 
-.dropdown.Filter:hover {
-    border-color: #6c757d;
-    /* Thay đổi màu viền khi hover */
-    box-shadow: 0 2px 5px rgba(108, 117, 125, 0.2);
-    /* Đổ bóng */
+/* Cố định khung ảnh và hiệu ứng Zoom ảnh bên trong */
+.tour-img-wrapper {
+    height: 180px;
+    overflow: hidden;
+}
+.tour-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.tour-card:hover .tour-img {
+    transform: scale(1.1);
 }
 
-/* Style cho nút bấm */
-.btn-primary:hover {
-    background-color: #0056b3;
-    /* Đổi màu nền khi hover */
-    color: #f00303;
-    /* Màu chữ */
-    transform: scale(1.05);
-    /* Phóng to nhẹ nút khi hover */
-    transition: all 0.3s ease;
-    /* Hiệu ứng chuyển đổi mượt */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Đổ bóng nút khi hover */
+/* Ép tiêu đề tour luôn hiển thị 2 dòng (giữ form bằng nhau), dài quá tự hiện dấu 3 chấm */
+.tour-title {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.5em; 
 }
-
-/* Style cho nhóm danh sách */
-.list-group-flush {
-    margin-top: 10px;
-}
-
-.start-to-stop {
-    margin-bottom: 15px;
-}
-
-/* Style cho khoảng cách cuối */
-.text-end {
-    margin-top: 10px;
+.text-clamp-3 {
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 </style>
