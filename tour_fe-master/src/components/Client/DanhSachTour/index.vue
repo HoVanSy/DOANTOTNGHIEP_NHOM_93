@@ -17,7 +17,6 @@
                             <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-filter me-2 text-primary"></i>Bộ Lọc Nâng Cao</h5>
                         </div>
                         <div class="card-body p-4">
-                            
                             <div class="mb-4">
                                 <label class="fw-semibold text-secondary mb-2 font-14"><i class="fa-solid fa-list-check me-2"></i>Loại hình tour</label>
                                 <select v-model="thong_tin.loai_dd" @change="searchTour()" class="form-select border-0 bg-light rounded-3">

@@ -14,10 +14,8 @@
             <div class="row g-4">
                 <div class="col-lg-3">
                     <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 80px;">
-                        <div class="card-header bg-white border-bottom pt-3 pb-2">
-                            <h5 class="fw-bold text-primary mb-0">
-                                <i class="fa-solid fa-filter me-2"></i>Bộ lọc
-                            </h5>
+                        <div class="card-header bg-white border-bottom pt-4 pb-3">
+                            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-filter me-2 text-primary"></i>Bộ Lọc Nâng Cao</h5>
                         </div>
                         <div class="card-body p-4">
                             <div class="mb-4">
@@ -104,17 +102,14 @@
                                         <small class="text-secondary">Người lớn</small>
                                     </div>
 
-                                    <div class="row g-2">
-                                        <div class="col-6">
-                                            <router-link :to="`/client/chi-tiet-tour/${tour.id}`" class="btn btn-primary rounded-pill w-100 fw-medium btn-sm">
-                                                <i class="fa-solid fa-arrow-right me-1"></i>Xem chi tiết
-                                            </router-link>
-                                        </div>
-                                        <div class="col-6">
-                                            <button @click="addToWishlist(tour.id)" class="btn btn-outline-danger rounded-pill w-100 fw-medium btn-sm">
-                                                <i class="fa-solid fa-heart"></i>
-                                            </button>
-                                        </div>
+                                    <div class="mt-auto pt-3 border-top d-flex gap-2">
+                                        <router-link :to="`/client/chi-tiet-tour/${tour.id}`" class="btn btn-outline-primary rounded-pill flex-grow-1 fw-medium font-14">
+                                            Xem chi tiết
+                                        </router-link>
+                                        
+                                        <button @click="addToWishlist(tour.id)" class="btn btn-outline-danger rounded-pill px-3" title="Thêm vào yêu thích">
+                                            <i class="fa-solid fa-heart"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
