@@ -77,6 +77,13 @@ const routes = [
         beforeEnter: checkLoginClient
     },
 
+    {
+        path: '/client/tim-kiem-tour',
+        name: 'TimKiemTour',
+        component: () => import('../components/Client/TimKiemTour/index.vue'),
+        meta: { layout: 'client' }
+    },
+
     //admin
     {
         path : '/admin/tinh-thanh',

@@ -204,4 +204,37 @@ class Tour extends Controller
             'tour_client'  =>  $data
         ]);
     }
+
+    // Client search tour by keyword
+    public function searchTourClient(Request $request)
+    {
+        $keyword = "%" . $request->keyword . "%";
+        $minPrice = $request->min_price ?? 0;
+        $maxPrice = $request->max_price ?? PHP_INT_MAX;
+
+        $query = ModelsTour::where('tieu_de', 'like', $keyword)
+                ->orWhere('mo_ta', 'like', $keyword)
+                ->whereBetween('gia_nguoi_lon', [$minPrice, $maxPrice]);
+
+        $data = $query->get();
+
+        return response()->json([
+            'status' => true,
+            'tours' => $data,
+            'count' => $data->count()
+        ]);
+    }
+
+    // Get price range for filter
+    public function getTourPriceRange()
+    {
+        $minPrice = ModelsTour::min('gia_nguoi_lon') ?? 0;
+        $maxPrice = ModelsTour::max('gia_nguoi_lon') ?? 0;
+
+        return response()->json([
+            'status' => true,
+            'min_price' => $minPrice,
+            'max_price' => $maxPrice
+        ]);
+    }
 }

@@ -156,6 +156,8 @@ Route::group(['prefix'  =>  '/client'], function () {
         Route::get('/lay-du-lieu', [Tour::class, 'getDataClient']);
         Route::post('/lay-chi-tiet-tour/data', [Tour::class, 'clientGetChiTietTour']);
         Route::post('/thanh-toan', [HoaDonController::class, 'thanhToan']);
+        Route::post('/tim-kiem', [Tour::class, 'searchTourClient']);
+        Route::get('/gia-tour-range', [Tour::class, 'getTourPriceRange']);
     });
     Route::group(['prefix'  =>  '/tinh-thanh'], function () {
         Route::get('/lay-du-lieu', [TinhThanhController::class, 'getDataClient']);

@@ -1,9 +1,9 @@
 <template>
     <div class="bg-white shadow-sm sticky-top">
         <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white py-1">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
                 
-                <router-link class="navbar-brand py-0" to="/">
+                <router-link class="navbar-brand py-0 me-lg-4" to="/">
                     <img style="height: 45px; object-fit: contain;" src="../imgaes/logo.png" alt="Logo">
                 </router-link>
 
@@ -13,42 +13,58 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent2">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-medium gap-1">
+                <div class="collapse navbar-collapse align-items-center" id="navbarSupportedContent2">
+                    
+                    <ul class="navbar-nav mb-2 mb-lg-0 fw-medium gap-1">
                         <li class="nav-item">
-                            <router-link to="/" class="nav-link custom-link rounded px-3 py-2">
+                            <router-link to="/" class="nav-link custom-link rounded-pill px-3">
                                 <i class="bx bx-home-alt me-1"></i> Home
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/client/danh-sach-hoa-don" class="nav-link custom-link rounded px-3 py-2">
+                            <router-link to="/client/danh-sach-hoa-don" class="nav-link custom-link rounded-pill px-3">
                                 <i class="fa-solid fa-bag-shopping me-1"></i> Hoá Đơn
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/blog" class="nav-link custom-link rounded px-3 py-2">
-                                <i class="fa-solid fa-newspaper me-1"></i> Blog tin tức
+                            <router-link to="/blog" class="nav-link custom-link rounded-pill px-3">
+                                <i class="fa-solid fa-newspaper me-1"></i> Tin tức
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/yeu-cau" class="nav-link custom-link rounded px-3 py-2">
-                                <i class="fa-solid fa-rotate me-1"></i> Hủy / Đổi lịch
+                            <router-link to="/yeu-cau" class="nav-link custom-link rounded-pill px-3">
+                                <i class="fa-solid fa-rotate me-1"></i> Hủy/Đổi
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/client/wishlist" class="nav-link custom-link rounded px-3 py-2">
-                                <i class="fa-solid fa-heart me-1"></i> Yêu thích
+                            <router-link to="/client/wishlist" class="nav-link custom-link rounded-pill px-3">
+                                <i class="fa-solid fa-heart me-1 text-danger"></i> Yêu thích
                             </router-link>
                         </li>
                     </ul>
 
+                    <div class="flex-grow-1 mx-lg-4 my-3 my-lg-0">
+                        <div class="search-bar-wrapper bg-light rounded-pill d-flex align-items-center px-3 py-1">
+                            <input 
+                                v-model="keyword_search" 
+                                @keyup.enter="handleSearch()" 
+                                type="text" 
+                                class="form-control bg-transparent border-0 shadow-none text-dark" 
+                                placeholder="Bạn muốn tìm tour đi đâu?..."
+                            >
+                            <button @click="handleSearch()" class="btn text-primary border-0 rounded-circle" type="button">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     <template v-if="is_check == false">
                         <div class="d-flex align-items-center gap-2">
-                            <router-link to="/client/dang-nhap" class="btn btn-sm btn-outline-secondary radius-30 px-3 py-1 fw-medium">
-                                <i class="bx bx-lock me-1"></i> Login
+                            <router-link to="/client/dang-nhap" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium btn-auth">
+                                Đăng Nhập
                             </router-link>
-                            <router-link to="/client/dang-ky" class="btn btn-sm btn-secondary radius-30 px-3 py-1 fw-medium text-white">
-                                <i class="bx bx-user me-1"></i> Register
+                            <router-link to="/client/dang-ky" class="btn btn-dark rounded-pill px-4 py-2 fw-medium btn-auth text-white">
+                                Đăng Ký
                             </router-link>
                         </div>
                     </template>
@@ -58,7 +74,7 @@
                             <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret text-dark border rounded-pill px-3 py-1 user-pill"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 
-                                <i class="fa-solid fa-circle-user fs-5 text-secondary me-2"></i>
+                                <i class="fa-solid fa-circle-user fs-5 text-primary me-2"></i>
                                 
                                 <div class="user-info me-2">
                                     <span class="user-name mb-0 fw-bold font-14">{{ ten_hien_thi }}</span>
@@ -67,10 +83,10 @@
                                 <i class="fa-solid fa-chevron-down text-secondary font-10"></i>
                             </a>
                             
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2 rounded-3">
                                 <li>
-                                    <a v-on:click="trangCaNhan()" class="dropdown-item py-2 text-secondary custom-dropdown-item" style="cursor: pointer;">
-                                        <i class='bx bx-user-circle me-2'></i><span>Trang Cá Nhân</span>
+                                    <a v-on:click="trangCaNhan()" class="dropdown-item py-2 text-dark custom-dropdown-item" style="cursor: pointer;">
+                                        <i class='bx bx-user-circle me-2 text-primary'></i><span>Trang Cá Nhân</span>
                                     </a>
                                 </li>
                                 <li>
@@ -101,13 +117,23 @@ export default {
         return {
             ten_hien_thi: 'Chưa đăng nhập',
             is_check: false,
-            id: ' '
+            id: ' ',
+            keyword_search: ''
         }
     },
     mounted() {
         this.checkLogin();
     },
     methods: {
+        handleSearch() {
+            if (this.keyword_search.trim()) {
+                this.$router.push({
+                    name: 'TimKiemTour',
+                    query: { keyword: this.keyword_search }
+                });
+                this.keyword_search = '';
+            }
+        },
         dangXuat() {
             baseRequestClient
                 .get('account-client/logout')
@@ -154,42 +180,68 @@ export default {
 .font-14 { font-size: 14px; }
 .font-10 { font-size: 10px; }
 
-/* Màu mặc định của menu là màu xám trung tính */
+/* Các nút chuyển hướng */
 .custom-link {
-    color: #000000 !important;
+    color: #495057 !important;
     transition: all 0.2s ease-in-out;
-    font-size: 15px; /* Giảm nhẹ font chữ menu */
+    font-size: 14px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
-/* Hiệu ứng hover: Nền xám nhạt, chữ đậm màu hơn */
 .custom-link:hover {
-    background-color: #f8f9fa;
-    color: #212529 !important;
-}
-
-/* Đang ở trang nào thì bôi đậm trang đó */
-.router-link-active.custom-link {
-    color: #212529 !important;
-    font-weight: 700;
     background-color: #f1f3f5;
+    color: #0d6efd !important;
 }
 
-/* Khung user pill hover */
+.router-link-active.custom-link {
+    color: #0d6efd !important;
+    font-weight: 700;
+    background-color: #e7f1ff; /* Màu xanh siêu nhạt */
+}
+
+/* Thanh tìm kiếm */
+.search-bar-wrapper {
+    max-width: 600px; /* Giữ cho thanh tìm kiếm không bị kéo dài vô tận trên màn hình to */
+    width: 100%;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.search-bar-wrapper:focus-within {
+    border-color: #0d6efd;
+    background-color: #fff !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.search-bar-wrapper input::placeholder {
+    color: #adb5bd;
+}
+
+.search-bar-wrapper input:focus {
+    outline: none;
+}
+
+/* Khu vực Auth/User */
+.btn-auth {
+    font-size: 14px;
+}
+
 .user-pill {
     transition: all 0.2s;
     background-color: #f8f9fa;
 }
+
 .user-pill:hover {
     background-color: #e9ecef;
 }
 
-/* Nút dropdown */
-.custom-dropdown-item:hover {
-    background-color: #f8f9fa;
+.custom-dropdown-item {
+    font-size: 14px;
+    font-weight: 500;
 }
 
-/* Bo góc cho các nút đăng nhập / đăng ký */
-.radius-30 {
-    border-radius: 30px !important;
+.custom-dropdown-item:hover {
+    background-color: #f8f9fa;
 }
 </style>

@@ -114,94 +114,89 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="card border-0 shadow-lg rounded-4 fixed-booking">
-                        <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
-                            <h4 class="fw-bold text-primary mb-0">THÔNG TIN ĐẶT TOUR</h4>
-                            <p class="text-secondary font-14 mt-2 mb-0">Mã tour: <b>#{{ tour[0].id_tour }}</b></p>
+                    <div class="card border-0 shadow rounded-4 sticky-top z-1" style="top: 80px;">
+                        <div class="card-header bg-white border-bottom-0 pt-3 pb-0 text-center">
+                            <h5 class="fw-bold text-primary mb-0">THÔNG TIN ĐẶT TOUR</h5>
+                            <p class="text-secondary font-12 mt-1 mb-0">Mã tour: <b>#{{ tour[0].id_tour }}</b></p>
                         </div>
                         
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center bg-light px-3 py-2 rounded-3 mb-3">
                                 <div>
-                                    <p class="mb-0 font-14 text-secondary">Người lớn</p>
-                                    <h5 class="text-danger fw-bold mb-0">{{ formatToVND(tour[0].gia_nguoi_lon) }}</h5>
+                                    <p class="mb-0 font-12 text-secondary">Người lớn</p>
+                                    <span class="text-danger fw-bold font-14">{{ formatToVND(tour[0].gia_nguoi_lon) }}</span>
                                 </div>
                                 <div class="text-end border-start ps-3">
-                                    <p class="mb-0 font-14 text-secondary">Trẻ em</p>
-                                    <h5 class="text-danger fw-bold mb-0">{{ formatToVND(tour[0].gia_tre_em) }}</h5>
+                                    <p class="mb-0 font-12 text-secondary">Trẻ em</p>
+                                    <span class="text-danger fw-bold font-14">{{ formatToVND(tour[0].gia_tre_em) }}</span>
                                 </div>
                             </div>
 
                             <form>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold text-dark">Khách hàng đặt</label>
-                                    <input type="text" class="form-control bg-light" :value="ten_hien_thi" readonly>
+                                    <label class="form-label fw-bold text-dark font-13 mb-1">Khách hàng đặt</label>
+                                    <input type="text" class="form-control form-control-sm bg-light" :value="ten_hien_thi" readonly>
                                 </div>
 
-                                <div class="row mb-3">
-                                    <div class="col-12 mb-3">
-                                        <label class="form-label fw-bold text-dark d-flex justify-content-between">
-                                            <span>Người lớn <small class="text-secondary fw-normal">(trên 10 tuổi)</small></span>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold text-dark d-flex justify-content-between font-13 mb-1">
+                                            <span>Người lớn <small class="text-secondary fw-normal">(trên 10T)</small></span>
                                         </label>
-                                        <div class="input-group">
-                                            <button @click="decrease('adult')" class="btn btn-outline-secondary px-3 fw-bold" type="button">−</button>
+                                        <div class="input-group input-group-sm">
+                                            <button @click="decrease('adult')" class="btn btn-outline-secondary px-3" type="button">−</button>
                                             <input v-model="so_nguoi_lon" type="text" class="form-control text-center fw-bold bg-white" readonly>
-                                            <button @click="increase('adult')" class="btn btn-outline-secondary px-3 fw-bold" type="button">+</button>
+                                            <button @click="increase('adult')" class="btn btn-outline-secondary px-3" type="button">+</button>
                                         </div>
                                     </div>
 
-                                    <div class="col-12 mb-4">
-                                        <label class="form-label fw-bold text-dark d-flex justify-content-between">
-                                            <span>Trẻ em <small class="text-secondary fw-normal">(dưới 10 tuổi)</small></span>
+                                    <div class="col-12 mt-2">
+                                        <label class="form-label fw-bold text-dark d-flex justify-content-between font-13 mb-1">
+                                            <span>Trẻ em <small class="text-secondary fw-normal">(dưới 10T)</small></span>
                                         </label>
-                                        <div class="input-group">
-                                            <button @click="decrease('child')" class="btn btn-outline-secondary px-3 fw-bold" type="button">−</button>
+                                        <div class="input-group input-group-sm">
+                                            <button @click="decrease('child')" class="btn btn-outline-secondary px-3" type="button">−</button>
                                             <input v-model="so_tre_em" type="text" class="form-control text-center fw-bold bg-white" readonly>
-                                            <button @click="increase('child')" class="btn btn-outline-secondary px-3 fw-bold" type="button">+</button>
+                                            <button @click="increase('child')" class="btn btn-outline-secondary px-3" type="button">+</button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-between align-items-center border-top pt-3 mb-4">
-                                    <h5 class="mb-0 text-dark">TỔNG TIỀN</h5>
-                                    <h3 class="mb-0 text-danger fw-bold">{{ formatToVND(tong_tien) }}</h3>
+                                <div class="d-flex justify-content-between align-items-center border-top pt-2 mb-3">
+                                    <span class="mb-0 text-dark fw-bold font-14">TỔNG TIỀN</span>
+                                    <h4 class="mb-0 text-danger fw-bold">{{ formatToVND(tong_tien) }}</h4>
                                 </div>
 
                                 <div class="d-grid gap-2">
-                                    <button 
-                                        @click="datTour()" 
-                                        type="button"
-                                        class="btn w-100 fw-semibold py-2 shadow-sm"
-                                        style="border-radius: 8px; border: 2px solid #000; background: #fff; color: #000; font-size: 14px;"
-                                    >
+                                    <button @click="datTour()" type="button" class="btn btn-primary rounded-3 fw-bold shadow-sm py-2">
                                         ĐẶT TOUR NGAY
                                     </button>
 
-                                    <div class="row g-2 mt-1">
+                                    <div class="row g-2">
                                         <div class="col-6">
-                                            <button 
-                                                @click="themVaoGioHang()" 
-                                                type="button"
-                                                class="btn w-100 fw-semibold shadow-sm py-2"
-                                                style="border-radius: 8px; border: 2px solid #000; background: #fff; color: #000; font-size: 13px;"
-                                            >
+                                            <button @click="themVaoGioHang()" type="button" class="btn btn-warning w-100 rounded-3 fw-bold text-white shadow-sm py-2 font-13">
                                                 <i class="fa-solid fa-cart-plus me-1"></i> Giỏ Hàng
                                             </button>
                                         </div>
-
                                         <div class="col-6">
-                                            <button 
-                                                @click="themVaoWishlist()" 
-                                                type="button"
-                                                class="btn w-100 fw-semibold shadow-sm py-2"
-                                                style="border-radius: 8px; border: 2px solid #000; background: #fff; color: #000; font-size: 13px;"
-                                            >
+                                            <button @click="themVaoWishlist()" type="button" class="btn text-white w-100 rounded-3 fw-bold shadow-sm py-2 font-13" style="background-color: #ff4757;">
                                                 <i class="fa-solid fa-heart me-1"></i> Yêu Thích
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3 text-primary"><i class="fas fa-info-circle me-2"></i>Mô tả tour</h5>
+                            <p class="text-secondary mb-0">{{ tour[0].mo_ta }}</p>
                         </div>
                     </div>
                 </div>
