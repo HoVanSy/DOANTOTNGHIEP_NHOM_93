@@ -15,30 +15,30 @@
 
                 <div class="collapse navbar-collapse align-items-center" id="navbarSupportedContent2">
                     
-                    <ul class="navbar-nav mb-2 mb-lg-0 fw-medium gap-1">
+                    <ul class="navbar-nav mb-2 mb-lg-0 fw-medium">
                         <li class="nav-item">
-                            <router-link to="/" class="nav-link custom-link rounded-pill px-3">
-                                <i class="bx bx-home-alt me-1"></i> Home
+                            <router-link to="/" class="nav-link custom-link">
+                                Home
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/client/danh-sach-hoa-don" class="nav-link custom-link rounded-pill px-3">
-                                <i class="fa-solid fa-bag-shopping me-1"></i> Hoá Đơn
+                            <router-link to="/client/danh-sach-hoa-don" class="nav-link custom-link">
+                                Hoá Đơn
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/blog" class="nav-link custom-link rounded-pill px-3">
-                                <i class="fa-solid fa-newspaper me-1"></i> Tin tức
+                            <router-link to="/blog" class="nav-link custom-link">
+                                Tin tức
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/yeu-cau" class="nav-link custom-link rounded-pill px-3">
-                                <i class="fa-solid fa-rotate me-1"></i> Hủy/Đổi
+                            <router-link to="/yeu-cau" class="nav-link custom-link">
+                                Hủy/Đổi
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/client/wishlist" class="nav-link custom-link rounded-pill px-3">
-                                <i class="fa-solid fa-heart me-1 text-danger"></i> Yêu thích
+                            <router-link to="/client/wishlist" class="nav-link custom-link">
+                                Yêu thích
                             </router-link>
                         </li>
                     </ul>
@@ -71,13 +71,13 @@
 
                     <template v-else>
                         <div class="user-box dropdown">
-                            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret text-dark border rounded-pill px-3 py-1 user-pill"
+                            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret text-dark border-0 rounded-pill px-2 py-1 user-pill"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 
-                                <i class="fa-solid fa-circle-user fs-5 text-primary me-2"></i>
+                                <i class="fa-solid fa-circle-user fs-6 text-secondary me-2"></i>
                                 
                                 <div class="user-info me-2">
-                                    <span class="user-name mb-0 fw-bold font-14">{{ ten_hien_thi }}</span>
+                                    <span class="user-name mb-0 fw-semibold font-13">{{ ten_hien_thi }}</span>
                                 </div>
                                 
                                 <i class="fa-solid fa-chevron-down text-secondary font-10"></i>
@@ -176,33 +176,46 @@ export default {
 </script>
 
 <style scoped>
-/* Tiện ích font size */
+.font-13 { font-size: 13px; }
 .font-14 { font-size: 14px; }
 .font-10 { font-size: 10px; }
 
-/* Các nút chuyển hướng */
 .custom-link {
     color: #495057 !important;
-    transition: all 0.2s ease-in-out;
     font-size: 14px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px 0 !important; 
+    margin: 0 12px; 
+    position: relative;
+    background-color: transparent !important;
 }
 
 .custom-link:hover {
-    background-color: #f1f3f5;
     color: #0d6efd !important;
+}
+
+.custom-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #0d6efd;
+    transition: width 0.3s ease;
+}
+
+.custom-link:hover::after,
+.router-link-active.custom-link::after {
+    width: 100%;
 }
 
 .router-link-active.custom-link {
     color: #0d6efd !important;
     font-weight: 700;
-    background-color: #e7f1ff; /* Màu xanh siêu nhạt */
 }
 
-/* Thanh tìm kiếm */
 .search-bar-wrapper {
-    max-width: 600px; /* Giữ cho thanh tìm kiếm không bị kéo dài vô tận trên màn hình to */
+    max-width: 600px; 
     width: 100%;
     border: 1px solid transparent;
     transition: all 0.3s;
@@ -222,18 +235,18 @@ export default {
     outline: none;
 }
 
-/* Khu vực Auth/User */
+
 .btn-auth {
     font-size: 14px;
 }
 
 .user-pill {
+    background-color: #f1f3f5;
     transition: all 0.2s;
-    background-color: #f8f9fa;
 }
 
 .user-pill:hover {
-    background-color: #e9ecef;
+    background-color: #e2e6ea; 
 }
 
 .custom-dropdown-item {
