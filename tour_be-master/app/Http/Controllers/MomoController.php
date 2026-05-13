@@ -31,13 +31,8 @@ class MomoController extends Controller
         if (empty($orderId)) {
             $orderId = 'order' . time();
         }
-<<<<<<< HEAD
         $redirectUrl = "https://ability-winking-defendant.ngrok-free.dev/client/ket-qua-thanh-toan";
         $ipnUrl      = "https://ability-winking-defendant.ngrok-free.dev/api/client/momo/ipn";
-=======
-        $redirectUrl = "https://henna-ramrod-scanning.ngrok-free.dev/client/ket-qua-thanh-toan";
-        $ipnUrl      = "https://henna-ramrod-scanning.ngrok-free.dev/api/client/momo/ipn";
->>>>>>> master
         // $redirectUrl = "http://localhost:5173/client/ket-qua-thanh-toan";
         // $ipnUrl      = "http://localhost:5173/api/client/momo/ipn";
         $extraData   = "";

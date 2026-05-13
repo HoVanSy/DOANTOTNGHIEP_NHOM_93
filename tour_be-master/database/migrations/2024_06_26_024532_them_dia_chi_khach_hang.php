@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('khach_hangs', function (Blueprint $table) {
-            $table->string('dia_chi')->nullable();
         });
     }
 

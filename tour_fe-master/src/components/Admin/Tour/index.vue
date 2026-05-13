@@ -138,12 +138,9 @@
                                                 <button @click="Object.assign(detail_tour_ct, v)" class="btn-action action-info-detail" data-bs-toggle="modal" data-bs-target="#chiTietModalCT" title="Xem lịch trình chi tiết">
                                                     <i class="fa-solid fa-list-check"></i>
                                                 </button>
-<<<<<<< HEAD
-=======
                                                 <button @click="openLichTrinhModal(v)" class="btn-action action-map" data-bs-toggle="modal" data-bs-target="#lichTrinhModal" title="Quản lý lịch trình map">
                                                     <i class="fa-solid fa-map-location-dot"></i>
                                                 </button>
->>>>>>> master
                                             </div>
                                         </td>
                                         <td>
@@ -302,8 +299,6 @@
             </div>
         </div>
 
-<<<<<<< HEAD
-=======
         <!-- Modal Lịch Trình Map -->
         <div class="modal fade" id="lichTrinhModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -406,17 +401,13 @@
             </div>
         </div>
 
->>>>>>> master
     </div>
 </template>
 
 <script>
 import baseRequest from "../../../core/baseRequest";
 import { createToaster } from "@meforma/vue-toaster";
-<<<<<<< HEAD
-=======
 import axios from "axios";
->>>>>>> master
 const toaster = createToaster({ position: "top-right" });
 
 export default {
@@ -425,12 +416,6 @@ export default {
             list_tour: [],
             key_search: {},
             create_tour: { tinh_trang: 1 },
-<<<<<<< HEAD
-            delete_tour: {}, // Đổi object để chứa title xóa
-            update_tour: {},
-            detail_tour: {},
-            detail_tour_ct: {},
-=======
             delete_tour: {},
             update_tour: {},
             detail_tour: {},
@@ -442,7 +427,6 @@ export default {
             map: null,
             markers: [],
             markerColors: ['#0d7a5f', '#e8a020', '#dc3545', '#6f42c1', '#17a2b8', '#28a745']
->>>>>>> master
         };
     },
     mounted() {
@@ -482,8 +466,6 @@ export default {
             });
         },
         
-<<<<<<< HEAD
-=======
         // Lịch trình map methods
         openLichTrinhModal(tour) {
             this.selected_tour = tour;
@@ -686,17 +668,12 @@ export default {
             }
         },
         
->>>>>>> master
         themMoiTour() {
             baseRequest.post("admin/tour/them-moi-tour", this.create_tour).then((res) => {
                 if (res.data.status == true) {
                     toaster.success("Thông báo<br>" + res.data.message);
                     this.loadDataTour();
-<<<<<<< HEAD
-                    this.create_tour = { tinh_trang: 1 }; // Xoá trắng form
-=======
                     this.create_tour = { tinh_trang: 1 };
->>>>>>> master
                 } else {
                     toaster.error("Thông báo<br>" + res.data.message);
                 }
@@ -859,8 +836,6 @@ export default {
 
 .font-13 { font-size: 13px; }
 .font-14 { font-size: 14px; }
-<<<<<<< HEAD
-=======
 
 /* ── MAP CONTAINER ── */
 .map-container-admin {
@@ -872,5 +847,4 @@ export default {
 /* ── ACTION MAP BUTTON ── */
 .action-map { background-color: #fef3c7; color: #d97706; }
 .action-map:hover { background-color: #d97706; color: #fff; }
->>>>>>> master
 </style>

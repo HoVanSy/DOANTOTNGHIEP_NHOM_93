@@ -74,9 +74,6 @@
                             <b class="ms-1 text-dark">{{ tour[0].ten_dia_diem }}<span v-if="tour[1]">, {{ tour[1].ten_dia_diem }}</span><span v-if="tour[2]">, {{ tour[2].ten_dia_diem }}</span></b>
                         </div>
                     </div>
-
-<<<<<<< HEAD
-=======
                     <!-- ── MAP LỊCH TRÌNH TOUR ── -->
                     <div class="info-card rounded-4 p-4 mb-4" v-if="lich_trinh.length > 0">
                         <h5 class="info-label mb-3">
@@ -133,7 +130,6 @@
                         </div>
                     </div>
 
->>>>>>> master
                     <!-- Chuyến bay -->
                     <div class="info-card rounded-4 p-4 mb-4">
                         <h5 class="info-label mb-4">Thông Tin Chuyến Bay</h5>
@@ -301,23 +297,16 @@ export default {
         return {
             tour: [],
             list_tour: [],
-<<<<<<< HEAD
-=======
             lich_trinh: [],
->>>>>>> master
             so_nguoi_lon: 0,
             so_tre_em: 0,
             tong_tien: 0,
             is_login: false,
-<<<<<<< HEAD
-            ten_hien_thi: 'Chưa đăng nhập'
-=======
             ten_hien_thi: 'Chưa đăng nhập',
             map: null,
             markers: [],
             routeLines: [],
             markerColors: ['#0d7a5f', '#e8a020', '#dc3545', '#6f42c1', '#17a2b8', '#28a745']
->>>>>>> master
         }
     },
     mounted() {
@@ -326,9 +315,6 @@ export default {
         this.kiemTraDangNhap();
         this.checkLogin();
     },
-<<<<<<< HEAD
-    methods: {
-=======
     watch: {
         lich_trinh: {
             handler: function(newVal) {
@@ -623,7 +609,6 @@ export default {
                 this.map.invalidateSize();
             }
         },
->>>>>>> master
         thanhToanATM() {
         if (this.so_nguoi_lon === 0 && this.so_tre_em === 0) {
             toaster.warning("Vui lòng chọn số lượng hành khách!");
@@ -680,10 +665,7 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.tour = res.data.chi_tiet_tour;
-<<<<<<< HEAD
-=======
                         this.lich_trinh = res.data.lich_trinh || [];
->>>>>>> master
                     } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                     }
@@ -1052,8 +1034,6 @@ export default {
 .btn-momo-soft:hover { background: #fce0ee; }
 [class^="btn-momo"] img { width: 28px; height: 28px; border-radius: 6px; }
 .btn-momo-soft small { font-size: 12px; color: #c96b9e; }
-<<<<<<< HEAD
-=======
 
 /* ── MAP STYLES ── */
 .map-container {
@@ -1137,5 +1117,4 @@ export default {
     border: 1px solid #e5e7eb;
     font-size: 12px;
 }
->>>>>>> master
 </style>

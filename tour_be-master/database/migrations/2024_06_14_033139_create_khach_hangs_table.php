@@ -18,10 +18,15 @@ return new class extends Migration
             $table->string("so_dien_thoai")->nullable();
             $table->string("password");
             $table->date("ngay_sinh")->nullable();
+
+            $table->string("dia_chi")->nullable();
+            $table->integer("gioi_tinh")->nullable();
+
             $table->integer("tinh_trang")->default(1);
             $table->integer("is_active")->default(0);
             $table->integer("hash_reset")->default(0)->nullable();
             $table->integer("hash_active")->default(0)->nullable();
+
             $table->timestamps();
         });
     }

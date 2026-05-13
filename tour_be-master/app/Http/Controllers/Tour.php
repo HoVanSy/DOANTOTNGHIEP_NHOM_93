@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ChiTietChucNang;
 use App\Models\ChiTietTour;
-<<<<<<< HEAD
-=======
 use App\Models\LichTrinhTour;
->>>>>>> master
 use App\Models\Tour as ModelsTour;
 use Exception;
 use Illuminate\Http\Request;
@@ -182,10 +179,7 @@ class Tour extends Controller
             ->join('quan_huyens', 'quan_huyens.id', 'dia_diems.id_quan_huyen')
             ->where('chi_tiet_tours.id_tour', $request->id)
             ->select(
-<<<<<<< HEAD
-=======
                 'tours.id as id_tour',
->>>>>>> master
                 'tours.link_anh as anh_tour',
                 'tours.tieu_de as tieu_de_tour',
                 'tours.ngay_bat_dau',
@@ -199,10 +193,6 @@ class Tour extends Controller
                 'tinh_thanhs.ten_tinh_thanh',
                 'quan_huyens.ten_quan_huyen'
             )->get();
-<<<<<<< HEAD
-        return response()->json([
-            'chi_tiet_tour' =>  $data,
-=======
         
         $lich_trinh = [];
         if ($request->id) {
@@ -214,7 +204,6 @@ class Tour extends Controller
         return response()->json([
             'chi_tiet_tour' =>  $data,
             'lich_trinh' => $lich_trinh,
->>>>>>> master
             'status'        =>  true
         ]);
     }

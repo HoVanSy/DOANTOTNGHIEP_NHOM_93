@@ -18,18 +18,11 @@ class HoaDonSeeder extends Seeder
         DB::table('hoa_dons')->truncate();
 
         DB::table('hoa_dons')->insert([
-<<<<<<< HEAD
-            [
-                'ma_hoa_don' => 'HD001',
-                'id_khach_hang' => 1,
-                'tong_tien' => 9050000,
-=======
             // 5 tháng trước - doanh thu thấp ban đầu
             [
                 'ma_hoa_don' => 'HD001',
                 'id_khach_hang' => 1,
                 'tong_tien' => 8500000,
->>>>>>> master
                 'so_luong_nguoi_lon' => 2,
                 'so_luong_tre_em' => 1,
                 'tinh_trang' => 1,
@@ -38,27 +31,7 @@ class HoaDonSeeder extends Seeder
             [
                 'ma_hoa_don' => 'HD002',
                 'id_khach_hang' => 2,
-<<<<<<< HEAD
-                'tong_tien' => 6290000,
-                'so_luong_nguoi_lon' => 1,
-                'so_luong_tre_em' => 0,
-                'tinh_trang' => 1,
-                'created_at' => now()->subMonths(4),
-            ],
-            [
-                'ma_hoa_don' => 'HD003',
-                'id_khach_hang' => 3,
-                'tong_tien' => 8790000,
-                'so_luong_nguoi_lon' => 2,
-                'so_luong_tre_em' => 2,
-                'tinh_trang' => 2,
-                'created_at' => now()->subMonths(3),
-            ],
-            [
-                'ma_hoa_don' => 'HD004',
-                'id_khach_hang' => 4,
-                'tong_tien' => 15540000,
-=======
+
                 'tong_tien' => 6200000,
                 'so_luong_nguoi_lon' => 1,
                 'so_luong_tre_em' => 0,
@@ -108,21 +81,12 @@ class HoaDonSeeder extends Seeder
                 'ma_hoa_don' => 'HD007',
                 'id_khach_hang' => 7,
                 'tong_tien' => 10500000,
->>>>>>> master
                 'so_luong_nguoi_lon' => 2,
                 'so_luong_tre_em' => 1,
                 'tinh_trang' => 1,
                 'created_at' => now()->subMonths(2),
             ],
             [
-<<<<<<< HEAD
-                'ma_hoa_don' => 'HD005',
-                'id_khach_hang' => 5,
-                'tong_tien' => 5000000,
-                'so_luong_nguoi_lon' => 1,
-                'so_luong_tre_em' => 0,
-                'tinh_trang' => 3,
-=======
                 'ma_hoa_don' => 'HD008',
                 'id_khach_hang' => 8,
                 'tong_tien' => 18900000,
@@ -166,7 +130,6 @@ class HoaDonSeeder extends Seeder
                 'so_luong_nguoi_lon' => 1,
                 'so_luong_tre_em' => 0,
                 'tinh_trang' => 3, // Chưa thanh toán
->>>>>>> master
                 'created_at' => now()->subMonths(1),
             ],
         ]);
