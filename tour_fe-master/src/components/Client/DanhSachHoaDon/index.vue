@@ -52,9 +52,9 @@
                                         </a>
                                         
                                         <div v-else-if="v.tinh_trang == 0" class="d-flex order-actions">
-                                            <a type="button" title="Thanh Toán VNPAY" @click="thanhToanVNPAY(v.id)" 
+                                            <a type="button" title="Thanh Toán MOMO" @click="thanhToanATM(v)"
                                                 class="ms-2 bg-light-primary text-primary border border-primary d-flex align-items-center justify-content-center">
-                                                <img src="https://stcd02206177151.cloud.edgevnpay.vn/assets/images/logo-icon/logo-primary.svg" width="22" alt="VNPAY">
+                                                <img src="https://homepage.momocdn.net/fileuploads/svg/momo-file-240411162904.svg" width="22" alt="MOMO">
                                             </a>
 
                                             <a type="button" v-on:click="Object.assign(huy_hoa_don, v)" title="Hủy"
@@ -144,19 +144,31 @@ export default {
                 });
         },
 
-        thanhToanVNPAY(idHoaDon) {
-            baseRequest.post('client/vnpay/create', { hoa_don_id: idHoaDon })
-                .then((res) => {
-                    if (res.data.status) {
-                        window.location.href = res.data.url;
-                    } else {
-                        toaster.error(res.data.message);
-                    }
-                })
-                .catch((err) => {
-                    console.error("Lỗi tạo thanh toán:", err);
-                    toaster.error("Không thể kết nối đến cổng thanh toán VNPAY!");
-                });
+        thanhToanATM(hoaDon) 
+        {
+            const payload = {
+                id: hoaDon.id,
+                tong_tien: hoaDon.tong_tien
+            };
+
+            axios.post("http://127.0.0.1:8000/api/momo/atm-payment", payload, {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+            })
+            .then((res) => {
+                console.log("RESPONSE MOMO:", res.data);
+
+                if (res.data.status && res.data.payUrl) {
+                    window.location.href = res.data.payUrl;
+                } else {
+                    toaster.error(
+                        "MoMo lỗi: " + JSON.stringify(res.data)
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error("Chi tiết lỗi:", error.response.data); 
+                toaster.error("Dữ liệu gửi đi không hợp lệ (Lỗi 422)!");
+            });
         },
 
         formatToVND(number) {

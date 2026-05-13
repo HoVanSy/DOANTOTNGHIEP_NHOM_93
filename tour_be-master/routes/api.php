@@ -19,6 +19,12 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\YeuCauHuyController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ThongKeController;
+use App\Http\Controllers\MomoController;
+
+Route::post('/momo/atm-payment', [MomoController::class, 'atmPayment']);
+Route::post('/client/momo/ipn', [MomoController::class, 'ipnHandler']);
+
+Route::get('/client/ket-qua-thanh-toan', [MomoController::class, 'ketQuaThanhToan']);
 
 Route::get('/blog/lay-du-lieu', [BlogController::class, 'getDataClient']);
 Route::get('/blog/chi-tiet/{id}', [BlogController::class, 'getChiTietBlog']);
@@ -168,8 +174,7 @@ Route::group(['prefix'  =>  '/client'], function () {
         Route::post('/lay-thong-tin-chi-tiet-hoa-don/data', [HoaDonController::class, 'getDataCTHD']);
     });
     Route::group(['prefix'  =>  '/vnpay'], function () {
-// Route::post('/create', [VNPAYController::class, 'store']);
-// Route::get('/return', [VNPAYController::class, 'vnpayReturn']);
+
     });
     Route::group(['prefix'  =>  '/tim-kiem-tour'], function () {
         Route::get('/lay-du-lieu', [DiaDiemController::class, 'getDataClient']);
@@ -184,10 +189,3 @@ Route::group(['prefix'  =>  '/client'], function () {
 });
 
 Route::post('/chatbot/question', [ChatbotController::class, 'handleQuestion']);
-
-// // Route xử lý tạo thanh toán (Gửi sang VNPay) - Có Middleware Auth để bảo mật
-// Route::post('/client/vnpay/create', [VNPAYController::class, 'createPayment'])->middleware('auth:sanctum');
-
-// // Route nhận kết quả trả về từ VNPay - Không dùng Middleware Auth vì VNPAY sẽ gọi trực tiếp
-// Route::get('/client/vnpay/return', [VNPAYController::class, 'vnpayReturn']);
-// Route::resource('payment', VNPAYController::class);

@@ -152,7 +152,7 @@
 
                                     <div class="col-12 mt-2">
                                         <label class="form-label fw-bold text-dark d-flex justify-content-between font-13 mb-1">
-                                            <span>Trẻ em <small class="text-secondary fw-normal">(dưới 10T)</small></span>
+                                            <span>Trẻ em <small class="text-secondary fw-normal">(dưới 10 tuổi)</small></span>
                                         </label>
                                         <div class="input-group input-group-sm">
                                             <button @click="decrease('child')" class="btn btn-outline-secondary px-3" type="button">−</button>
