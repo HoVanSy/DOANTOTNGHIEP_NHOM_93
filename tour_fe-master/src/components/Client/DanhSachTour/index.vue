@@ -1,97 +1,99 @@
 <template>
-    <div class="bg-light py-4 min-vh-100">
-        <div class="container">
+    <div class="tour-list-page py-4">
+        <div class="container mt-3">
             
-            <div class="row mb-3">
-                <div class="col-12">
-                    <h3 class="fw-bold text-dark text-uppercase mb-0">DANH SÁCH TOUR</h3>
-                    <nav aria-label="breadcrumb">
-                    </nav>
-                </div>
+            <!-- ── SECTION HEADER ── -->
+            <div class="section-header mb-4">
+                <span class="section-tag">Khám phá Việt Nam</span>
+                <h2 class="section-title">Danh Sách Tour Chờ Bạn</h2>
+                <div class="header-line"></div>
             </div>
 
             <div class="row g-4 mt-1">
+                <!-- ── BỘ LỌC BÊN TRÁI ── -->
                 <div class="col-lg-3">
-                    <div class="card border-0 shadow-sm rounded-4 sticky-top z-1" style="top: 80px;">
-                        <div class="card-header bg-white border-bottom pt-4 pb-3">
-                            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-filter me-2 text-primary"></i>Bộ Lọc Nâng Cao</h5>
+                    <div class="filter-card rounded-4 p-4 shadow-sm border-0 sticky-top" style="top: 100px; z-index: 10;">
+                        <h5 class="info-label mb-4">
+                            <i class="fa-solid fa-filter me-2"></i>Bộ Lọc Tìm Kiếm
+                        </h5>
+
+                        <div class="filter-group mb-3">
+                            <label class="form-label-custom">Loại hình tour</label>
+                            <select v-model="thong_tin.loai_dd" @change="searchTour()" class="form-select custom-input">
+                                <option value="">Tất cả loại hình</option>
+                                <option value="1">Khách sạn nghỉ dưỡng</option>
+                                <option value="2">Nhà Hàng - Ẩm thực</option>
+                                <option value="3">Địa điểm tham quan</option>
+                            </select>
                         </div>
-                        <div class="card-body p-4">
-                            <div class="mb-4">
-                                <label class="fw-semibold text-secondary mb-2 font-14"><i class="fa-solid fa-list-check me-2"></i>Loại hình tour</label>
-                                <select v-model="thong_tin.loai_dd" @change="searchTour()" class="form-select border-0 bg-light rounded-3">
-                                    <option value="">Tất cả loại hình</option>
-                                    <option value="1">Khách sạn nghỉ dưỡng</option>
-                                    <option value="2">Nhà Hàng - Ẩm thực</option>
-                                    <option value="3">Địa điểm tham quan</option>
-                                </select>
-                            </div>
 
-                            <div class="mb-4">
-                                <label class="fw-semibold text-secondary mb-2 font-14"><i class="fa-solid fa-location-dot me-2"></i>Điểm đến</label>
-                                <select v-model="thong_tin.tinh_thanh" @change="searchTour()" class="form-select border-0 bg-light rounded-3">
-                                    <option value="">Tất cả tỉnh thành</option>
-                                    <option v-for="(value, index) in danh_sach_tinh_thanh" :key="index" :value="value.ten_tinh_thanh">
-                                        {{ value.ten_tinh_thanh }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="fw-semibold text-secondary mb-2 font-14"><i class="fa-regular fa-calendar-days me-2"></i>Ngày đi dự kiến</label>
-                                <input v-model="thong_tin.ngay_khoi_hanh" @change="searchTour()" type="date" class="form-control border-0 bg-light rounded-3 text-secondary">
-                            </div>
-
-
-                            <button @click="resetFilter()" class="btn btn-outline-secondary w-100 rounded-pill fw-medium py-2">Xóa bộ lọc</button>
+                        <div class="filter-group mb-3">
+                            <label class="form-label-custom">Điểm đến</label>
+                            <select v-model="thong_tin.tinh_thanh" @change="searchTour()" class="form-select custom-input">
+                                <option value="">Tất cả tỉnh thành</option>
+                                <option v-for="(value, index) in danh_sach_tinh_thanh" :key="index" :value="value.ten_tinh_thanh">
+                                    {{ value.ten_tinh_thanh }}
+                                </option>
+                            </select>
                         </div>
+
+                        <div class="filter-group mb-4">
+                            <label class="form-label-custom">Ngày khởi hành</label>
+                            <input v-model="thong_tin.ngay_khoi_hanh" @change="searchTour()" type="date" class="form-control custom-input">
+                        </div>
+
+                        <button @click="resetFilter()" class="btn-reset w-100">
+                            <i class="fa-solid fa-rotate-left me-2"></i>Thiết lập lại
+                        </button>
                     </div>
                 </div>
 
+                <!-- ── DANH SÁCH TOUR ── -->
                 <div class="col-lg-9">
-                    
-                    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
-                        <span class="text-dark fw-medium">Chúng tôi tìm thấy <b class="text-primary fs-5">{{ list_danh_sach_tour.length }}</b> kết quả phù hợp.</span>
+                    <div class="results-bar d-flex justify-content-between align-items-center mb-4 p-3 rounded-3">
+                        <span class="text-dark fw-medium">
+                            Tìm thấy <b class="text-primary-dark fs-5">{{ list_danh_sach_tour.length }}</b> kết quả phù hợp
+                        </span>
+                        <div v-if="thong_tin.keyword" class="search-keyword badge bg-light text-dark p-2 border">
+                            Từ khóa: "{{ thong_tin.keyword }}"
+                        </div>
                     </div>
 
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
                         <div class="col" v-for="(v, k) in list_danh_sach_tour" :key="v.id || k">
-                            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden tour-card">
+                            <div class="tour-card h-100 rounded-3 overflow-hidden border-0 shadow-sm bg-white">
                                 
                                 <div class="position-relative tour-img-wrapper">
                                     <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)">
-                                        <img :src="v.link_anh || 'https://via.placeholder.com/300x200'" class="card-img-top tour-img" alt="Ảnh Tour">
-                                        <div class="position-absolute top-0 start-0 m-2">
-                                            <span v-if="v.loai_dia_diem == 1" class="badge bg-info text-dark rounded-pill px-3 py-2 shadow-sm"><i class="fa-solid fa-hotel me-1"></i> Khách sạn</span>
-                                            <span v-else-if="v.loai_dia_diem == 2" class="badge bg-warning text-dark rounded-pill px-3 py-2 shadow-sm"><i class="fa-solid fa-utensils me-1"></i> Nhà hàng</span>
-                                            <span v-else-if="v.loai_dia_diem == 3" class="badge bg-success rounded-pill px-3 py-2 shadow-sm"><i class="fa-solid fa-camera me-1"></i> Tham quan</span>
+                                        <img :src="v.link_anh || 'https://via.placeholder.com/300x200'" class="tour-img" alt="Ảnh Tour">
+                                        <div class="badge-overlay position-absolute top-0 start-0 m-2">
+                                            <span v-if="v.loai_dia_diem == 1" class="badge-type b-hotel"><i class="fa-solid fa-hotel"></i></span>
+                                            <span v-else-if="v.loai_dia_diem == 2" class="badge-type b-food"><i class="fa-solid fa-utensils"></i></span>
+                                            <span v-else class="badge-type b-view"><i class="fa-solid fa-camera"></i></span>
                                         </div>
                                     </router-link>
                                 </div>
 
                                 <div class="card-body d-flex flex-column p-3">
-                                    <div class="mb-2">
-                                        <span class="text-secondary font-13"><i class="fa-solid fa-location-dot me-1 text-primary"></i> {{ v.ten_tinh_thanh }}</span>
+                                    <div class="mb-1">
+                                        <span class="text-muted font-12"><i class="fa-solid fa-location-dot me-1 text-primary-dark"></i> {{ v.ten_tinh_thanh }}</span>
                                     </div>
                                     
-                                    <h6 class="card-title fw-bold text-dark mb-2 tour-title">
+                                    <h6 class="tour-title fw-bold mb-2">
                                         <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="text-decoration-none text-dark hover-primary">
                                             {{ v.ten_dia_diem || v.tieu_de }}
                                         </router-link>
                                     </h6>
                                     
-                                    <p class="card-text text-secondary font-13 text-clamp-2 mb-3">
-                                        {{ v.mo_ta || 'Khám phá những trải nghiệm tuyệt vời cùng với hành trình đặc biệt này...' }}
+                                    <p class="tour-desc text-muted mb-3">
+                                        {{ v.mo_ta || 'Trải nghiệm hành trình du lịch đẳng cấp cùng chúng tôi...' }}
                                     </p>
 
-                                    
-                                    
-                                    <div class="mt-auto pt-3 border-top d-flex gap-2">
-                                        <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="btn btn-outline-primary rounded-pill flex-grow-1 fw-medium font-14">
-                                            Xem Chi Tiết
+                                    <div class="mt-auto pt-2 border-top d-flex gap-2">
+                                        <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="btn-detail flex-grow-1">
+                                            Chi tiết
                                         </router-link>
-                                        
-                                        <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="btn btn-primary rounded-pill px-4 fw-medium font-14">
+                                        <router-link :to="'/client/chi-tiet-tour/' + (v.id || v.id_tour)" class="btn-book-sm">
                                             Đặt Ngay
                                         </router-link>
                                     </div>
@@ -100,11 +102,14 @@
                         </div>
                     </div>
 
-                    <div v-if="list_danh_sach_tour.length === 0" class="text-center bg-white p-5 rounded-4 shadow-sm mt-4">
-                        <img src="https://cdn-icons-png.flaticon.com/512/7486/7486754.png" alt="No data" style="width: 150px; opacity: 0.5;" class="mb-3">
-                        <h5 class="text-secondary">Rất tiếc, không tìm thấy tour nào phù hợp với yêu cầu của bạn.</h5>
-                        <p class="text-muted">Vui lòng thử điều chỉnh lại bộ lọc hoặc từ khóa tìm kiếm.</p>
-                        <button @click="resetFilter()" class="btn btn-outline-primary rounded-pill mt-3 px-4">Xóa toàn bộ lọc</button>
+                    <!-- ── EMPTY STATE ── -->
+                    <div v-if="list_danh_sach_tour.length === 0" class="empty-state text-center py-5 rounded-4 bg-white shadow-sm mt-2">
+                        <div class="icon-box mb-3">
+                            <i class="fa-solid fa-magnifying-glass-location fa-3x text-muted opacity-25"></i>
+                        </div>
+                        <h5 class="text-secondary fw-bold">Không tìm thấy tour phù hợp</h5>
+                        <p class="text-muted small">Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm khác nhé!</p>
+                        <button @click="resetFilter()" class="btn-primary-custom mt-2">Xóa toàn bộ lọc</button>
                     </div>
 
                 </div>
@@ -114,7 +119,7 @@
 </template>
 
 <script>
-import baseRequest from "../../../core/baseRequestClient"; // Nhớ trỏ về baseRequestClient nhé
+import baseRequest from "../../../core/baseRequestClient";
 import { createToaster } from "@meforma/vue-toaster";
 const toaster = createToaster({ position: "top-right" });
 
@@ -136,17 +141,12 @@ export default {
         }
     },
     mounted() {
-        // Bắt lấy keyword từ URL (nếu user gõ từ thanh tìm kiếm ở Navbar)
         if (this.$route.query.keyword) {
             this.thong_tin.keyword = this.$route.query.keyword;
         }
-
         this.loadDataTinhThanh();
-        
-        // Gọi hàm search ngay lần đầu tiên để lấy dữ liệu (có hoặc không có keyword)
         this.searchTour();
     },
-    // Chạy lại searchTour nếu URL thay đổi (VD: User lại gõ tìm kiếm tiếp trên Navbar)
     watch: {
         '$route.query.keyword': function (newKeyword) {
             this.thong_tin.keyword = newKeyword || '';
@@ -155,15 +155,12 @@ export default {
     },
     methods: {
         searchTour() {
-            // Thay đổi đường dẫn API nếu backend của bạn khác nhé
             baseRequest
                 .post('client/tim-kiem-tour/lay-du-lieu-tim-kiem', this.thong_tin)
                 .then((res) => {
-                    // Cập nhật lại list theo dữ liệu API trả về
                     if (res.data.status || res.data.tim_kiem) {
                         this.list_danh_sach_tour = res.data.tim_kiem || res.data.dia_diem_client; 
                     } else {
-                        // Nếu không tìm thấy hoặc API trả lỗi
                         this.list_danh_sach_tour = [];
                     }
                 })
@@ -190,7 +187,7 @@ export default {
                 so_nguoi: '',
                 keyword: ''
             };
-            this.$router.push({ name: 'TimKiemTour' }); // Xóa keyword trên URL
+            this.$router.push({ path: this.$route.path }); 
             this.searchTour();
         },
         formatToVND(number) {
@@ -202,37 +199,81 @@ export default {
 </script>
 
 <style scoped>
-/* Tiện ích tùy chỉnh kích thước chữ */
-.font-12 { font-size: 12px; }
-.font-13 { font-size: 13px; }
-.font-14 { font-size: 14px; }
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
 
-/* Tùy chỉnh input form select */
-.form-select:focus, .form-control:focus {
-    box-shadow: none;
-    border: 1px solid #0d6efd !important;
+.tour-list-page {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: #f8f7f4;
+    min-height: 100vh;
 }
 
-/* Hiệu ứng di chuột đổi màu xanh cho tiêu đề tour */
-.hover-primary {
-    transition: color 0.3s ease;
+/* ── HEADER ── */
+.section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: #0d7a5f;
+    background: rgba(13, 122, 95, 0.1);
+    padding: 4px 12px;
+    border-radius: 50px;
 }
-.hover-primary:hover {
-    color: #0d6efd !important;
+.section-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1a1f2e;
+    margin-top: 8px;
+}
+.header-line {
+    width: 50px;
+    height: 3px;
+    background: #0d7a5f;
+    border-radius: 50px;
 }
 
-/* Hiệu ứng nẩy lên và đổ bóng cho cả khung Card Tour */
+/* ── FILTER ── */
+.filter-card {
+    background: #fff;
+    border: 1px solid #f0ede8;
+}
+.info-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0d7a5f;
+}
+.form-label-custom {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1f2e;
+    margin-bottom: 6px;
+    display: block;
+}
+.custom-input {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    padding: 8px;
+    font-size: 13px;
+    background-color: #f9fafb;
+}
+
+/* ── RESULTS BAR ── */
+.results-bar {
+    background: #fff;
+    border: 1px solid #f0ede8;
+}
+.text-primary-dark { color: #0d7a5f; }
+
+/* ── TOUR CARDS ── */
 .tour-card {
     transition: all 0.3s ease;
+    border: 1px solid #f0ede8 !important;
 }
 .tour-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
 }
-
-/* Cố định khung ảnh và hiệu ứng Zoom ảnh bên trong */
 .tour-img-wrapper {
-    height: 180px;
+    height: 165px;
     overflow: hidden;
 }
 .tour-img {
@@ -242,23 +283,99 @@ export default {
     transition: transform 0.5s ease;
 }
 .tour-card:hover .tour-img {
-    transform: scale(1.1);
+    transform: scale(1.08);
 }
 
-/* Ép tiêu đề tour luôn hiển thị 2 dòng (giữ form bằng nhau), dài quá tự hiện dấu 3 chấm */
+.badge-type {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.b-hotel { background: #0dcaf0; }
+.b-food { background: #ffc107; }
+.b-view { background: #198754; }
+
 .tour-title {
+    font-size: 15px;
+    line-height: 1.4;
     display: -webkit-box;
-    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 2.5em; 
+    height: 2.8em;
 }
-.text-clamp-3 {
+.tour-desc {
+    font-size: 13px;
+    line-height: 1.5;
     display: -webkit-box;
-    line-clamp: 3;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* ── BUTTONS ── */
+.btn-detail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: 1.5px solid #0d7a5f;
+    color: #0d7a5f;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: 0.3s;
+    padding: 6px;
+}
+.btn-detail:hover { background: #0d7a5f; color: #fff; }
+
+.btn-book-sm {
+    background: #0d7a5f;
+    color: #fff;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.btn-reset {
+    background: transparent;
+    color: #6b7280;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px;
+    transition: 0.2s;
+}
+.btn-reset:hover { border-color: #0d7a5f; color: #0d7a5f; }
+
+.btn-primary-custom {
+    background: #0d7a5f;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.hover-primary:hover { color: #0d7a5f !important; }
+.font-12 { font-size: 12px; }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+    background: #fff;
+    border: 1px dashed #e5e7eb;
 }
 </style>

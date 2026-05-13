@@ -1,105 +1,105 @@
 <template>
-    <div class="bg-white shadow-sm sticky-top">
+    <div class="navbar-wrapper shadow-sm sticky-top">
         <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
-                
+            <nav class="navbar navbar-expand-lg py-0">
+
+                <!-- LOGO -->
                 <router-link class="navbar-brand py-0 me-lg-4" to="/">
-                    <img style="height: 45px; object-fit: contain;" src="../imgaes/logo.png" alt="Logo">
+                    <img style="height: 42px; object-fit: contain;" src="../imgaes/logo.png" alt="Logo">
                 </router-link>
 
+                <!-- TOGGLER -->
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent2"
-                    aria-expanded="false" aria-label="Toggle navigation"> 
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse align-items-center" id="navbarSupportedContent2">
-                    
-                    <ul class="navbar-nav mb-2 mb-lg-0 fw-medium">
+
+                    <!-- NAV LINKS -->
+                    <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <router-link to="/" class="nav-link custom-link">
-                                Home
-                            </router-link>
+                            <router-link to="/" class="nav-link custom-link">Home</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/client/danh-sach-hoa-don" class="nav-link custom-link">
-                                Hoá Đơn
-                            </router-link>
+                            <router-link to="/client/danh-sach-hoa-don" class="nav-link custom-link">Hoá Đơn</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/blog" class="nav-link custom-link">
-                                Tin tức
-                            </router-link>
+                            <router-link to="/blog" class="nav-link custom-link">Tin tức</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/yeu-cau" class="nav-link custom-link">
-                                Hủy/Đổi
-                            </router-link>
+                            <router-link to="/yeu-cau" class="nav-link custom-link">Hủy/Đổi</router-link>
                         </li>
                         <li class="nav-item">
                             <router-link to="/client/wishlist" class="nav-link custom-link">
-                                Yêu thích
+                                <i class="fa-regular fa-heart me-1"></i>Yêu thích
                             </router-link>
                         </li>
                     </ul>
 
+                    <!-- SEARCH -->
                     <div class="flex-grow-1 mx-lg-4 my-3 my-lg-0">
-                        <div class="search-bar-wrapper bg-light rounded-pill d-flex align-items-center px-3 py-1">
-                            <input 
-                                v-model="keyword_search" 
-                                @keyup.enter="handleSearch()" 
-                                type="text" 
-                                class="form-control bg-transparent border-0 shadow-none text-dark" 
+                        <div class="search-bar-wrapper d-flex align-items-center">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input
+                                v-model="keyword_search"
+                                @keyup.enter="handleSearch()"
+                                type="text"
+                                class="search-input"
                                 placeholder="Bạn muốn tìm tour đi đâu?..."
                             >
-                            <button @click="handleSearch()" class="btn text-primary border-0 rounded-circle" type="button">
-                                <i class="fa-solid fa-magnifying-glass"></i>
+                            <button @click="handleSearch()" class="search-btn" type="button">
+                                Tìm
                             </button>
                         </div>
                     </div>
 
+                    <!-- CHƯA ĐĂNG NHẬP -->
                     <template v-if="is_check == false">
                         <div class="d-flex align-items-center gap-2">
-                            <router-link to="/client/dang-nhap" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium btn-auth">
+                            <router-link to="/client/dang-nhap" class="btn-outline-auth">
                                 Đăng Nhập
                             </router-link>
-                            <router-link to="/client/dang-ky" class="btn btn-dark rounded-pill px-4 py-2 fw-medium btn-auth text-white">
+                            <router-link to="/client/dang-ky" class="btn-fill-auth">
                                 Đăng Ký
                             </router-link>
                         </div>
                     </template>
 
+                    <!-- ĐÃ ĐĂNG NHẬP -->
                     <template v-else>
                         <div class="user-box dropdown">
-                            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret text-dark border-0 rounded-pill px-2 py-1 user-pill"
+                            <a class="user-pill d-flex align-items-center gap-2 dropdown-toggle dropdown-toggle-nocaret"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                
-                                <i class="fa-solid fa-circle-user fs-6 text-secondary me-2"></i>
-                                
-                                <div class="user-info me-2">
-                                    <span class="user-name mb-0 fw-semibold font-13">{{ ten_hien_thi }}</span>
+                                <div class="user-avatar">
+                                    <i class="fa-solid fa-user"></i>
                                 </div>
-                                
-                                <i class="fa-solid fa-chevron-down text-secondary font-10"></i>
+                                <span class="user-name">{{ ten_hien_thi }}</span>
+                                <i class="fa-solid fa-chevron-down chev-icon"></i>
                             </a>
-                            
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2 rounded-3">
+
+                            <ul class="dropdown-menu dropdown-menu-end custom-dropdown mt-2">
+                                <li class="dropdown-header-info px-3 py-2">
+                                    <p class="mb-0 fw-bold text-dark" style="font-size:14px">{{ ten_hien_thi }}</p>
+                                    <p class="mb-0 text-muted" style="font-size:12px">Thành viên</p>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
                                 <li>
-                                    <a v-on:click="trangCaNhan()" class="dropdown-item py-2 text-dark custom-dropdown-item" style="cursor: pointer;">
-                                        <i class='bx bx-user-circle me-2 text-primary'></i><span>Trang Cá Nhân</span>
+                                    <a v-on:click="trangCaNhan()" class="dropdown-item custom-dropdown-item" style="cursor:pointer">
+                                        <i class='bx bx-user-circle me-2 text-primary'></i>Trang Cá Nhân
                                     </a>
                                 </li>
+                                <li><hr class="dropdown-divider my-1"></li>
                                 <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a v-on:click="dangXuat()" class="dropdown-item py-2 text-danger custom-dropdown-item" style="cursor: pointer;">
-                                        <i class='bx bx-log-out-circle me-2'></i><span>Đăng Xuất</span>
+                                    <a v-on:click="dangXuat()" class="dropdown-item custom-dropdown-item text-danger" style="cursor:pointer">
+                                        <i class='bx bx-log-out-circle me-2'></i>Đăng Xuất
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </template>
+
                 </div>
             </nav>
         </div>
@@ -140,7 +140,7 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         toaster.success('Thông báo<br>' + res.data.message);
-                        localStorage.removeItem("token_client"); // Clear token khi đăng xuất
+                        localStorage.removeItem("token_client");
                         localStorage.removeItem("ho_ten_client");
                         this.is_check = false;
                         this.$router.push('/client/dang-nhap');
@@ -149,7 +149,6 @@ export default {
                     }
                 });
         },
-
         checkLogin() {
             axios
                 .get('http://127.0.0.1:8000/api/account-client/kiem-tra-token-client', {
@@ -167,7 +166,6 @@ export default {
                     this.is_check = false;
                 });
         },
-        
         trangCaNhan() {
             this.$router.push('/client/trang-ca-nhan');
         }
@@ -176,85 +174,211 @@ export default {
 </script>
 
 <style scoped>
-.font-13 { font-size: 13px; }
-.font-14 { font-size: 14px; }
-.font-10 { font-size: 10px; }
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
+/* ── BASE ── */
+.navbar-wrapper {
+    background: #fff;
+    border-bottom: 1px solid #f0ede8;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+.navbar {
+    min-height: 64px;
+}
+
+/* ── NAV LINKS ── */
 .custom-link {
-    color: #495057 !important;
+    color: #374151 !important;
     font-size: 14px;
-    padding: 8px 0 !important; 
-    margin: 0 12px; 
+    font-weight: 500;
+    padding: 6px 0 !important;
+    margin: 0 14px;
     position: relative;
     background-color: transparent !important;
+    transition: color 0.2s ease;
+    white-space: nowrap;
 }
-
 .custom-link:hover {
-    color: #0d6efd !important;
+    color: #0d7a5f !important;
 }
-
 .custom-link::after {
     content: '';
     position: absolute;
     width: 0;
     height: 2px;
-    bottom: 0;
+    bottom: -2px;
     left: 0;
-    background-color: #0d6efd;
-    transition: width 0.3s ease;
+    background-color: #0d7a5f;
+    border-radius: 2px;
+    transition: width 0.25s ease;
 }
-
 .custom-link:hover::after,
 .router-link-active.custom-link::after {
     width: 100%;
 }
-
 .router-link-active.custom-link {
-    color: #0d6efd !important;
+    color: #0d7a5f !important;
     font-weight: 700;
 }
 
+/* ── SEARCH BAR ── */
 .search-bar-wrapper {
-    max-width: 600px; 
+    max-width: 560px;
     width: 100%;
-    border: 1px solid transparent;
-    transition: all 0.3s;
+    background: #f5f3ee;
+    border: 1.5px solid transparent;
+    border-radius: 50px;
+    padding: 6px 6px 6px 16px;
+    transition: all 0.25s ease;
 }
-
 .search-bar-wrapper:focus-within {
-    border-color: #0d6efd;
-    background-color: #fff !important;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    border-color: #0d7a5f;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(13, 122, 95, 0.1);
 }
-
-.search-bar-wrapper input::placeholder {
+.search-icon {
+    color: #9ca3af;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+.search-bar-wrapper:focus-within .search-icon {
+    color: #0d7a5f;
+}
+.search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #1a1f2e;
+    width: 100%;
+}
+.search-input::placeholder {
     color: #adb5bd;
 }
-
-.search-bar-wrapper input:focus {
-    outline: none;
+.search-btn {
+    background: #0d7a5f;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 7px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.search-btn:hover {
+    background: #085544;
 }
 
-
-.btn-auth {
+/* ── AUTH BUTTONS ── */
+.btn-outline-auth {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 20px;
+    border-radius: 50px;
+    border: 1.5px solid #d1d5db;
+    color: #374151;
     font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+.btn-outline-auth:hover {
+    border-color: #0d7a5f;
+    color: #0d7a5f;
+}
+.btn-fill-auth {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 20px;
+    border-radius: 50px;
+    background: #0d7a5f;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+}
+.btn-fill-auth:hover {
+    background: #085544;
+    color: #fff;
+    transform: translateY(-1px);
 }
 
+/* ── USER PILL ── */
 .user-pill {
-    background-color: #f1f3f5;
-    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f5f3ee;
+    border-radius: 50px;
+    padding: 6px 12px 6px 6px;
+    text-decoration: none;
+    transition: background 0.2s;
+    border: 1.5px solid transparent;
 }
-
 .user-pill:hover {
-    background-color: #e2e6ea; 
+    background: #eae8e3;
+    border-color: #d1d5db;
+}
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #0d7a5f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1f2e;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.chev-icon {
+    font-size: 10px;
+    color: #9ca3af;
 }
 
+/* ── DROPDOWN ── */
+.custom-dropdown {
+    border: 1px solid #f0ede8;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    padding: 4px 0;
+    min-width: 200px;
+    overflow: hidden;
+}
+.dropdown-header-info {
+    background: #f5f3ee;
+}
 .custom-dropdown-item {
     font-size: 14px;
     font-weight: 500;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    transition: background 0.15s;
 }
-
 .custom-dropdown-item:hover {
-    background-color: #f8f9fa;
+    background-color: #f5f3ee;
 }
 </style>

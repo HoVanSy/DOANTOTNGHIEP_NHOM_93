@@ -42,11 +42,6 @@ const routes = [
         beforeEnter: checkLoginClient
     },
 
-    {
-        path : '/client/dat-tour',
-        component: ()=>import('../components/Client/DatTour/index.vue'),  
-        meta : {layout : 'client'}  
-    },
 
     {
         path : '/client/hoa-don/:id',

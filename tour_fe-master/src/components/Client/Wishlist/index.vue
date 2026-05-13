@@ -1,51 +1,71 @@
 <template>
-  <div class="container mt-5">
-    <h2 class="text-center mb-4">TOUR YÊU THÍCH</h2>
-    
-    <div v-if="!isLoggedIn" class="text-center py-5">
-      <h4 class="text-muted">Vui lòng đăng nhập để xem tour yêu thích</h4>
-      <router-link to="/dang-nhap" class="btn btn-primary mt-3">Đăng nhập</router-link>
-    </div>
-
-    <div v-else-if="listWishlist.length === 0" class="text-center py-5">
-      <i class="fa-solid fa-heart text-muted fa-4x mb-3"></i>
-      <h4 class="text-muted">Chưa có tour yêu thích nào</h4>
-      <router-link to="/danh-sach-tour" class="btn btn-primary mt-3">Khám phá tour</router-link>
-    </div>
-
-    <div v-else class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 border rounded-4 p-3">
-      <div class="col" v-for="(item, index) in listWishlist" :key="index">
-          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden tour-card">
-              
-              <div class="position-relative tour-img-wrapper">
-                  <img :src="item.tour?.link_anh || 'https://via.placeholder.com/300x200'" class="card-img-top tour-img" alt="Ảnh Tour">
-              </div>
-              
-              <div class="card-body d-flex flex-column p-3">
-                  <h6 class="card-title fw-bold text-dark mb-2 tour-title">
-                      <router-link :to="'/client/chi-tiet-tour/' + item.tour_id" class="text-decoration-none text-dark hover-primary">
-                          {{ item.tour?.tieu_de }}
-                      </router-link>
-                  </h6>
-                  
-                  <p class="card-text text-danger fw-bold font-14 mb-3">
-                      {{ formatCurrency(item.tour?.gia_tien) }}
-                  </p>
-                  
-                  <div class="mt-auto pt-3 border-top d-flex gap-2">
-                      <router-link :to="'/client/chi-tiet-tour/' + item.tour_id" class="btn btn-outline-primary rounded-pill flex-grow-1 fw-medium font-14">
-                          Xem Chi Tiết
-                      </router-link>
-                      
-                      <button @click="removeFromWishlist(item.tour_id)" class="btn btn-outline-danger rounded-pill px-3" title="Xóa khỏi yêu thích">
-                          <i class="fa-solid fa-trash"></i>
-                      </button>
-                  </div>
-                  
-              </div>
-          </div>
+  <div class="wishlist-page py-4">
+    <div class="container mt-3">
+      <!-- ── SECTION HEADER ── -->
+      <div class="section-header text-center mb-4">
+        <span class="section-tag">Bộ sưu tập của bạn</span>
+        <h2 class="section-title">Tour Yêu Thích</h2>
+        <div class="header-line mx-auto"></div>
       </div>
-  </div>
+
+      <!-- ── TRẠNG THÁI CHƯA ĐĂNG NHẬP ── -->
+      <div v-if="!isLoggedIn" class="empty-state text-center py-5 rounded-4">
+        <div class="icon-box mb-3">
+          <i class="fa-solid fa-heart-circle-xmark fa-3x text-muted opacity-50"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Bắt đầu lưu giữ hành trình</h5>
+        <p class="text-muted small">Vui lòng đăng nhập để xem danh sách các tour bạn đã yêu thích.</p>
+        <router-link to="/dang-nhap" class="btn-primary-custom mt-2">Đăng nhập ngay</router-link>
+      </div>
+
+      <!-- ── TRẠNG THÁI DANH SÁCH TRỐNG ── -->
+      <div v-else-if="listWishlist.length === 0" class="empty-state text-center py-5 rounded-4">
+        <div class="icon-box mb-3">
+          <i class="fa-solid fa-heart fa-3x text-muted opacity-25"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Danh sách đang trống</h5>
+        <p class="text-muted small">Hãy dạo quanh một vòng và "thả tim" cho những chuyến đi bạn thích nhé!</p>
+        <router-link to="/danh-sach-tour" class="btn-primary-custom mt-2">Khám phá tour ngay</router-link>
+      </div>
+
+      <!-- ── DANH SÁCH WISHLIST ── -->
+      <div v-else class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+        <div class="col" v-for="(item, index) in listWishlist" :key="index">
+          <div class="tour-card h-100 rounded-3 overflow-hidden border-0 shadow-sm bg-white">
+            
+            <div class="position-relative tour-img-wrapper" @click="$router.push('/client/chi-tiet-tour/' + item.tour_id)">
+              <img :src="item.tour?.link_anh || 'https://via.placeholder.com/300x200'" class="tour-img" alt="Ảnh Tour">
+              <div class="img-overlay"></div>
+            </div>
+            
+            <div class="card-body d-flex flex-column p-3">
+              <h6 class="tour-title fw-bold mb-2">
+                <router-link :to="'/client/chi-tiet-tour/' + item.tour_id" class="text-decoration-none text-dark hover-primary">
+                  {{ item.tour?.tieu_de }}
+                </router-link>
+              </h6>
+              
+              <div class="price-section mb-3">
+                <span class="price-label small text-muted">Giá từ</span>
+                <p class="price-value text-danger fw-bold mb-0">
+                  {{ formatCurrency(item.tour?.gia_tien) }}
+                </p>
+              </div>
+              
+              <div class="mt-auto pt-2 border-top d-flex gap-2">
+                <router-link :to="'/client/chi-tiet-tour/' + item.tour_id" class="btn-detail flex-grow-1">
+                  Xem Chi Tiết
+                </router-link>
+                
+                <button @click="removeFromWishlist(item.tour_id)" class="btn-remove" title="Xóa khỏi yêu thích">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -82,14 +102,13 @@ export default {
         baseRequest.post('client/wishlist/xoa', { tour_id: tourId })
           .then((res) => {
             if (res.data.status) {
-              alert('Đã xóa khỏi wishlist!');
               this.loadWishlist();
             }
           });
       }
     },
     formatCurrency(value) {
-      if (!value) return '';
+      if (!value) return 'Liên hệ';
       return new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND'
@@ -98,49 +117,141 @@ export default {
   }
 }
 </script>
+
 <style scoped>
-/* Tiện ích tùy chỉnh kích thước chữ */
-.font-14 { font-size: 14px; }
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
 
-/* Hiệu ứng di chuột đổi màu xanh cho tiêu đề tour */
-.hover-primary {
-    transition: color 0.3s ease;
-}
-.hover-primary:hover {
-    color: #0d6efd !important;
+.wishlist-page {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: #f8f7f4;
+  min-height: 80vh;
 }
 
-/* Hiệu ứng nẩy lên và đổ bóng cho cả khung Card Tour */
+/* ── HEADER ── */
+.section-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #0d7a5f;
+  background: rgba(13, 122, 95, 0.1);
+  padding: 4px 12px;
+  border-radius: 50px;
+}
+.section-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1f2e;
+  margin-top: 8px;
+}
+.header-line {
+  width: 50px;
+  height: 3px;
+  background: #0d7a5f;
+  border-radius: 50px;
+}
+
+/* ── CARDS ── */
 .tour-card {
-    transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  border: 1px solid #f0ede8 !important;
 }
 .tour-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
 }
 
-/* Cố định khung ảnh và hiệu ứng Zoom ảnh bên trong */
 .tour-img-wrapper {
-    height: 180px;
-    overflow: hidden;
+  height: 165px; /* Giảm ~10% từ 180px */
+  overflow: hidden;
+  cursor: pointer;
 }
 .tour-img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
 .tour-card:hover .tour-img {
-    transform: scale(1.1);
+  transform: scale(1.08);
 }
 
-/* Ép tiêu đề tour luôn hiển thị 2 dòng (giữ form bằng nhau), dài quá tự hiện dấu 3 chấm */
 .tour-title {
-    display: -webkit-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 2.5em; 
+  font-size: 15px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.8em;
+}
+
+.price-value {
+  font-size: 15px;
+}
+
+/* ── BUTTONS ── */
+.btn-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: transparent;
+  color: #0d7a5f;
+  border: 1.5px solid #0d7a5f;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: 0.3s;
+  padding: 6px 12px;
+}
+.btn-detail:hover {
+  background: #0d7a5f;
+  color: #fff;
+}
+
+.btn-remove {
+  background: #fff;
+  color: #dc3545;
+  border: 1.5px solid #ffeded;
+  border-radius: 50px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transition: 0.2s;
+}
+.btn-remove:hover {
+  background: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+}
+
+.btn-primary-custom {
+  display: inline-block;
+  background: #0d7a5f;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.btn-primary-custom:hover {
+  background: #085544;
+  transform: translateY(-2px);
+}
+
+.hover-primary:hover {
+  color: #0d7a5f !important;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  background: #fff;
+  border: 1px dashed #e5e7eb;
 }
 </style>
