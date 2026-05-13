@@ -5,7 +5,7 @@
             <MenuRocker></MenuRocker>
         </div>
         <div class="page-wrapper">
-            <div class="page-content">
+            <div class="page-content pt-2">
                 <router-view></router-view>
             </div>
         </div>
@@ -16,6 +16,7 @@
         <BotRocker></BotRocker>
     </div>
 </template>
+
 <script>
 import TopRocker from "../components/TopRocker.vue";
 import MenuRocker from "../components/MenuRocker.vue";
@@ -29,6 +30,7 @@ import "../../assets/plugins/metismenu/js/metisMenu.min.js";
 import "../../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js";
 import "../../assets/js/index.js";
 import "../../assets/js/app.js";
+
 export default {
     name        : "app",
     components  : {
@@ -36,6 +38,7 @@ export default {
     }
 }
 </script>
+
 <style>
 @import "../../assets/plugins/vectormap/jquery-jvectormap-2.0.2.css";
 @import "../../assets/plugins/simplebar/css/simplebar.css";
@@ -51,4 +54,12 @@ export default {
 @import "../../assets/css/header-colors.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+
+.page-wrapper {
+    margin-top: 30px !important; 
+}
+.page-content {
+    padding-top: 0 !important; 
+    padding-bottom: 0 !important;
+}
 </style>

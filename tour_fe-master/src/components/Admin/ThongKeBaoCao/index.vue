@@ -1,108 +1,92 @@
 <template>
-    <div class="container-fluid mt-3">
-        <div class="d-flex align-items-center mb-4">
-            <h4 class="mb-0">Thống Kê & Báo Cáo</h4>
+    <div class="dashboard-wrapper container-fluid px-3 py-2">
+        
+        <div class="d-flex align-items-center mb-2">
         </div>
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-2 mb-2">
             <div class="col">
-                <div class="card radius-10 border-start border-0 border-3 border-success">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Tổng Doanh Thu</p>
-                                <h4 class="my-1 text-success">{{ formatToVND(tong_quan.tong_doanh_thu) }}</h4>
-                                <p class="mb-0 font-13 text-success"><i class="fa-solid fa-arrow-trend-up"></i> +5% so với tháng trước</p>
-                            </div>
-                            <div class="widgets-icons bg-light-success text-success ms-auto">
-                                <i class="fa-solid fa-money-bill-trend-up"></i>
-                            </div>
+                <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
+                    <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="mb-0 text-muted font-11 fw-semibold text-uppercase">Doanh Thu</p>
+                            <h6 class="my-1 text-dark fw-bold font-15">{{ formatToVND(tong_quan.tong_doanh_thu) }}</h6>
+                            <p class="mb-0 font-10 text-success"><i class="fa-solid fa-arrow-trend-up"></i> +5% tháng này</p>
+                        </div>
+                        <div class="widgets-icons bg-light-success text-success">
+                            <i class="fa-solid fa-money-bill-wave"></i>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="col">
-                <div class="card radius-10 border-start border-0 border-3 border-info">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Hóa Đơn Thành Công</p>
-                                <h4 class="my-1 text-info">{{ tong_quan.hoa_don_thanh_cong }}</h4>
-                                <p class="mb-0 font-13 text-secondary">Tổng số hóa đơn đã thanh toán</p>
-                            </div>
-                            <div class="widgets-icons bg-light-info text-info ms-auto">
-                                <i class="fa-solid fa-file-invoice-dollar"></i>
-                            </div>
+                <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
+                    <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="mb-0 text-muted font-11 fw-semibold text-uppercase">HĐ Thành Công</p>
+                            <h6 class="my-1 text-dark fw-bold font-15">{{ tong_quan.hoa_don_thanh_cong }}</h6>
+                            <p class="mb-0 font-10 text-secondary">Đã thanh toán</p>
+                        </div>
+                        <div class="widgets-icons bg-light-info text-info">
+                            <i class="fa-solid fa-file-circle-check"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col">
-                <div class="card radius-10 border-start border-0 border-3 border-primary">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Khách Hàng Mới</p>
-                                <h4 class="my-1 text-primary">{{ tong_quan.khach_hang_moi }}</h4>
-                                <p class="mb-0 font-13 text-primary"><i class="fa-solid fa-arrow-trend-up"></i> +12% so với tháng trước</p>
-                            </div>
-                            <div class="widgets-icons bg-light-primary text-primary ms-auto">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
+                <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
+                    <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="mb-0 text-muted font-11 fw-semibold text-uppercase">Khách Mới</p>
+                            <h6 class="my-1 text-dark fw-bold font-15">{{ tong_quan.khach_hang_moi }}</h6>
+                            <p class="mb-0 font-10 text-primary"><i class="fa-solid fa-arrow-trend-up"></i> +12% tháng này</p>
+                        </div>
+                        <div class="widgets-icons bg-light-primary text-primary">
+                            <i class="fa-solid fa-user-plus"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col">
-                <div class="card radius-10 border-start border-0 border-3 border-danger">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Hóa Đơn Hủy</p>
-                                <h4 class="my-1 text-danger">{{ tong_quan.hoa_don_huy }}</h4>
-                                <p class="mb-0 font-13 text-danger"><i class="fa-solid fa-arrow-trend-down"></i> Cần chú ý</p>
-                            </div>
-                            <div class="widgets-icons bg-light-danger text-danger ms-auto">
-                                <i class="fa-solid fa-calendar-xmark"></i>
-                            </div>
+                <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
+                    <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="mb-0 text-muted font-11 fw-semibold text-uppercase">HĐ Đã Hủy</p>
+                            <h6 class="my-1 text-dark fw-bold font-15">{{ tong_quan.hoa_don_huy }}</h6>
+                            <p class="mb-0 font-10 text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cần chú ý</p>
+                        </div>
+                        <div class="widgets-icons bg-light-danger text-danger">
+                            <i class="fa-solid fa-ban"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-3">
-            <div class="col-12 col-lg-8">
-                <div class="card radius-10 w-100">
-                    <div class="card-header bg-transparent border-bottom">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Biểu Đồ Doanh Thu (6 Tháng Gần Nhất)</h6>
-                            </div>
-                        </div>
+        <div class="row g-2 chart-row flex-grow-1">
+            <div class="col-12 col-lg-8 d-flex flex-column">
+                <div class="card radius-8 w-100 h-100 d-flex flex-column mb-0 shadow-sm border-0">
+                    <div class="card-header bg-white border-bottom p-2 px-3">
+                        <h6 class="mb-0 font-12 fw-bold text-dark text-uppercase">Doanh Thu 6 Tháng Gần Nhất</h6>
                     </div>
-                    <div class="card-body">
-                        <div style="height: 300px;">
+                    <div class="card-body p-2 position-relative flex-grow-1">
+                        <div class="chart-container">
                             <canvas id="doanhThuChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-lg-4">
-                <div class="card radius-10 w-100">
-                    <div class="card-header bg-transparent border-bottom">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Tỉ Lệ Trạng Thái Hóa Đơn</h6>
-                            </div>
-                        </div>
+            <div class="col-12 col-lg-4 d-flex flex-column">
+                <div class="card radius-8 w-100 h-100 d-flex flex-column mb-0 shadow-sm border-0">
+                    <div class="card-header bg-white border-bottom p-2 px-3">
+                        <h6 class="mb-0 font-12 fw-bold text-dark text-uppercase">Tỉ Lệ Trạng Thái</h6>
                     </div>
-                    <div class="card-body">
-                        <div style="height: 300px; display: flex; justify-content: center;">
+                    <div class="card-body p-2 position-relative flex-grow-1 d-flex align-items-center justify-content-center">
+                        <div class="chart-container">
                             <canvas id="trangThaiChart"></canvas>
                         </div>
                     </div>
@@ -140,22 +124,25 @@ export default {
     mounted() {
         this.loadThongKeTongQuan();
         this.loadThongKeDoanhThu();
+        window.addEventListener('resize', this.resizeCharts);
     },
     beforeUnmount() {
-        // Dọn dẹp RAM: Hủy biểu đồ khi người dùng chuyển sang trang khác
         if (this.chartDoanhThu) this.chartDoanhThu.destroy();
         if (this.chartTrangThai) this.chartTrangThai.destroy();
+        window.removeEventListener('resize', this.resizeCharts);
     },
     methods: {
+        resizeCharts() {
+            if (this.chartDoanhThu) this.chartDoanhThu.resize();
+            if (this.chartTrangThai) this.chartTrangThai.resize();
+        },
+
         async loadThongKeTongQuan() {
             try {
-                const token = localStorage.getItem('token_admin');
+                const token = localStorage.getItem('token');
                 const response = await axios.get('/api/admin/thong-ke/tong-quan', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
                 if (response.data.status) {
                     this.tong_quan = response.data.data;
                 }
@@ -166,21 +153,18 @@ export default {
 
         async loadThongKeDoanhThu() {
             try {
-                const token = localStorage.getItem('token_admin');
+                const token = localStorage.getItem('token');
                 const response = await axios.get('/api/admin/thong-ke/doanh-thu', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
                 if (response.data.status) {
                     this.thong_ke = response.data.data;
-                    // Vẽ biểu đồ sau khi có dữ liệu
                     this.renderBiểuĐồDoanhThu();
                     this.renderBiểuĐồTrangThai();
                 }
             } catch (error) {
-                console.error('Lỗi khi tải thống kê doanh thu:', error);
+                console.error('Lỗi tải thống kê:', error);
             }
         },
 
@@ -191,30 +175,33 @@ export default {
         renderBiểuĐồDoanhThu() {
             const ctx = document.getElementById('doanhThuChart').getContext('2d');
             this.chartDoanhThu = new Chart(ctx, {
-                type: 'bar', // Biểu đồ dạng cột
+                type: 'bar',
                 data: {
                     labels: this.thong_ke.thang,
                     datasets: [{
                         label: 'Doanh thu (VNĐ)',
                         data: this.thong_ke.doanh_thu,
-                        backgroundColor: '#198754', // Màu xanh lá success
-                        borderRadius: 4, // Bo tròn góc của cột
+                        backgroundColor: '#0d7a5f', /* Xanh lá theme */
+                        borderRadius: 6,
+                        barPercentage: 0.6
                     }]
                 },
                 options: {
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false } // Tắt cái hộp chú thích ở trên cùng cho gọn
-                    },
+                    responsive: true,
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: { 
                             beginAtZero: true,
+                            grid: { color: '#f0f0f0', drawBorder: false },
                             ticks: {
-                                callback: function(value) {
-                                    // Rút gọn số tiền trên trục Y (ví dụ: 10,000,000 -> 10Tr)
-                                    return value / 1000000 + 'Tr'; 
-                                }
+                                font: { size: 10 },
+                                callback: function(value) { return value / 1000000 + 'Tr'; }
                             }
+                        },
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { font: { size: 10 } }
                         }
                     }
                 }
@@ -229,20 +216,20 @@ export default {
                     labels: ['Đã Thanh Toán', 'Chưa Thanh Toán', 'Đã Hủy'],
                     datasets: [{
                         data: this.thong_ke.trang_thai,
-                        backgroundColor: [
-                            '#0dcaf0', // info
-                            '#ffc107', // warning
-                            '#dc3545'  // danger
-                        ],
-                        borderWidth: 0
+                        backgroundColor: ['#0d7a5f', '#e8a020', '#dc3545'],
+                        borderWidth: 0,
+                        hoverOffset: 4
                     }]
                 },
                 options: {
                     maintainAspectRatio: false,
+                    responsive: true,
                     cutout: '70%', 
+                    layout: { padding: 10 },
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            position: 'bottom',
+                            labels: { usePointStyle: true, padding: 15, font: { size: 11 } }
                         }
                     }
                 }
@@ -253,13 +240,55 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.dashboard-wrapper {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background-color: #f1f5f9;
+    height: calc(100vh - 120px); 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+}
+
+.chart-row {
+    min-height: 0; 
+}
+.chart-container {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    right: 15px;
+    bottom: 10px;
+}
+
+.radius-8 { border-radius: 8px; }
+
+.summary-card {
+    transition: transform 0.2s;
+    border: 1px solid #f0ede8 !important;
+}
+.summary-card:hover { transform: translateY(-2px); }
+
 .widgets-icons {
-    width: 50px;
-    height: 50px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
-    font-size: 24px;
+    border-radius: 8px;
+    font-size: 16px; 
 }
+.bg-light-success { background-color: #e6f5f0; }
+.bg-light-info { background-color: #e0f2fe; }
+.bg-light-primary { background-color: #e0e7ff; color: #4f46e5 !important;}
+.bg-light-danger { background-color: #fee2e2; }
+
+.text-primary-dark { color: #0d7a5f; }
+.letter-spacing { letter-spacing: 0.5px; }
+
+.font-10 { font-size: 10px; }
+.font-11 { font-size: 11px; }
+.font-12 { font-size: 12px; }
+.font-15 { font-size: 15px; }
 </style>

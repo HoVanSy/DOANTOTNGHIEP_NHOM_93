@@ -13,7 +13,7 @@
                             <!-- Icon Khiên bảo mật tượng trưng cho Admin -->
                             <i class="fa-solid fa-user-shield brand-icon"></i>
                             <div class="brand-text">
-                                <span class="brand-name">VIET<span class="brand-highlight">TOUR</span></span>
+                                <span class="brand-name">VIVU <span class="brand-highlight">TOUR</span></span>
                                 <span class="brand-slogan">Admin Portal</span>
                             </div>
                         </div>
@@ -135,12 +135,11 @@ export default {
 
 .admin-login-wrapper {
     font-family: 'Be Vietnam Pro', sans-serif;
-    background-color: #f1f5f9; /* Nền xám xanh nhẹ mang tính kỹ thuật/quản trị */
+    background-color: #f1f5f9;
     position: relative;
     overflow: hidden;
 }
 
-/* ── HIỆU ỨNG TRANG TRÍ ── */
 .top-accent {
     position: absolute;
     top: 0;
@@ -160,7 +159,7 @@ export default {
 .brand-icon {
     width: 48px;
     height: 48px;
-    background-color: #1a1f2e; /* Đổi màu xanh cực đậm cho Admin */
+    background-color: #1a1f2e; 
     color: #e8a020;
     display: flex;
     align-items: center;

@@ -13,7 +13,7 @@
                             <div class="brand-logo-custom">
                                 <i class="fa-solid fa-plane-departure brand-icon"></i>
                                 <div class="brand-text">
-                                    <span class="brand-name">VIET<span class="brand-highlight">TOUR</span></span>
+                                    <span class="brand-name">VIVU <span class="brand-highlight">TOUR</span></span>
                                     <span class="brand-slogan">Travel & Explore</span>
                                 </div>
                             </div>
