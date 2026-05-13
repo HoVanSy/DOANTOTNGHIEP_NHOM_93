@@ -420,4 +420,47 @@ export default {
     text-transform: uppercase;
     margin-top: 2px;
 }
+/*LOGO*/
+
+.brand-logo-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #0d7a5f;
+    color: #e8a020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    border-radius: 12px 4px 12px 4px;
+    box-shadow: 0 4px 10px rgba(13, 122, 95, 0.2);
+}
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+}
+.brand-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0d7a5f;
+    letter-spacing: 0.5px;
+}
+.brand-highlight {
+    color: #e8a020;
+}
+.brand-slogan {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6c757d;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
 </style>
