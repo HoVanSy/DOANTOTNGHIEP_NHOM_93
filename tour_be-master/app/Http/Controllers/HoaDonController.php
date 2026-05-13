@@ -130,7 +130,7 @@ class HoaDonController extends Controller
         $tong_tien = $dataTour['so_nguoi_lon'] * $dataTour['gia_nguoi_lon'] + $dataTour['so_tre_em'] * $dataTour['gia_tre_em'];
         $khach_hang =   Auth::guard('sanctum')->user();
 
-        if ($dataTour['gia_nguoi_lon'] <= 0 || $dataTour['so_tre_em'] <= 0) {
+        if ($dataTour['so_nguoi_lon'] <= 0 && $dataTour['so_tre_em'] <= 0) {
             return response()->json([
                 'status'    =>  false,
                 'message'   =>  'Số lượng người lớn hoặc trẻ em phải lớn hơn 0!',
@@ -154,7 +154,7 @@ class HoaDonController extends Controller
 
             return response()->json([
                 'status'    =>  true,
-                'message'   =>  'Thêm vào giỏ hàng thành công!',
+                'message'   =>  'Thêm vào thanh toán sau thành công!',
             ]);
         }
     }

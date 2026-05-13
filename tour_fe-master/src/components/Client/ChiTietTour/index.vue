@@ -170,11 +170,14 @@
                                 </div>
 
                                 <div class="d-grid gap-2">
-                                    <button @click="thanhToanATM()" class="btn-book-now mb-2">ĐẶT TOUR NGAY</button>
+                                    <button @click="thanhToanATM()" class="btn-momo-filled w-100 mb-3">
+                                        <img src="https://homepage.momocdn.net/fileuploads/svg/momo-file-240411162904.svg" alt="">
+                                        Thanh toán bằng MoMo
+                                        </button>
                                     <div class="row g-2">
                                         <div class="col-6">
                                             <button @click="themVaoGioHang()" class="btn-action btn-cart w-100">
-                                                <i class="fa-solid fa-cart-plus me-1"></i> Thêm vào hoá đơn
+                                                <i class="fa-solid fa-cart-plus me-1"></i> Thanh toán sau
                                             </button>
                                         </div>
                                         <div class="col-6">
@@ -393,20 +396,22 @@ export default {
             }
         },
         themVaoGioHang() {
-            if (this.so_nguoi_lon <= 0 && this.so_tre_em <= 0) {
-                toaster.error("Số lượng người lớn hoặc trẻ em phải lớn hơn 0!");
-                return;
+            if (this.so_nguoi_lon === 0 && this.so_tre_em === 0) {
+                toaster.error("Vui lòng chọn số lượng hành khách (người lớn hoặc trẻ em)!");
+                return; 
             }
 
             if (this.is_login) {
                 var payload = {
-                    'gia_nguoi_lon': this.tour[0].gia_nguoi_lon,
-                    'gia_tre_em': this.tour[0].gia_tre_em,
+                    'gia_nguoi_lon': parseInt(this.tour[0].gia_nguoi_lon) || 0,
+                    'gia_tre_em': parseInt(this.tour[0].gia_tre_em) || 0,
                     'so_nguoi_lon': parseInt(this.so_nguoi_lon) || 0,
                     'so_tre_em': parseInt(this.so_tre_em) || 0,
-                    'id_tour': this.tour[0].id_tour || this.tour[0].id,
+                    'id_tour': this.tour[0].id_tour || this.tour[0].id, 
                 };
-                
+
+                console.log("Dữ liệu gửi lên server:", payload);
+
                 axios
                     .post("http://127.0.0.1:8000/api/client/gio-hang/them-vao-gio-hang", payload, {
                         headers: {
@@ -423,8 +428,9 @@ export default {
                             toaster.error(res.data.message);
                         }
                     })
-                    .catch(() => {
-                        toaster.error("Có lỗi xảy ra khi thêm vào giỏ hàng!");
+                    .catch((err) => {
+                        console.error("Lỗi API:", err.response?.data);
+                        toaster.error("Có lỗi xảy ra hoặc dữ liệu gửi đi không hợp lệ!");
                     });
             } else {
                 toaster.error("Bạn cần đăng nhập trước!");
@@ -658,4 +664,20 @@ export default {
 @media (max-width: 991px) {
     .border-end-custom { border-right: none; }
 }
+
+.btn-momo-filled, .btn-momo-outlined, .btn-momo-soft {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 13px 20px;
+  border-radius: 12px; font-size: 15px; font-weight: 500;
+  cursor: pointer; border: none; transition: all 0.2s;
+}
+
+.btn-momo-filled { background: #ae2070; color: #fff; }
+.btn-momo-filled:hover { background: #921a5f; }
+.btn-momo-outlined { background: #fff; color: #ae2070; border: 1.5px solid #ae2070; }
+.btn-momo-outlined:hover { background: #fdf0f6; }
+.btn-momo-soft { background: #fdf0f6; color: #ae2070; border: 0.5px solid #f0b8d4; justify-content: space-between; }
+.btn-momo-soft:hover { background: #fce0ee; }
+[class^="btn-momo"] img { width: 28px; height: 28px; border-radius: 6px; }
+.btn-momo-soft small { font-size: 12px; color: #c96b9e; }
 </style>
