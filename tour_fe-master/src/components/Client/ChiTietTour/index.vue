@@ -75,6 +75,65 @@
                         </div>
                     </div>
 
+<<<<<<< HEAD
+=======
+                    <!-- ── MAP LỊCH TRÌNH TOUR ── -->
+                    <div class="info-card rounded-4 p-4 mb-4" v-if="lich_trinh.length > 0">
+                        <h5 class="info-label mb-3">
+                            <i class="fas fa-map-marked-alt me-2"></i>Bản Đồ Lịch Trình
+                        </h5>
+                        <div id="map-container-client" class="map-container rounded-3 overflow-hidden mb-3"></div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted font-13">
+                                <i class="fas fa-route me-1"></i>{{ lich_trinh.length }} điểm dừng
+                            </span>
+                            <button @click="centerMap()" class="btn btn-sm btn-outline-primary rounded-pill">
+                                <i class="fas fa-crosshairs me-1"></i>Căn giữa bản đồ
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ── LỊCH TRÌNH CHI TIẾT TỪNG NGÀY ── -->
+                    <div class="info-card rounded-4 p-4 mb-4" v-if="lich_trinh.length > 0">
+                        <h5 class="info-label mb-4">
+                            <i class="fas fa-list-alt me-2"></i>Lịch Trình Chi Tiết
+                        </h5>
+                        <div class="timeline-container">
+                            <div v-for="(item, index) in lich_trinh" :key="index" class="timeline-item">
+                                <div class="timeline-marker" :style="{ backgroundColor: getMarkerColor(index) }">
+                                    {{ index + 1 }}
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <h6 class="mb-1 fw-bold text-dark">{{ item.tieu_de }}</h6>
+                                            <span class="badge-day">Ngày {{ item.so_ngay }}</span>
+                                        </div>
+                                        <div class="text-end">
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-clock me-1"></i>{{ item.gio_khoi_hanh || '07:00' }} - {{ item.gio_ket_thuc || '18:00' }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mb-2 font-14" v-if="item.mo_ta">{{ item.mo_ta }}</p>
+                                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                                        <span class="info-tag">
+                                            <i class="fas fa-map-marker-alt me-1"></i>{{ item.dia_diem_di }}
+                                        </span>
+                                        <i class="fas fa-arrow-right text-muted"></i>
+                                        <span class="info-tag">
+                                            <i class="fas fa-flag-checkered me-1"></i>{{ item.dia_diem_den }}
+                                        </span>
+                                        <span class="info-tag" v-if="item.phuong_tien">
+                                            <i class="fas fa-vehicle me-1"></i>{{ item.phuong_tien }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+>>>>>>> master
                     <!-- Chuyến bay -->
                     <div class="info-card rounded-4 p-4 mb-4">
                         <h5 class="info-label mb-4">Thông Tin Chuyến Bay</h5>
@@ -242,11 +301,23 @@ export default {
         return {
             tour: [],
             list_tour: [],
+<<<<<<< HEAD
+=======
+            lich_trinh: [],
+>>>>>>> master
             so_nguoi_lon: 0,
             so_tre_em: 0,
             tong_tien: 0,
             is_login: false,
+<<<<<<< HEAD
             ten_hien_thi: 'Chưa đăng nhập'
+=======
+            ten_hien_thi: 'Chưa đăng nhập',
+            map: null,
+            markers: [],
+            routeLines: [],
+            markerColors: ['#0d7a5f', '#e8a020', '#dc3545', '#6f42c1', '#17a2b8', '#28a745']
+>>>>>>> master
         }
     },
     mounted() {
@@ -255,7 +326,304 @@ export default {
         this.kiemTraDangNhap();
         this.checkLogin();
     },
+<<<<<<< HEAD
     methods: {
+=======
+    watch: {
+        lich_trinh: {
+            handler: function(newVal) {
+                console.log('Lịch trình data changed:', newVal);
+                if (newVal && newVal.length > 0) {
+                    this.$nextTick(() => {
+                        console.log('Init map with data:', newVal);
+                        this.initMap();
+                    });
+                }
+            },
+            deep: true
+        }
+    },
+    methods: {
+        getMarkerColor(index) {
+            return this.markerColors[index % this.markerColors.length];
+        },
+        initMap() {
+            const mapContainer = document.getElementById('map-container-client');
+            if (!mapContainer) return;
+            
+            if (this.map) {
+                this.map.remove();
+                this.map = null;
+            }
+            
+            if (!window.L) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+                document.head.appendChild(link);
+                
+                const script = document.createElement('script');
+                script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                script.onload = () => {
+                    this.createMapInstance();
+                };
+                document.head.appendChild(script);
+            } else {
+                this.createMapInstance();
+            }
+        },
+        createMapInstance() {
+            if (this.map) return;
+            
+            this.map = L.map('map-container-client').setView([16.0544, 108.2022], 7);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(this.map);
+            
+            this.loadRouteData();
+        },
+        async loadRouteData() {
+            if (!this.map || !this.lich_trinh || this.lich_trinh.length === 0) return;
+            
+            // Xóa tất cả các layer cũ
+            this.map.eachLayer((layer) => {
+                if (layer instanceof L.Marker || layer instanceof L.Polyline || layer instanceof L.GeoJSON) {
+                    this.map.removeLayer(layer);
+                }
+            });
+            
+            const markerPositions = [];
+            
+            // Thu thập tất cả địa điểm cần geocode
+            const allLocations = [];
+            this.lich_trinh.forEach((item) => {
+                if (item.dia_diem_den) {
+                    const exists = allLocations.find(l => l.name === item.dia_diem_den);
+                    if (!exists) {
+                        allLocations.push({ 
+                            name: item.dia_diem_den, 
+                            item: item 
+                        });
+                    }
+                }
+            });
+            
+            // Geocode tất cả địa điểm trước
+            const locationCoords = {};
+            for (let i = 0; i < allLocations.length; i++) {
+                const loc = allLocations[i];
+                let coords = null;
+                
+                if (loc.item.vi_do && loc.item.kinh_do) {
+                    coords = [parseFloat(loc.item.vi_do), parseFloat(loc.item.kinh_do)];
+                } else {
+                    coords = await this.geocode(loc.name);
+                }
+                
+                if (coords) {
+                    locationCoords[loc.name] = coords;
+                }
+                
+                // Delay để tránh rate limit
+                if (i < allLocations.length - 1) {
+                    await new Promise(r => setTimeout(r, 500));
+                }
+            }
+            
+            // Bây giờ vẽ markers và routes với tọa độ đã có
+            for (let i = 0; i < this.lich_trinh.length; i++) {
+                const item = this.lich_trinh[i];
+                const coords = locationCoords[item.dia_diem_den];
+                
+                if (coords && coords.length === 2) {
+                    const color = this.getMarkerColor(i);
+                    
+                    const icon = L.divIcon({
+                        html: `<div style="background-color: ${color}; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.4);">${i + 1}</div>`,
+                        className: 'custom-marker',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16]
+                    });
+                    
+                    L.marker(coords, { icon: icon })
+                        .addTo(this.map)
+                        .bindPopup(`<b>${item.tieu_de}</b><br>📍 ${item.dia_diem_den}<br>⏰ ${item.gio_khoi_hanh || '07:00'} - ${item.gio_ket_thuc || '18:00'}`);
+                    
+                    markerPositions.push(coords);
+                    
+                    // Vẽ đường đi từ điểm hiện tại đến điểm tiếp theo
+                    if (i < this.lich_trinh.length - 1) {
+                        const nextItem = this.lich_trinh[i + 1];
+                        const fromCoord = coords;
+                        const toCoord = locationCoords[nextItem.dia_diem_den];
+                        
+                        if (fromCoord && toCoord) {
+                            await this.drawRouteByCoords(fromCoord, toCoord, i);
+                        }
+                    }
+                }
+            }
+            
+            // Zoom map để hiển thị tất cả các marker
+            if (markerPositions.length > 0) {
+                const bounds = L.latLngBounds(markerPositions);
+                this.map.fitBounds(bounds, { padding: [50, 50] });
+            }
+        },
+        async geocode(address) {
+            try {
+                // Thử tìm với địa chỉ đầy đủ
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Việt Nam')}&limit=1`
+                );
+                const data = await response.json();
+                
+                if (data && data.length > 0) {
+                    return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+                }
+            } catch (error) {
+                console.error('Geocoding error for:', address, error);
+            }
+            return null;
+        },
+        async drawRouteByCoords(fromCoords, toCoords, index) {
+            if (!fromCoords || !toCoords) return;
+            
+            const color = this.getMarkerColor(index);
+            
+            try {
+                // Gọi OSRM API để lấy đường đi thực tế
+                const response = await fetch(
+                    `https://router.project-osrm.org/route/v1/driving/${fromCoords[1]},${fromCoords[0]};${toCoords[1]},${toCoords[0]}?overview=full&geometries=geojson`
+                );
+                const data = await response.json();
+                
+                if (data.code === 'Ok' && data.routes && data.routes[0]) {
+                    const routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                    const distance = (data.routes[0].distance / 1000).toFixed(1);
+                    
+                    // Viền trắng
+                    L.polyline(routeCoords, {
+                        color: 'white',
+                        weight: 8,
+                        opacity: 1
+                    }).addTo(this.map);
+                    
+                    // Đường chính
+                    L.polyline(routeCoords, {
+                        color: color,
+                        weight: 5,
+                        opacity: 0.9
+                    }).addTo(this.map);
+                    
+                    // Thêm khoảng cách ở giữa đường
+                    const midIndex = Math.floor(routeCoords.length / 2);
+                    const midCoord = routeCoords[midIndex];
+                    
+                    const distanceIcon = L.divIcon({
+                        className: 'distance-marker',
+                        html: `<div style="background: white; padding: 4px 8px; border-radius: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 11px; font-weight: bold; color: ${color}; white-space: nowrap;">${distance} km</div>`,
+                        iconSize: [60, 20],
+                        iconAnchor: [30, 10]
+                    });
+                    
+                    L.marker(midCoord, { icon: distanceIcon, interactive: false }).addTo(this.map);
+                } else {
+                    // Fallback: vẽ đường thẳng nếu OSRM fail
+                    L.polyline([fromCoords, toCoords], {
+                        color: color,
+                        weight: 4,
+                        opacity: 0.8,
+                        dashArray: '10, 10'
+                    }).addTo(this.map);
+                }
+            } catch (error) {
+                console.error('OSRM error:', error);
+                // Fallback: vẽ đường thẳng nếu có lỗi
+                L.polyline([fromCoords, toCoords], {
+                    color: color,
+                    weight: 4,
+                    opacity: 0.8,
+                    dashArray: '10, 10'
+                }).addTo(this.map);
+            }
+        },
+        async drawRoute(fromItem, toItem, index) {
+            // Lấy tọa độ từ database
+            let fromCoords = null;
+            let toCoords = null;
+            
+            if (fromItem.vi_do && fromItem.kinh_do) {
+                fromCoords = [parseFloat(fromItem.vi_do), parseFloat(fromItem.kinh_do)];
+            }
+            
+            if (toItem.vi_do && toItem.kinh_do) {
+                toCoords = [parseFloat(toItem.vi_do), parseFloat(toItem.kinh_do)];
+            }
+            
+            if (fromCoords && toCoords) {
+                const color = this.getMarkerColor(index);
+                
+                try {
+                    // Gọi OSRM API để lấy đường đi thực tế
+                    const response = await fetch(
+                        `https://router.project-osrm.org/route/v1/driving/${fromCoords[1]},${fromCoords[0]};${toCoords[1]},${toCoords[0]}?overview=full&geometries=geojson`
+                    );
+                    const data = await response.json();
+                    
+                    if (data.code === 'Ok' && data.routes && data.routes[0]) {
+                        const routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                        const distance = (data.routes[0].distance / 1000).toFixed(1);
+                        
+                        // Viền trắng
+                        L.polyline(routeCoords, {
+                            color: 'white',
+                            weight: 8,
+                            opacity: 1
+                        }).addTo(this.map);
+                        
+                        // Đường chính
+                        L.polyline(routeCoords, {
+                            color: color,
+                            weight: 5,
+                            opacity: 0.9
+                        }).addTo(this.map);
+                        
+                        // Thêm khoảng cách ở giữa đường
+                        const midIndex = Math.floor(routeCoords.length / 2);
+                        const midCoord = routeCoords[midIndex];
+                        
+                        const distanceIcon = L.divIcon({
+                            className: 'distance-marker',
+                            html: `<div style="background: white; padding: 4px 8px; border-radius: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 11px; font-weight: bold; color: ${color}; white-space: nowrap;">${distance} km</div>`,
+                            iconSize: [60, 20],
+                            iconAnchor: [30, 10]
+                        });
+                        
+                        L.marker(midCoord, { icon: distanceIcon, interactive: false }).addTo(this.map);
+                        
+                        return; // Thành công, không cần vẽ đường thẳng
+                    }
+                } catch (error) {
+                    console.error('OSRM error:', error);
+                }
+                
+                // Fallback: vẽ đường thẳng nếu OSRM fail
+                L.polyline([fromCoords, toCoords], {
+                    color: color,
+                    weight: 4,
+                    opacity: 0.8,
+                    dashArray: '10, 10'
+                }).addTo(this.map);
+            }
+        },
+        centerMap() {
+            if (this.map) {
+                this.map.invalidateSize();
+            }
+        },
+>>>>>>> master
         thanhToanATM() {
         if (this.so_nguoi_lon === 0 && this.so_tre_em === 0) {
             toaster.warning("Vui lòng chọn số lượng hành khách!");
@@ -312,6 +680,10 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.tour = res.data.chi_tiet_tour;
+<<<<<<< HEAD
+=======
+                        this.lich_trinh = res.data.lich_trinh || [];
+>>>>>>> master
                     } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                     }
@@ -680,4 +1052,90 @@ export default {
 .btn-momo-soft:hover { background: #fce0ee; }
 [class^="btn-momo"] img { width: 28px; height: 28px; border-radius: 6px; }
 .btn-momo-soft small { font-size: 12px; color: #c96b9e; }
+<<<<<<< HEAD
+=======
+
+/* ── MAP STYLES ── */
+.map-container {
+    height: 400px;
+    width: 100%;
+    z-index: 1;
+}
+.font-13 { font-size: 13px; }
+.font-14 { font-size: 14px; }
+
+/* ── TIMELINE STYLES ── */
+.timeline-container {
+    position: relative;
+    padding-left: 20px;
+}
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #0d7a5f, #e8a020);
+    border-radius: 3px;
+}
+.timeline-item {
+    position: relative;
+    padding: 15px 0 15px 40px;
+    border-bottom: 1px dashed #e5e7eb;
+}
+.timeline-item:last-child {
+    border-bottom: none;
+}
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.timeline-content {
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+.badge-day {
+    background: #0d7a5f;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.info-tag {
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #4b5563;
+}
+.info-tag i {
+    color: #0d7a5f;
+}
+
+/* ── MAP LEGEND ── */
+.map-legend {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    font-size: 12px;
+}
+>>>>>>> master
 </style>

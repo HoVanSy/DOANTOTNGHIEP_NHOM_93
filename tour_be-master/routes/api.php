@@ -20,6 +20,10 @@ use App\Http\Controllers\YeuCauHuyController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ThongKeController;
 use App\Http\Controllers\MomoController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\LichTrinhTourController;
+>>>>>>> master
 
 Route::post('/momo/atm-payment', [MomoController::class, 'atmPayment']);
 Route::post('/client/momo/ipn', [MomoController::class, 'ipnHandler']);
@@ -110,6 +114,15 @@ Route::group(['prefix'  =>  '/admin'], function () {
         Route::post('/cap-nhat-tour', [Tour::class, 'updateTour']);
         Route::post('/doi-tinh-trang-tour', [Tour::class, 'doiTinhTrangTour']);
     });
+<<<<<<< HEAD
+=======
+    Route::group(['prefix'  =>  '/lich-trinh'], function () {
+        Route::get('/lay-du-lieu/{tour_id}', [LichTrinhTourController::class, 'getLichTrinh']);
+        Route::post('/them-moi', [LichTrinhTourController::class, 'createLichTrinh']);
+        Route::post('/cap-nhat', [LichTrinhTourController::class, 'updateLichTrinh']);
+        Route::delete('/xoa/{id}', [LichTrinhTourController::class, 'deleteLichTrinh']);
+    });
+>>>>>>> master
     Route::group(['prefix'  =>  '/hoa-don'], function () {
         Route::get('/lay-du-lieu', [HoaDonController::class, 'getData']);
         Route::post('/doi-tinh-trang-hoa-don', [HoaDonController::class, 'doiTinhTrangHoaDon']);

@@ -138,6 +138,12 @@
                                                 <button @click="Object.assign(detail_tour_ct, v)" class="btn-action action-info-detail" data-bs-toggle="modal" data-bs-target="#chiTietModalCT" title="Xem lịch trình chi tiết">
                                                     <i class="fa-solid fa-list-check"></i>
                                                 </button>
+<<<<<<< HEAD
+=======
+                                                <button @click="openLichTrinhModal(v)" class="btn-action action-map" data-bs-toggle="modal" data-bs-target="#lichTrinhModal" title="Quản lý lịch trình map">
+                                                    <i class="fa-solid fa-map-location-dot"></i>
+                                                </button>
+>>>>>>> master
                                             </div>
                                         </td>
                                         <td>
@@ -296,12 +302,121 @@
             </div>
         </div>
 
+<<<<<<< HEAD
+=======
+        <!-- Modal Lịch Trình Map -->
+        <div class="modal fade" id="lichTrinhModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg rounded-4">
+                    <div class="modal-header border-bottom">
+                        <h5 class="modal-title fw-bold">
+                            <i class="fa-solid fa-map-location-dot text-primary-dark me-2"></i>
+                            Lịch Trình Map - {{ selected_tour.tieu_de }}
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="mb-3">
+                                    <label class="form-label-custom">Ngày thứ</label>
+                                    <input v-model="lich_trinh_form.so_ngay" type="number" class="form-control custom-input" placeholder="VD: 1, 2, 3..." min="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-custom">Tiêu đề</label>
+                                    <input v-model="lich_trinh_form.tieu_de" type="text" class="form-control custom-input" placeholder="VD: Ngày 1 - Khởi hành...">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-custom">Mô tả</label>
+                                    <textarea v-model="lich_trinh_form.mo_ta" class="form-control custom-input" rows="2" placeholder="Mô tả chi tiết lịch trình..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-custom">Điểm đi</label>
+                                    <input v-model="lich_trinh_form.dia_diem_di" type="text" class="form-control custom-input" placeholder="VD: Hà Nội">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-custom">Điểm đến</label>
+                                    <input v-model="lich_trinh_form.dia_diem_den" type="text" class="form-control custom-input" placeholder="VD: TP Hồ Chí Minh">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label-custom">Phương tiện</label>
+                                        <input v-model="lich_trinh_form.phuong_tien" type="text" class="form-control custom-input" placeholder="VD: Máy bay">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label class="form-label-custom">Giờ đi</label>
+                                        <input v-model="lich_trinh_form.gio_khoi_hanh" type="time" class="form-control custom-input">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label class="form-label-custom">Giờ về</label>
+                                        <input v-model="lich_trinh_form.gio_ket_thuc" type="time" class="form-control custom-input">
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button @click="saveLichTrinh()" class="btn btn-primary-dark rounded-pill">
+                                        <i class="fa-solid fa-plus me-2"></i>{{ is_edit_lich_trinh ? 'Cập nhật' : 'Thêm mới' }}
+                                    </button>
+                                    <button v-if="is_edit_lich_trinh" @click="cancelEditLichTrinh()" class="btn btn-secondary rounded-pill">
+                                        Hủy chỉnh sửa
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div id="map-container-admin" class="map-container-admin rounded-3 overflow-hidden mb-3"></div>
+                                <div class="table-responsive" style="max-height: 250px;">
+                                    <table class="table table-sm table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th>Ngày</th>
+                                                <th>Tiêu đề</th>
+                                                <th>Điểm đến</th>
+                                                <th class="text-center">Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item, index) in list_lich_trinh" :key="index">
+                                                <td class="text-center">
+                                                    <span class="badge" :style="{ backgroundColor: markerColors[index % markerColors.length], color: 'white' }">{{ item.so_ngay }}</span>
+                                                </td>
+                                                <td>{{ item.so_ngay }}</td>
+                                                <td>{{ item.tieu_de }}</td>
+                                                <td>{{ item.dia_diem_den }}</td>
+                                                <td class="text-center">
+                                                    <button @click="editLichTrinh(item)" class="btn btn-sm btn-outline-primary me-1">
+                                                        <i class="fa-solid fa-pen"></i>
+                                                    </button>
+                                                    <button @click="deleteLichTrinh(item.id)" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="list_lich_trinh.length === 0">
+                                                <td colspan="5" class="text-center text-muted py-3">
+                                                    Chưa có lịch trình nào
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+>>>>>>> master
     </div>
 </template>
 
 <script>
 import baseRequest from "../../../core/baseRequest";
 import { createToaster } from "@meforma/vue-toaster";
+<<<<<<< HEAD
+=======
+import axios from "axios";
+>>>>>>> master
 const toaster = createToaster({ position: "top-right" });
 
 export default {
@@ -310,10 +425,24 @@ export default {
             list_tour: [],
             key_search: {},
             create_tour: { tinh_trang: 1 },
+<<<<<<< HEAD
             delete_tour: {}, // Đổi object để chứa title xóa
             update_tour: {},
             detail_tour: {},
             detail_tour_ct: {},
+=======
+            delete_tour: {},
+            update_tour: {},
+            detail_tour: {},
+            detail_tour_ct: {},
+            selected_tour: {},
+            list_lich_trinh: [],
+            lich_trinh_form: {},
+            is_edit_lich_trinh: false,
+            map: null,
+            markers: [],
+            markerColors: ['#0d7a5f', '#e8a020', '#dc3545', '#6f42c1', '#17a2b8', '#28a745']
+>>>>>>> master
         };
     },
     mounted() {
@@ -353,12 +482,221 @@ export default {
             });
         },
         
+<<<<<<< HEAD
+=======
+        // Lịch trình map methods
+        openLichTrinhModal(tour) {
+            this.selected_tour = tour;
+            this.lich_trinh_form = { id_tour: tour.id, so_ngay: 1 };
+            this.is_edit_lich_trinh = false;
+            this.loadLichTrinh(tour.id);
+            this.$nextTick(() => {
+                this.initLeafletMap();
+            });
+        },
+        
+        loadLichTrinh(tour_id) {
+            baseRequest.get("admin/lich-trinh/lay-du-lieu/" + tour_id).then((res) => {
+                if (res.data.status) {
+                    this.list_lich_trinh = res.data.lich_trinh;
+                    this.updateMapPreview();
+                }
+            });
+        },
+        
+        initLeafletMap() {
+            if (this.map) {
+                this.map.remove();
+            }
+            
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+            if (!document.querySelector('link[href*="leaflet"]')) {
+                document.head.appendChild(link);
+            }
+            
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+            script.onload = () => {
+                if (this.map) return;
+                
+                this.map = L.map('map-container-admin').setView([16.0544, 108.2022], 6);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(this.map);
+                
+                this.updateMapPreview();
+            };
+            if (!window.L) {
+                document.head.appendChild(script);
+            } else {
+                this.updateMapPreview();
+            }
+        },
+        
+        async updateMapPreview() {
+            if (!window.L || !this.map) return;
+            
+            this.map.eachLayer((layer) => {
+                if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                    this.map.removeLayer(layer);
+                }
+            });
+            
+            for (let i = 0; i < this.list_lich_trinh.length; i++) {
+                const item = this.list_lich_trinh[i];
+                try {
+                    const coords = await this.geocode(item.dia_diem_den);
+                    if (coords) {
+                        const color = this.markerColors[i % this.markerColors.length];
+                        const icon = L.divIcon({
+                            html: `<div style="background-color: ${color}; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${i + 1}</div>`,
+                            className: 'custom-marker',
+                            iconSize: [30, 30],
+                            iconAnchor: [15, 15]
+                        });
+                        
+                        L.marker([coords.lat, coords.lon], { icon: icon })
+                            .addTo(this.map)
+                            .bindPopup(`<b>${item.tieu_de}</b><br>${item.dia_diem_den}`);
+                    }
+                } catch (error) {
+                    console.log('Geocoding error');
+                }
+                
+                if (i < this.list_lich_trinh.length - 1) {
+                    const nextItem = this.list_lich_trinh[i + 1];
+                    await this.drawRouteOnMap(item.dia_diem_den, nextItem.dia_diem_di);
+                }
+            }
+            
+            if (this.list_lich_trinh.length > 0) {
+                const bounds = [];
+                for (const item of this.list_lich_trinh) {
+                    const coords = await this.geocode(item.dia_diem_den);
+                    if (coords) {
+                        bounds.push([coords.lat, coords.lon]);
+                    }
+                }
+                if (bounds.length > 0) {
+                    this.map.fitBounds(bounds, { padding: [50, 50] });
+                }
+            }
+        },
+        
+        async geocode(address) {
+            try {
+                const response = await axios.get(
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Vietnam')}`
+                );
+                if (response.data && response.data.length > 0) {
+                    return {
+                        lat: parseFloat(response.data[0].lat),
+                        lon: parseFloat(response.data[0].lon)
+                    };
+                }
+            } catch (error) {
+                console.error('Geocoding error:', error);
+            }
+            return null;
+        },
+        
+        async drawRouteOnMap(from, to) {
+            try {
+                const fromCoords = await this.geocode(from);
+                const toCoords = await this.geocode(to);
+                
+                if (fromCoords && toCoords) {
+                    const response = await axios.get(
+                        `https://router.project-osrm.org/route/v1/driving/${fromCoords.lon},${fromCoords.lat};${toCoords.lon},${toCoords.lat}?overview=full&geometries=geojson`
+                    );
+                    
+                    if (response.data && response.data.routes && response.data.routes[0]) {
+                        const route = response.data.routes[0].geometry;
+                        const color = this.markerColors[this.list_lich_trinh.length % this.markerColors.length];
+                        
+                        L.geoJSON(route, {
+                            style: {
+                                color: color,
+                                weight: 4,
+                                opacity: 0.8
+                            }
+                        }).addTo(this.map);
+                    }
+                }
+            } catch (error) {
+                console.error('Route drawing error:', error);
+            }
+        },
+        
+        saveLichTrinh() {
+            if (!this.lich_trinh_form.tieu_de || !this.lich_trinh_form.dia_diem_den) {
+                toaster.warning("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+            
+            this.lich_trinh_form.id_tour = this.selected_tour.id;
+            
+            if (this.is_edit_lich_trinh) {
+                baseRequest.post("admin/lich-trinh/cap-nhat", this.lich_trinh_form).then((res) => {
+                    if (res.data.status) {
+                        toaster.success("Cập nhật lịch trình thành công!");
+                        this.loadLichTrinh(this.selected_tour.id);
+                        this.lich_trinh_form = { id_tour: this.selected_tour.id, so_ngay: 1 };
+                        this.is_edit_lich_trinh = false;
+                    } else {
+                        toaster.error(res.data.message);
+                    }
+                });
+            } else {
+                baseRequest.post("admin/lich-trinh/them-moi", this.lich_trinh_form).then((res) => {
+                    if (res.data.status) {
+                        toaster.success("Thêm lịch trình thành công!");
+                        this.loadLichTrinh(this.selected_tour.id);
+                        this.lich_trinh_form = { id_tour: this.selected_tour.id, so_ngay: this.list_lich_trinh.length + 2 };
+                    } else {
+                        toaster.error(res.data.message);
+                    }
+                });
+            }
+        },
+        
+        editLichTrinh(item) {
+            this.lich_trinh_form = { ...item };
+            this.is_edit_lich_trinh = true;
+        },
+        
+        cancelEditLichTrinh() {
+            this.lich_trinh_form = { id_tour: this.selected_tour.id, so_ngay: this.list_lich_trinh.length + 1 };
+            this.is_edit_lich_trinh = false;
+        },
+        
+        deleteLichTrinh(id) {
+            if (confirm('Bạn có chắc muốn xóa lịch trình này?')) {
+                baseRequest.delete("admin/lich-trinh/xoa/" + id).then((res) => {
+                    if (res.data.status) {
+                        toaster.success("Xóa lịch trình thành công!");
+                        this.loadLichTrinh(this.selected_tour.id);
+                    } else {
+                        toaster.error(res.data.message);
+                    }
+                });
+            }
+        },
+        
+>>>>>>> master
         themMoiTour() {
             baseRequest.post("admin/tour/them-moi-tour", this.create_tour).then((res) => {
                 if (res.data.status == true) {
                     toaster.success("Thông báo<br>" + res.data.message);
                     this.loadDataTour();
+<<<<<<< HEAD
                     this.create_tour = { tinh_trang: 1 }; // Xoá trắng form
+=======
+                    this.create_tour = { tinh_trang: 1 };
+>>>>>>> master
                 } else {
                     toaster.error("Thông báo<br>" + res.data.message);
                 }
@@ -521,4 +859,18 @@ export default {
 
 .font-13 { font-size: 13px; }
 .font-14 { font-size: 14px; }
+<<<<<<< HEAD
+=======
+
+/* ── MAP CONTAINER ── */
+.map-container-admin {
+    height: 350px;
+    width: 100%;
+    border: 1px solid #e5e7eb;
+}
+
+/* ── ACTION MAP BUTTON ── */
+.action-map { background-color: #fef3c7; color: #d97706; }
+.action-map:hover { background-color: #d97706; color: #fff; }
+>>>>>>> master
 </style>
