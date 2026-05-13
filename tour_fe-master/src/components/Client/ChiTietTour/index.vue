@@ -393,14 +393,20 @@ export default {
             }
         },
         themVaoGioHang() {
+            if (this.so_nguoi_lon <= 0 && this.so_tre_em <= 0) {
+                toaster.error("Số lượng người lớn hoặc trẻ em phải lớn hơn 0!");
+                return;
+            }
+
             if (this.is_login) {
                 var payload = {
                     'gia_nguoi_lon': this.tour[0].gia_nguoi_lon,
                     'gia_tre_em': this.tour[0].gia_tre_em,
-                    'so_nguoi_lon': this.so_nguoi_lon,
-                    'so_tre_em': this.so_tre_em,
-                    'id_tour': this.tour[0].id_tour,
+                    'so_nguoi_lon': parseInt(this.so_nguoi_lon) || 0,
+                    'so_tre_em': parseInt(this.so_tre_em) || 0,
+                    'id_tour': this.tour[0].id_tour || this.tour[0].id,
                 };
+                
                 axios
                     .post("http://127.0.0.1:8000/api/client/gio-hang/them-vao-gio-hang", payload, {
                         headers: {
@@ -414,14 +420,17 @@ export default {
                             this.so_tre_em = 0;
                             this.tong_tien = 0;
                         } else {
-                            toaster.error(res.data.message)
+                            toaster.error(res.data.message);
                         }
+                    })
+                    .catch(() => {
+                        toaster.error("Có lỗi xảy ra khi thêm vào giỏ hàng!");
                     });
             } else {
                 toaster.error("Bạn cần đăng nhập trước!");
                 this.$router.push('/client/dang-nhap');
             }
-        },
+        }
     },
 }
 </script>

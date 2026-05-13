@@ -4,8 +4,14 @@
             <nav class="navbar navbar-expand-lg py-0">
 
                 <!-- LOGO -->
-                <router-link class="navbar-brand py-0 me-lg-4" to="/">
-                    <img style="height: 42px; object-fit: contain;" src="../imgaes/logo.png" alt="Logo">
+                <router-link class="navbar-brand py-0 me-lg-4 d-flex align-items-center gap-2 text-decoration-none" to="/">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-plane-departure"></i>
+                    </div>
+                    <div class="brand-text d-flex flex-column justify-content-center">
+                        <span class="brand-name">VIVU<span class="brand-highlight">TOUR</span></span>
+                        <span class="brand-slogan">Travel & Explore</span>
+                    </div>
                 </router-link>
 
                 <!-- TOGGLER -->
@@ -380,5 +386,38 @@ export default {
 }
 .custom-dropdown-item:hover {
     background-color: #f5f3ee;
+}
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    background-color: #003C71;
+    color: #FFBD00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border-radius: 12px 4px 12px 4px; /* Bo góc vát chéo logo */
+    box-shadow: 0 4px 10px rgba(0, 60, 113, 0.2);
+}
+.brand-text {
+    line-height: 1;
+}
+.brand-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: #003C71;
+    letter-spacing: 0.5px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+.brand-highlight {
+    color: #FFBD00;
+}
+.brand-slogan {
+    font-size: 10px;
+    font-weight: 700;
+    color: #6c757d;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
 }
 </style>
