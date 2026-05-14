@@ -14,7 +14,6 @@
         
         <nav class="navbar navbar-expand-xl w-100 p-0">
             <ul class="navbar-nav justify-content-start flex-grow-1 menu-list">
-                
                 <li class="nav-item">
                     <router-link to="/admin/thongkebaocao" class="nav-link">
                         <div class="parent-icon"><i class="fa-solid fa-chart-line"></i></div>
@@ -127,10 +126,10 @@ export default {
     overflow-x: auto;
     gap: 4px;
     padding: 8px 0;
-    scrollbar-width: none; /* Ẩn scrollbar Firefox */
+    scrollbar-width: none;
 }
 .menu-list::-webkit-scrollbar {
-    display: none; /* Ẩn scrollbar Chrome/Safari */
+    display: none; 
 }
 
 /* ── NAV ITEMS ── */
@@ -140,30 +139,28 @@ export default {
 }
 
 .primary-menu .navbar-nav .nav-link {
-    color: #4b5563;
+    color: #4b5563; 
     padding: 8px 14px !important; 
     display: flex;
     align-items: center;
-    border-radius: 8px; /* Bo góc item */
+    border-radius: 8px;
     transition: all 0.2s ease-in-out;
     font-weight: 500;
 }
 
-/* Hover State */
 .primary-menu .navbar-nav .nav-link:hover {
-    color: #0d7a5f;
+    color: #0d7a5f; 
     background-color: #f8f9fa;
 }
 
-/* Active State (Trạng thái trang đang chọn) */
 .primary-menu .navbar-nav .nav-link.router-link-active {
     color: #0d7a5f;
-    background-color: #e6f5f0; /* Nền xanh lá nhạt */
+    background-color: #e6f5f0; 
     font-weight: 600;
 }
 
 .primary-menu .navbar-nav .nav-link.router-link-active .parent-icon i {
-    color: #0d7a5f;
+    color: #0d7a5f; /* Icon xanh lá */
 }
 
 /* ── ICONS & TEXT ── */

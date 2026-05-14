@@ -38,10 +38,10 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label class="form-label-custom">Đơn Hàng Tối Thiểu (đ)</label>
                                 <input v-model="create_km.don_hang_toi_thieu" type="number" class="form-control custom-input" placeholder="0">
-                            </div>
+                            </div> -->
 
                             <div class="row">
                                 <div class="col-6 mb-4">
@@ -134,7 +134,7 @@
                                                 {{ formatDate(v.ngay_ket_thuc) }}
                                             </div>
                                             <small v-if="isExpired(v.ngay_ket_thuc)" class="text-danger fst-italic">(Hết hạn)</small>
-                                            <div class="text-muted mt-1" style="font-size: 11px;">Đơn tối thiểu: {{ formatToVND(v.don_hang_toi_thieu) }}</div>
+                                            <!-- <div class="text-muted mt-1" style="font-size: 11px;">Đơn tối thiểu: {{ formatToVND(v.don_hang_toi_thieu) }}</div> -->
                                         </td>
                                         <td class="text-center">
                                             <div class="form-check form-switch d-flex justify-content-center m-0 p-0">

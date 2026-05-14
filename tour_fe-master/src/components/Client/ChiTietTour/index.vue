@@ -172,8 +172,8 @@
                 <div class="col-lg-4">
                     <div class="booking-card rounded-4 shadow-lg sticky-top" style="top: 70px; z-index: 10;">
                         <div class="booking-header text-center p-2">
-                            <h6 class="fw-bold text-white mb-0">ĐẶT CHUYẾN ĐI</h6>
-                            <small class="text-white-50 font-11">Mã tour: #{{ tour[0].id_tour }}</small>
+                            <h6 class="fw-bold text-dark mb-0">ĐẶT CHUYẾN ĐI</h6>
+                            <small class="text-dark-50 font-11">Mã tour: #{{ tour[0].id_tour }}</small>
                         </div>
                         
                         <div class="p-3">
@@ -219,7 +219,7 @@
                                     <label class="form-label-custom font-12 mb-1">Mã khuyến mãi</label>
                                     <div class="input-group input-group-sm">
                                         <input v-model="ma_khuyen_mai" type="text" class="form-control custom-input" placeholder="Nhập mã..." :disabled="is_applied">
-                                        <button @click="apMaKhuyenMai()" class="btn btn-primary px-3" type="button" :disabled="is_applied">
+                                        <button @click="apMaKhuyenMai()" class="btn btn-warning px-3" type="button" :disabled="is_applied">
                                             {{ is_applied ? 'OK' : 'Áp dụng' }}
                                         </button>
                                     </div>
@@ -651,7 +651,7 @@ export default {
                 this.map.invalidateSize();
             }
         },
-        
+
         thanhToanATM() {
             if (this.so_nguoi_lon === 0 && this.so_tre_em === 0) {
                 toaster.warning("Vui lòng chọn số lượng hành khách!");
@@ -665,8 +665,8 @@ export default {
             }
 
             const payload = {
-                id: this.tour[0].id_tour, 
-                tong_tien: this.tong_tien
+                id: this.tour[0].id, 
+                tong_tien: this.tong_tien,
             };
 
             axios.post("http://127.0.0.1:8000/api/momo/atm-payment", payload, {
@@ -678,12 +678,14 @@ export default {
                 if (res.data.status && res.data.payUrl) {
                     window.location.href = res.data.payUrl;
                 } else {
-                    toaster.error("MoMo lỗi: " + JSON.stringify(res.data));
+                    toaster.error(
+                        "MoMo lỗi: " + JSON.stringify(res.data)
+                    );
                 }
             })
             .catch((error) => {
-                console.error("Chi tiết lỗi:", error.response?.data); 
-                toaster.error("Lỗi khi kết nối với cổng thanh toán!");
+                console.error("Chi tiết lỗi:", error.response.data); 
+                toaster.error("Dữ liệu gửi đi không hợp lệ (Lỗi 422)!");
             });
         },
         apMaKhuyenMai() {
@@ -959,7 +961,9 @@ export default {
     overflow: hidden;
 }
 .booking-header {
-    background: #0aa857;
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+
 }
 .tour-id-tag {
     font-size: 11px;

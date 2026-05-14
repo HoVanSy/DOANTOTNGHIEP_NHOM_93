@@ -6,21 +6,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\HoaDon;
+use Illuminate\Support\Facades\Auth;
 
 class MomoController extends Controller
 {
     public function atmPayment(Request $request)
     {
+         $request->validate([
+            'id' => 'required',
+            'tong_tien' => 'required|numeric|min:1',
+        ]);
+        // $hoaDon = new HoaDon();
+
+        // $hoaDon->id_tour    = $request->id; 
+        // $hoaDon->tong_tien  = $request->tong_tien;
+        // $hoaDon->tinh_trang = 0;
+        // $hoaDon->id_khach_hang = Auth::guard('khach_hang')->id(); 
+        // $hoaDon->save();
+
         $endpoint = 'https://test-payment.momo.vn/v2/gateway/api/create';
 
         $partnerCode = 'MOMOBKUN20180529';
         $accessKey   = 'klm05TvNBzhg7h7j';
         $secretKey   = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
 
-        $request->validate([
-            'id' => 'required',
-            'tong_tien' => 'required|numeric|min:1',
-        ]);
+       
 
         $orderInfo   = "Thanh toan qua MoMo";
         $amount      = (int)$request->tong_tien;
@@ -28,6 +38,8 @@ class MomoController extends Controller
         $orderIdRaw  = preg_replace('/[^0-9A-Za-z]/', '', $request->id);
         $orderId     = $orderIdRaw ? $orderIdRaw . '-' . time() : 'order' . time();
         $orderId     = preg_replace('/[^0-9A-Za-z\-_.:]/', '', $orderId);
+        // $orderId = $hoaDon->id . '-' . time();
+        
         if (empty($orderId)) {
             $orderId = 'order' . time();
         }
