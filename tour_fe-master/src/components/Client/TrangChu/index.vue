@@ -186,9 +186,9 @@
 <script>
 import baseRequest from "../../../core/baseRequestClient";
 import { createToaster } from "@meforma/vue-toaster";
-import slide1 from '../../../layout/imgaes/Book now.png';
-import slide2 from '../../../layout/imgaes/Thiết kế chưa có tên.png';
-import slide3 from '../../../layout/imgaes/www.reallygreatsite.com.png';
+import slide1 from '../../../layout/imgaes/ld1.png';
+import slide2 from '../../../layout/imgaes/ld2.png';
+import slide3 from '../../../layout/imgaes/ld3.png';
 import offer1 from '../../../layout/imgaes/ưu đãi 1.png';
 import offer2 from '../../../layout/imgaes/ưu đãi 2.png';
 import offer3 from '../../../layout/imgaes/ưu đãi 3.png';
