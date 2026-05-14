@@ -34,9 +34,7 @@
             </div>
 
             <div class="row g-4">
-                <!-- ── CỘT TRÁI: THÔNG TIN CHI TIẾT ── -->
                 <div class="col-lg-8">
-                    <!-- Thông tin tổng quan -->
                     <div class="info-card rounded-4 p-4 mb-4">
                         <div class="row align-items-center mb-4">
                             <div class="col-md-6 border-end-custom">
@@ -172,63 +170,85 @@
 
                 <!-- ── CỘT PHẢI: FORM ĐẶT TOUR (Sticky) ── -->
                 <div class="col-lg-4">
-                    <div class="booking-card rounded-4 shadow-lg sticky-top" style="top: 100px; z-index: 10;">
-                        <div class="booking-header text-center p-4">
-                            <h5 class="fw-bold text-white mb-1">ĐẶT CHUYẾN ĐI</h5>
-                            <span class="tour-id-tag">Mã tour: #{{ tour[0].id_tour }}</span>
+                    <div class="booking-card rounded-4 shadow-lg sticky-top" style="top: 70px; z-index: 10;">
+                        <div class="booking-header text-center p-2">
+                            <h6 class="fw-bold text-white mb-0">ĐẶT CHUYẾN ĐI</h6>
+                            <small class="text-white-50 font-11">Mã tour: #{{ tour[0].id_tour }}</small>
                         </div>
                         
-                        <div class="p-4">
-                            <div class="price-summary d-flex justify-content-between mb-4">
+                        <div class="p-3">
+                            <div class="price-summary d-flex justify-content-between mb-3 bg-light rounded-3 p-2">
                                 <div class="text-center flex-grow-1">
-                                    <small class="text-muted d-block mb-1">Người lớn</small>
-                                    <span class="price-val">{{ formatToVND(tour[0].gia_nguoi_lon) }}</span>
+                                    <small class="text-muted d-block font-11">Người lớn</small>
+                                    <span class="price-val font-13 fw-bold">{{ formatToVND(tour[0].gia_nguoi_lon) }}</span>
                                 </div>
-                                <div class="divider-vertical"></div>
+                                <div class="divider-vertical mx-2"></div>
                                 <div class="text-center flex-grow-1">
-                                    <small class="text-muted d-block mb-1">Trẻ em</small>
-                                    <span class="price-val">{{ formatToVND(tour[0].gia_tre_em) }}</span>
+                                    <small class="text-muted d-block font-11">Trẻ em</small>
+                                    <span class="price-val font-13 fw-bold">{{ formatToVND(tour[0].gia_tre_em) }}</span>
                                 </div>
                             </div>
 
                             <form @submit.prevent>
-                                <div class="mb-3">
-                                    <label class="form-label-custom">Khách hàng</label>
-                                    <input type="text" class="form-control custom-input" :value="ten_hien_thi" readonly>
+                                <div class="mb-2">
+                                    <label class="form-label-custom font-12 mb-1">Khách hàng</label>
+                                    <input type="text" class="form-control custom-input py-1 font-13" :value="ten_hien_thi" readonly>
                                 </div>
 
                                 <div class="passenger-selector mb-3">
-                                    <label class="form-label-custom">Số lượng hành khách</label>
-                                    <!-- Người lớn -->
-                                    <div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded-3">
-                                        <span class="font-14 fw-medium text-dark">Người lớn <small class="d-block text-muted font-11">Trên 10 tuổi</small></span>
+                                    <label class="form-label-custom font-12 mb-1">Số lượng hành khách</label>
+                                    <div class="d-flex justify-content-between align-items-center mb-1 p-2 border rounded-3">
+                                        <span class="font-12 fw-medium text-dark">Người lớn <small class="text-muted font-10">/Trên 10t</small></span>
                                         <div class="counter-control">
                                             <button @click="decrease('adult')" type="button" class="count-btn">−</button>
-                                            <input v-model="so_nguoi_lon" type="text" class="count-input" readonly>
+                                            <input v-model="so_nguoi_lon" type="text" class="count-input font-13" readonly>
                                             <button @click="increase('adult')" type="button" class="count-btn">+</button>
                                         </div>
                                     </div>
-                                    <!-- Trẻ em -->
                                     <div class="d-flex justify-content-between align-items-center p-2 border rounded-3">
-                                        <span class="font-14 fw-medium text-dark">Trẻ em <small class="d-block text-muted font-11">Dưới 10 tuổi</small></span>
+                                        <span class="font-12 fw-medium text-dark">Trẻ em <small class="text-muted font-10">/Dưới 10t</small></span>
                                         <div class="counter-control">
                                             <button @click="decrease('child')" type="button" class="count-btn">−</button>
-                                            <input v-model="so_tre_em" type="text" class="count-input" readonly>
+                                            <input v-model="so_tre_em" type="text" class="count-input font-13" readonly>
                                             <button @click="increase('child')" type="button" class="count-btn">+</button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="total-section d-flex justify-content-between align-items-center mb-4">
-                                    <span class="fw-bold text-dark">TỔNG CỘNG</span>
-                                    <span class="total-price">{{ formatToVND(tong_tien) }}</span>
+                                <div class="promo-section mb-3">
+                                    <label class="form-label-custom font-12 mb-1">Mã khuyến mãi</label>
+                                    <div class="input-group input-group-sm">
+                                        <input v-model="ma_khuyen_mai" type="text" class="form-control custom-input" placeholder="Nhập mã..." :disabled="is_applied">
+                                        <button @click="apMaKhuyenMai()" class="btn btn-primary px-3" type="button" :disabled="is_applied">
+                                            {{ is_applied ? 'OK' : 'Áp dụng' }}
+                                        </button>
+                                    </div>
+                                    <div v-if="thong_bao_km" :class="is_applied ? 'text-success' : 'text-danger'" class="font-11 mt-1 fw-medium">
+                                        {{ thong_bao_km }}
+                                    </div>
+                                </div>
+
+                                <div class="border-top pt-2 mb-3">
+                                    <div class="d-flex justify-content-between font-12 mb-1">
+                                        <span class="text-muted">Tạm tính:</span>
+                                        <span class="text-dark fw-bold">{{ formatToVND(tong_tien + so_tien_giam) }}</span>
+                                    </div>
+                                    <div v-if="is_applied" class="d-flex justify-content-between font-12 mb-1">
+                                        <span class="text-muted">Giảm giá:</span>
+                                        <span class="text-danger fw-bold">- {{ formatToVND(so_tien_giam) }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <span class="fw-bold text-dark font-13">TỔNG CỘNG</span>
+                                        <span class="total-price fs-5 text-danger">{{ formatToVND(tong_tien) }}</span>
+                                    </div>
                                 </div>
 
                                 <div class="d-grid gap-2">
-                                    <button @click="thanhToanATM()" class="btn-momo-filled w-100 mb-3">
-                                        <img src="https://homepage.momocdn.net/fileuploads/svg/momo-file-240411162904.svg" alt="">
-                                        Thanh toán bằng MoMo
-                                        </button>
+                                    <button @click="thanhToanATM()" class="btn-momo-filled w-100 py-2 mb-1 font-14">
+                                        <img src="https://homepage.momocdn.net/fileuploads/svg/momo-file-240411162904.svg" width="20" alt="">
+                                        Thanh toán MoMo
+                                    </button>
+                                    
                                     <div class="row g-2">
                                         <div class="col-6">
                                             <button @click="themVaoGioHang()" class="btn-action btn-cart w-100">
@@ -251,7 +271,6 @@
             <!-- ── TOUR LIÊN QUAN ── -->
             <div class="mt-5 pt-5 border-top">
                 <div class="section-header text-center mb-5">
-                    <span class="section-tag">Khám phá thêm</span>
                     <h3 class="section-title">Có Thể Bạn Sẽ Thích</h3>
                 </div>
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
@@ -306,7 +325,22 @@ export default {
             map: null,
             markers: [],
             routeLines: [],
-            markerColors: ['#0d7a5f', '#e8a020', '#dc3545', '#6f42c1', '#17a2b8', '#28a745']
+            markerColors: ['#0d7a5f', '#e8a020', '#dc3545', '#6f42c1', '#17a2b8', '#28a745'],
+            ma_khuyen_mai: '',
+            so_tien_giam: 0,
+            is_applied: false,
+            thong_bao_km: '',
+        }
+    },
+    computed: {
+        tong_tien_tam_tinh() {
+            if (!this.tour[0]) return 0;
+            return (this.so_nguoi_lon * this.tour[0].gia_nguoi_lon) + 
+                (this.so_tre_em * this.tour[0].gia_tre_em);
+        },
+        tong_tien_phai_tra() {
+            let total = this.tong_tien_tam_tinh - this.so_tien_giam;
+            return total > 0 ? total : 0;
         }
     },
     mounted() {
@@ -327,9 +361,17 @@ export default {
                 }
             },
             deep: true
-        }
+        },
+        so_nguoi_lon() { this.resetCoupon(); },
+        so_tre_em() { this.resetCoupon(); }
     },
     methods: {
+        resetCoupon() {
+            this.is_applied = false;
+            this.so_tien_giam = 0;
+            this.ma_khuyen_mai = '';
+            this.thong_bao_km = '';
+        },
         getMarkerColor(index) {
             return this.markerColors[index % this.markerColors.length];
         },
@@ -609,40 +651,62 @@ export default {
                 this.map.invalidateSize();
             }
         },
+        
         thanhToanATM() {
-        if (this.so_nguoi_lon === 0 && this.so_tre_em === 0) {
-            toaster.warning("Vui lòng chọn số lượng hành khách!");
-            return;
-        }
-
-        if (!this.is_login) {
-            toaster.error("Bạn cần đăng nhập trước khi thanh toán!");
-            this.$router.push('/client/dang-nhap');
-            return;
-        }
-
-        const payload = {
-            id: this.tour[0].id_tour, 
-            tong_tien: this.tong_tien
-        };
-
-        axios.post("http://127.0.0.1:8000/api/momo/atm-payment", payload, {
-            headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
-        })
-        .then((res) => {
-            console.log("RESPONSE MOMO:", res.data);
-
-            if (res.data.status && res.data.payUrl) {
-                window.location.href = res.data.payUrl;
-            } else {
-                toaster.error("MoMo lỗi: " + JSON.stringify(res.data));
+            if (this.so_nguoi_lon === 0 && this.so_tre_em === 0) {
+                toaster.warning("Vui lòng chọn số lượng hành khách!");
+                return;
             }
-        })
-        .catch((error) => {
-            console.error("Chi tiết lỗi:", error.response?.data); 
-            toaster.error("Lỗi khi kết nối với cổng thanh toán!");
-        });
-    },
+
+            if (!this.is_login) {
+                toaster.error("Bạn cần đăng nhập trước khi thanh toán!");
+                this.$router.push('/client/dang-nhap');
+                return;
+            }
+
+            const payload = {
+                id: this.tour[0].id_tour, 
+                tong_tien: this.tong_tien
+            };
+
+            axios.post("http://127.0.0.1:8000/api/momo/atm-payment", payload, {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+            })
+            .then((res) => {
+                console.log("RESPONSE MOMO:", res.data);
+
+                if (res.data.status && res.data.payUrl) {
+                    window.location.href = res.data.payUrl;
+                } else {
+                    toaster.error("MoMo lỗi: " + JSON.stringify(res.data));
+                }
+            })
+            .catch((error) => {
+                console.error("Chi tiết lỗi:", error.response?.data); 
+                toaster.error("Lỗi khi kết nối với cổng thanh toán!");
+            });
+        },
+        apMaKhuyenMai() {
+            const payload = {
+                code: this.ma_khuyen_mai,
+                tong_tien: this.tong_tien_tam_tinh
+            };
+
+            baseRequest
+                .post('client/check-coupon', payload)
+                .then((res) => {
+                    if (res.data.status) {
+                        this.is_applied = true;
+                        this.so_tien_giam = res.data.so_tien_giam;
+                        this.thong_bao_km = res.data.message;
+                        toaster.success("Bạn được giảm " + this.formatToVND(this.so_tien_giam));
+                    } else {
+                        this.is_applied = false;
+                        this.so_tien_giam = 0;
+                        this.thong_bao_km = res.data.message;
+                    }
+                });
+        },
         kiemTraDangNhap() {
             axios
                 .get("http://127.0.0.1:8000/api/account-client/kiem-tra-token-client", {
@@ -895,7 +959,7 @@ export default {
     overflow: hidden;
 }
 .booking-header {
-    background: #0d7a5f;
+    background: #0aa857;
 }
 .tour-id-tag {
     font-size: 11px;
@@ -1116,5 +1180,16 @@ export default {
     border-radius: 8px;
     border: 1px solid #e5e7eb;
     font-size: 12px;
+}
+.font-11 { font-size: 11px; }
+.font-12 { font-size: 12px; }
+.font-13 { font-size: 13px; }
+.font-14 { font-size: 14px; }
+.btn-momo-filled {
+    background-color: #a50064;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
 }
 </style>

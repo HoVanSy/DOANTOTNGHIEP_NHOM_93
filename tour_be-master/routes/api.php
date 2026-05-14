@@ -21,6 +21,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ThongKeController;
 use App\Http\Controllers\MomoController;
 use App\Http\Controllers\LichTrinhTourController;
+use App\Http\Controllers\KhuyenMaiController;
 
 Route::post('/momo/atm-payment', [MomoController::class, 'atmPayment']);
 Route::post('/client/momo/ipn', [MomoController::class, 'ipnHandler']);
@@ -32,6 +33,16 @@ Route::get('/blog/chi-tiet/{id}', [BlogController::class, 'getChiTietBlog']);
 
 Route::post('/client/yeu-cau-huy/tao', [YeuCauHuyController::class, 'createYeuCau']);
 Route::get('/client/yeu-cau-huy/lay-danh-sach', [YeuCauHuyController::class, 'getYeuCauClient']);
+
+Route::post('/client/check-coupon', [KhuyenMaiController::class, 'checkCoupon']);
+
+Route::group(['prefix' => 'admin/khuyen-mai'], function () {
+    Route::get('/data', [KhuyenMaiController::class, 'getData']);
+    Route::post('/create', [KhuyenMaiController::class, 'createKhuyenMai']);
+    Route::post('/update', [KhuyenMaiController::class, 'updateKhuyenMai']);
+    Route::post('/delete', [KhuyenMaiController::class, 'deleteKhuyenMai']);
+    Route::post('/status', [KhuyenMaiController::class, 'doiTrangThai']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

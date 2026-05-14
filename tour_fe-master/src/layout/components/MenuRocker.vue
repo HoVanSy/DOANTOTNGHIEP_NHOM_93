@@ -92,6 +92,12 @@
                     </router-link>
                 </li>
                 
+                <li class="nav-item">
+                    <router-link to="/admin/khuyenmai" class="nav-link">
+                        <div class="parent-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+                        <div class="menu-title">Khuyến Mãi</div>
+                    </router-link>
+                </li>
             </ul>
         </nav>
     </div>
