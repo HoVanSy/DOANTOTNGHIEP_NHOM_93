@@ -24,4 +24,9 @@ class Tour extends Model
         'id_nhan_vien',
         'link_anh',
     ];
+    public function lichTrinhTours()
+    {
+        // hasMany(Tên_Model_Đích, 'tên_cột_khóa_ngoại', 'tên_cột_khóa_chính')
+        return $this->hasMany(LichTrinhTour::class, 'id_tour', 'id');
+    }
 }

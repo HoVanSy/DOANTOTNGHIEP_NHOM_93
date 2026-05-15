@@ -25,6 +25,6 @@ class LichTrinhTour extends Model
     
     public function tour()
     {
-        return $this->belongsTo(Tour::class, 'id_tour');
+        return $this->belongsTo(Tour::class, 'id_tour', 'id');
     }
 }

@@ -12,7 +12,7 @@ class Tour extends Seeder
     {
         DB::table('tours')->delete();
 
-        DB::table('tours')->truncate();
+        // DB::table('tours')->truncate();
 
         DB::table('tours')->insert([
             ['tieu_de' => 'Tour Quảng Nam - Đà Nẵng - Quảng Ngãi ', 'ngay_bat_dau' => '2000-04-13', 'ngay_ket_thuc' => '2000-04-22', 'mo_ta' => 'Tour du lịch Quảng Nam - Đà Nẵng - Quảng Ngãi là một hành trình thú vị qua các tỉnh miền Trung Việt Nam, mang đến cho du khách cảnh quan thiên nhiên đa dạng, di sản văn hóa lịch sử phong phú và những trải nghiệm ẩm thực đặc sắc.', 'gia_nguoi_lon' => '9050000', 'gia_tre_em' => '500000', 'link_anh' => 'https://images2.thanhnien.vn/528068263637045248/2023/4/4/hoi-an-1680591517857660432696.jpg'],

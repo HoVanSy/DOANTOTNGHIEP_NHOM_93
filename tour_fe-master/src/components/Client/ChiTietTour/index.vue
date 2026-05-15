@@ -125,39 +125,6 @@
                         </div>
                     </div>
 
-                    <!-- Chuyến bay -->
-                    <div class="info-card rounded-4 p-4 mb-4">
-                        <h5 class="info-label mb-4">Thông Tin Chuyến Bay</h5>
-                        <div class="row g-4">
-                            <div class="col-md-6 border-end-custom">
-                                <div class="flight-badge-go mb-3">Chiều đi - {{ formatDate(tour[0].ngay_bat_dau) }}</div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="fs-4 fw-bold text-dark">08:20</span>
-                                    <div class="flight-line flex-grow-1 mx-3">
-                                        <i class="fas fa-plane"></i>
-                                    </div>
-                                    <span class="fs-4 fw-bold text-dark">09:20</span>
-                                </div>
-                                <div class="text-muted font-14">
-                                    <span>VN8077 • Tập trung: 07:00 AM</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 ps-md-4">
-                                <div class="flight-badge-back mb-3">Chiều về - {{ formatDate(tour[0].ngay_ket_thuc) }}</div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="fs-4 fw-bold text-dark">11:25</span>
-                                    <div class="flight-line flex-grow-1 mx-3">
-                                        <i class="fas fa-plane text-success"></i>
-                                    </div>
-                                    <span class="fs-4 fw-bold text-dark">12:35</span>
-                                </div>
-                                <div class="text-muted font-14">
-                                    <span>VN8066 • Bay thẳng</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Mô tả -->
                     <div class="info-card rounded-4 p-4">
                         <h5 class="info-label mb-3">Giới Thiệu Hành Trình</h5>
