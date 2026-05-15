@@ -268,6 +268,86 @@
                 </div>
             </div>
 
+            <!-- ── ĐÁNH GIÁ ── -->
+            <div class="tour-reviews-section mt-5">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-3">
+                        <h5 class="fw-bold text-dark mb-0">
+                            <i class="fa-solid fa-star text-warning me-2"></i>Đánh Giá Từ Khách Hàng
+                        </h5>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            
+                            <div class="col-lg-5 border-end-lg pe-lg-4">
+                                <div class="rating-summary text-center bg-light rounded-4 p-4 mb-4">
+                                    <h1 class="display-3 fw-bold text-dark mb-0">{{ trung_binh_sao }}</h1>
+                                    <div class="text-warning font-18 mb-2">
+                                        <i v-for="n in 5" :key="n" class="fa-star" :class="n <= Math.round(trung_binh_sao) ? 'fa-solid' : 'fa-regular'"></i>
+                                    </div>
+                                    <p class="text-muted mb-0">Dựa trên {{ list_danh_gia.length }} lượt đánh giá</p>
+                                </div>
+
+                                <div class="review-form">
+                                    <h6 class="fw-bold mb-3">Gửi đánh giá của bạn</h6>
+                                    <form @submit.prevent="guiDanhGia">
+                                        <div class="mb-3 d-flex align-items-center">
+                                            <span class="text-muted me-3 font-14">Bạn chấm mấy sao?</span>
+                                            <div class="star-rating-input" @mouseleave="hover_sao = 0">
+                                                <i v-for="n in 5" :key="n" 
+                                                class="fa-star font-18 cursor-pointer" 
+                                                :class="n <= (hover_sao || form_danh_gia.so_sao) ? 'fa-solid text-warning' : 'fa-regular text-muted'"
+                                                @mouseover="hover_sao = n"
+                                                @click="form_danh_gia.so_sao = n">
+                                                </i>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <textarea v-model="form_danh_gia.noi_dung" class="form-control custom-input" rows="4" placeholder="Chia sẻ trải nghiệm của bạn về tour này nhé..." required></textarea>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary-dark w-100 rounded-pill fw-bold" :disabled="form_danh_gia.so_sao === 0 || is_submitting">
+                                            <i class="fa-solid fa-paper-plane me-2"></i>{{ is_submitting ? 'ĐANG GỬI...' : 'GỬI ĐÁNH GIÁ' }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7 ps-lg-4">
+                                <div class="review-list pe-2" style="max-height: 500px; overflow-y: auto;">
+                                    
+                                    <div v-if="list_danh_gia.length === 0" class="text-center py-5 text-muted">
+                                        <i class="fa-regular fa-comment-dots fa-3x mb-3 opacity-25"></i>
+                                        <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá tour này!</p>
+                                    </div>
+
+                                    <div v-for="(v, k) in list_danh_gia" :key="k" class="review-item mb-4 pb-4 border-bottom">
+                                        <div class="d-flex align-items-start">
+                                            <div class="avatar-circle me-3 bg-light-success text-primary-dark fw-bold">
+                                                {{ v.ten_khach_hang.charAt(0).toUpperCase() }}
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <h6 class="mb-0 fw-bold text-dark">{{ v.ten_khach_hang }}</h6>
+                                                    <small class="text-muted font-12">{{ formatDate(v.created_at) }}</small>
+                                                </div>
+                                                <div class="text-warning font-12 mb-2">
+                                                    <i v-for="n in 5" :key="n" class="fa-star" :class="n <= v.so_sao ? 'fa-solid' : 'fa-regular'"></i>
+                                                </div>
+                                                <p class="text-secondary font-14 mb-0" style="white-space: pre-line;">{{ v.noi_dung }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ── TOUR LIÊN QUAN ── -->
             <div class="mt-5 pt-5 border-top">
                 <div class="section-header text-center mb-5">
@@ -330,6 +410,17 @@ export default {
             so_tien_giam: 0,
             is_applied: false,
             thong_bao_km: '',
+
+            id_tour: this.$route.params.id || window.location.href.split('/').pop(),
+            list_danh_gia: [],
+            trung_binh_sao: 0,
+            hover_sao: 0,
+            is_submitting: false,
+            form_danh_gia: {
+                so_sao: 0,
+                noi_dung: ''
+            },
+            user_login: {}
         }
     },
     computed: {
@@ -348,6 +439,7 @@ export default {
         this.loadDataTour();
         this.kiemTraDangNhap();
         this.checkLogin();
+        this.loadDanhGia();
     },
     watch: {
         lich_trinh: {
@@ -366,6 +458,64 @@ export default {
         so_tre_em() { this.resetCoupon(); }
     },
     methods: {
+        loadDanhGia() {
+            baseRequest.get('danh-gia/lay-du-lieu/' + this.id_tour)
+                .then((res) => {
+                    if (res.data.status) {
+                        this.list_danh_gia = res.data.list;
+                        this.trung_binh_sao = res.data.avg;
+                    }
+                })
+                .catch((err) => {
+                    console.error("Lỗi lấy đánh giá:", err);
+                });
+        },
+
+        guiDanhGia() {
+            if (!this.is_login) {
+                toaster.error("Bạn cần đăng nhập để gửi đánh giá!");
+                this.$router.push('/client/dang-nhap');
+                return;
+            }
+
+            if (this.form_danh_gia.so_sao === 0) {
+                toaster.warning("Vui lòng chạm để chọn số sao đánh giá!");
+                return;
+            }
+
+            this.is_submitting = true;
+
+            const payload = {
+                so_sao: this.form_danh_gia.so_sao,
+                noi_dung: this.form_danh_gia.noi_dung,
+                id_tour: this.id_tour,
+            };
+
+            axios.post("http://127.0.0.1:8000/api/danh-gia/them-moi", payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_client")
+                }
+            })
+            .then((res) => {
+                if (res.data.status) {
+                    toaster.success(res.data.message);
+                    // Xóa rỗng form sau khi gửi
+                    this.form_danh_gia = { so_sao: 0, noi_dung: '' }; 
+                    this.hover_sao = 0;
+                    this.loadDanhGia(); 
+                } else {
+                    toaster.error(res.data.message);
+                }
+            })
+            .catch((err) => {
+                console.error("Lỗi gửi đánh giá:", err.response?.data);
+                toaster.error("Có lỗi xảy ra hoặc dữ liệu gửi đi không hợp lệ!");
+            })
+            .finally(() => {
+                this.is_submitting = false;
+            });
+        },
+
         resetCoupon() {
             this.is_applied = false;
             this.so_tien_giam = 0;
@@ -1196,4 +1346,74 @@ export default {
     border-radius: 8px;
     font-weight: 600;
 }
+/* Đánh giá */
+.text-primary-dark { color: #0d7a5f !important; }
+.bg-light-success { background-color: #e6f5f0 !important; }
+
+.btn-primary-dark {
+    background-color: #0d7a5f;
+    color: #fff;
+    border: none;
+    transition: all 0.2s ease;
+}
+.btn-primary-dark:hover:not(:disabled) {
+    background-color: #085544;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(13, 122, 95, 0.2);
+}
+.btn-primary-dark:disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+}
+
+/* ── FORM INPUT & NGÔI SAO ── */
+.custom-input {
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    padding: 12px 14px;
+    font-size: 14px;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+.custom-input:focus {
+    background-color: #fff;
+    border-color: #0d7a5f;
+    box-shadow: 0 0 0 3px rgba(13, 122, 95, 0.1);
+}
+
+.cursor-pointer { cursor: pointer; }
+.star-rating-input i {
+    transition: transform 0.1s ease;
+    margin-right: 4px;
+}
+.star-rating-input i:hover {
+    transform: scale(1.2);
+}
+
+/* ── AVATAR ẢO ── */
+.avatar-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* ── TIỆN ÍCH CHUNG ── */
+.font-12 { font-size: 12px; }
+.font-14 { font-size: 14px; }
+.font-18 { font-size: 18px; }
+
+@media (min-width: 992px) {
+    .border-end-lg {
+        border-right: 1px solid #f0ede8 !important;
+    }
+}
+
+/* Thanh cuộn cho danh sách đánh giá */
+.review-list::-webkit-scrollbar { width: 5px; }
+.review-list::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
 </style>

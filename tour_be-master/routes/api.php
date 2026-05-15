@@ -22,6 +22,10 @@ use App\Http\Controllers\ThongKeController;
 use App\Http\Controllers\MomoController;
 use App\Http\Controllers\LichTrinhTourController;
 use App\Http\Controllers\KhuyenMaiController;
+use App\Http\Controllers\DanhGiaController;
+
+Route::get('danh-gia/lay-du-lieu/{id_tour}', [DanhGiaController::class, 'getDanhGia']);
+Route::post('danh-gia/them-moi', [DanhGiaController::class, 'store']);
 
 Route::post('/momo/atm-payment', [MomoController::class, 'atmPayment']);
 Route::post('/client/momo/ipn', [MomoController::class, 'ipnHandler']);

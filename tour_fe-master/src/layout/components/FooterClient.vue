@@ -36,7 +36,7 @@
                             VivuTour tự hào là đơn vị lữ hành hàng đầu, mang đến những trải nghiệm khám phá trọn vẹn, an toàn và tiết kiệm nhất cho mọi du khách.
                         </p>
                         <div class="d-flex gap-2 mt-4 social-group">
-                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.facebook.com/vansi.hoo" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
                             <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
                             <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
@@ -129,7 +129,7 @@ export default {
 
 .footer-wrapper {
     font-family: 'Be Vietnam Pro', sans-serif;
-    background-color: #fafbfc; /* Màu xám cực nhạt để tách biệt với body */
+    background-color: #fafbfc; 
 }
 
 /* ── TYPOGRAPHY & COLORS ── */
@@ -186,7 +186,7 @@ export default {
     align-items: center;
 }
 .footer-links a::before {
-    content: '\f105'; /* Icon FontAwesome mũi tên */
+    content: '\f105';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     font-size: 10px;
@@ -196,7 +196,7 @@ export default {
 }
 .footer-links a:hover {
     color: #0d7a5f;
-    transform: translateX(5px); /* Trượt nhẹ */
+    transform: translateX(5px);
 }
 .footer-links a:hover::before {
     color: #0d7a5f;
@@ -223,7 +223,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px; /* Đổi sang vuông bo góc thay vì tròn hẳn cho hiện đại */
+    border-radius: 8px; 
     background-color: #ffffff;
     border: 1px solid #e5e7eb;
     color: #4b5563;
@@ -251,7 +251,7 @@ export default {
     cursor: pointer;
 }
 .payment-methods i:hover {
-    color: #0d7a5f; /* Hover lên màu xanh lá */
+    color: #0d7a5f; 
 }
 .momo-icon {
     height: 24px;

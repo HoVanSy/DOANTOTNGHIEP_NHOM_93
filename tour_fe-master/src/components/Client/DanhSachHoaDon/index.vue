@@ -192,19 +192,6 @@ export default {
             return `${day}/${month}/${year}`; 
         },
 
-        xacNhanHoaDon(v) {
-            baseRequest
-                .post("client/gio-hang/xac-nhan-hoa-don", v)
-                .then((res) => {
-                    if (res.data.status == true) {
-                        toaster.success(res.data.message);
-                        this.loadDataDanhSachHoaDon();
-                    } else {
-                        toaster.error(res.data.message);
-                    }
-                });
-        },
-
         huyHoaDon(v) {
             baseRequest
                 .post("client/gio-hang/huy-hoa-don-client", v)
