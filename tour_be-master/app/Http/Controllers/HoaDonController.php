@@ -312,4 +312,38 @@ class HoaDonController extends Controller
             'status' => true
         ]);
     }
+
+    public function taoHoaDonMoMo(Request $request)
+    {
+        $khach_hang = Auth::guard('sanctum')->user();
+
+        if ($request->so_luong_nguoi_lon <= 0 && $request->so_luong_tre_em <= 0) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Số lượng người lớn hoặc trẻ em phải lớn hơn 0!',
+            ]);
+        }
+
+        $hd = HoaDon::create([
+            'ma_hoa_don'         => Str::uuid(),
+            'id_khach_hang'      => $khach_hang->id,
+            'tong_tien'          => $request->tong_tien,
+            'so_luong_nguoi_lon' => $request->so_luong_nguoi_lon,
+            'so_luong_tre_em'    => $request->so_luong_tre_em,
+            'tinh_trang'         => 0 
+        ]);
+
+        ChiTietHoaDon::create([
+            'id_hoa_don' => $hd->id,
+            'id_tour'    => $request->id_tour,
+            'thanh_tien' => $request->tong_tien,
+            'tinh_trang' => 0
+        ]);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Đang chuyển hướng sang MoMo...',
+            'hoa_don' => $hd 
+        ]);
+    }
 }

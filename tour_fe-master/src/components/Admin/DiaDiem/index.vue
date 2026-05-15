@@ -29,8 +29,8 @@
                                     </select>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <label class="form-label-custom">Giá Tiền</label>
-                                    <input v-model="create_dia_diem.gia_tien" type="number" class="form-control custom-input" placeholder="VNĐ" required>
+                                    <!-- <label class="form-label-custom">Giá Tiền</label> -->
+                                    <!-- <input v-model="create_dia_diem.gia_tien" type="number" class="form-control custom-input" placeholder="VNĐ" required> -->
                                 </div>
                             </div>
                             <div class="row">
@@ -128,7 +128,7 @@
                                             <span v-else-if="v.loai_dia_diem == 2" class="badge bg-primary mb-1">Nhà hàng</span>
                                             <span v-else-if="v.loai_dia_diem == 3" class="badge bg-warning text-dark mb-1">Tham quan</span>
                                             <br>
-                                            <b class="text-danger font-13">{{ formatToVND(v.gia_tien) }}</b>
+                                            <!-- <b class="text-danger font-13">{{ formatToVND(v.gia_tien) }}</b> -->
                                         </td>
                                         <td>
                                             <div class="font-13 fw-semibold text-secondary mb-1">
@@ -194,10 +194,10 @@
                                     <option value="3">Địa điểm tham quan</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <!-- <div class="col-md-6 mb-3">
                                 <label class="form-label-custom">Giá Tiền</label>
                                 <input v-model="update_dia_diem.gia_tien" type="number" class="form-control custom-input">
-                            </div>
+                            </div> -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label-custom">Tỉnh thành</label>
                                 <select v-model="update_dia_diem.id_tinh_thanh" @change="locQuanHuyen_update()" class="form-select custom-input">
@@ -269,7 +269,7 @@ export default {
             list_tinh_thanh: [],
             list_dia_diem: [],
             key_search: {},
-            create_dia_diem: { tinh_trang: 1, loai_dia_diem: 1, id_tinh_thanh: '', id_quan_huyen: '' },
+            create_dia_diem: { tinh_trang: 1, loai_dia_diem: 1, id_tinh_thanh: '', id_quan_huyen: '', },
             delete_dia_diem: {}, // Đổi id_can_xoa thành object
             update_dia_diem: {},
             tinh_dang_chon: {},
@@ -285,7 +285,14 @@ export default {
     },
     methods: {
         formatToVND(number) {
-            return (parseInt(number) || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            if (number === null || number === undefined || number === '') {
+                return '0 ₫';
+            }
+            const parsedNumber = Number(number); 
+            if (isNaN(parsedNumber)) {
+                return '0 ₫';
+            }
+            return parsedNumber.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
         locQuanHuyen() {
             this.loc_tinh = this.list_quan_huyen.filter(v => v.id_tinh_thanh === this.create_dia_diem.id_tinh_thanh);

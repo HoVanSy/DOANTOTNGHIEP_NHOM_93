@@ -16,13 +16,6 @@ class MomoController extends Controller
             'id' => 'required',
             'tong_tien' => 'required|numeric|min:1',
         ]);
-        // $hoaDon = new HoaDon();
-
-        // $hoaDon->id_tour    = $request->id; 
-        // $hoaDon->tong_tien  = $request->tong_tien;
-        // $hoaDon->tinh_trang = 0;
-        // $hoaDon->id_khach_hang = Auth::guard('khach_hang')->id(); 
-        // $hoaDon->save();
 
         $endpoint = 'https://test-payment.momo.vn/v2/gateway/api/create';
 
@@ -34,11 +27,9 @@ class MomoController extends Controller
 
         $orderInfo   = "Thanh toan qua MoMo";
         $amount      = (int)$request->tong_tien;
-        // $amount      = 700000;
         $orderIdRaw  = preg_replace('/[^0-9A-Za-z]/', '', $request->id);
         $orderId     = $orderIdRaw ? $orderIdRaw . '-' . time() : 'order' . time();
         $orderId     = preg_replace('/[^0-9A-Za-z\-_.:]/', '', $orderId);
-        // $orderId = $hoaDon->id . '-' . time();
         
         if (empty($orderId)) {
             $orderId = 'order' . time();

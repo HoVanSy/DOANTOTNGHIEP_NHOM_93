@@ -1,6 +1,5 @@
 <template>
     <div class="container py-4 min-vh-100 invoice-page">
-        <!-- ── SECTION HEADER ── -->
         <div class="section-header mb-4">
             <span class="section-tag">Lịch sử giao dịch</span>
             <h2 class="section-title">Danh Sách Hóa Đơn</h2>
@@ -52,15 +51,13 @@
                                 
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
-                                        <!-- Nút In Hóa Đơn -->
                                         <a title="In hóa đơn" v-if="v.tinh_trang == 1"
                                             v-bind:href="'/client/hoa-don/' + v.id" class="btn-action action-print">
                                             <i class="fa-solid fa-print"></i>
                                         </a>
                                         
-                                        <!-- Nút Thanh Toán và Hủy -->
                                         <template v-else-if="v.tinh_trang == 0">
-                                            <a type="button" title="Thanh Toán MoMo" @click="thanhToanATM(v)" class="btn-action action-pay">
+                                            <a type="button" title="Thanh Toán MoMo" @click="moFormXacNhan(v)" class="btn-action action-pay">
                                                 <img src="https://homepage.momocdn.net/fileuploads/svg/momo-file-240411162904.svg" width="16" alt="MOMO">
                                             </a>
 
@@ -70,7 +67,6 @@
                                             </a>
                                         </template>
                                         
-                                        <!-- Nút Đặt lại tour đã hủy -->
                                         <a v-bind:href="'/client/chi-tiet-tour/' + (v.chi_tiet_hoa_dons?.[0]?.id_tour || '')" type="button"
                                             title="Đặt lại tour này" v-else-if="v.tinh_trang == 2" class="btn-action action-reload">
                                             <i class="fa-solid fa-rotate-right"></i>
@@ -88,7 +84,6 @@
                     </table>
                 </div>
                 
-                <!-- Modal Hủy -->
                 <div class="modal fade" id="huyModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 rounded-4 shadow">
@@ -102,6 +97,52 @@
                                     <button type="button" class="btn btn-light px-4 rounded-pill fw-medium font-14" data-bs-dismiss="modal">Đóng</button>
                                     <button type="button" @click="huyHoaDon(huy_hoa_don)" data-bs-dismiss="modal" class="btn btn-danger px-4 rounded-pill fw-medium font-14">Xác Nhận Hủy</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalXacNhanThanhToan" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content rounded-4 border-0 shadow">
+                            <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+                                <h5 class="modal-title fw-bold text-dark">
+                                    <i class="fa-solid fa-address-card text-primary-dark me-2"></i>Xác nhận thông tin liên lạc
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            
+                            <div class="modal-body p-4">
+                                <div class="alert alert-info border-0 bg-light-success text-dark rounded-3 font-13 mb-4 d-flex align-items-center">
+                                    <i class="fa-solid fa-circle-check text-primary-dark fs-5 me-3"></i>
+                                    <div>Vui lòng kiểm tra lại thông tin liên lạc để chúng tôi có thể hỗ trợ và gửi vé điện tử cho bạn!</div>
+                                </div>
+
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label-custom font-13 mb-2">Họ và tên (*)</label>
+                                        <input v-model="form_lien_he.ho_ten" type="text" class="form-control custom-input py-2" placeholder="Ví dụ: Nguyễn Văn A">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-custom font-13 mb-2">Số điện thoại (*)</label>
+                                        <input v-model="form_lien_he.sdt" type="text" class="form-control custom-input py-2" placeholder="Ví dụ: 0901234567">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-custom font-13 mb-2">Email (*)</label>
+                                        <input v-model="form_lien_he.email" type="email" class="form-control custom-input py-2" placeholder="Ví dụ: email@example.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-custom font-13 mb-2">Địa chỉ hiện tại</label>
+                                        <input v-model="form_lien_he.dia_chi" type="text" class="form-control custom-input py-2" placeholder="Ví dụ: 123 Lê Lợi, TP.HCM">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal-footer border-top-0 pt-0 pb-4 px-4 d-flex justify-content-end">
+                                <button type="button" class="btn btn-light rounded-pill px-4 fw-medium" data-bs-dismiss="modal">Hủy bỏ</button>
+                                <button @click="tienHanhThanhToanMomo()" type="button" class="btn btn-primary-dark rounded-pill px-4 fw-bold">
+                                    Tiếp tục thanh toán <i class="fa-solid fa-arrow-right ms-2"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -124,11 +165,22 @@ export default {
         return {
             list_hoa_don: [],
             ct_hoa_don: [],
-            huy_hoa_don: {}
+            huy_hoa_don: {},
+
+            user_login: {},
+            hoa_don_dang_chon: null,
+            modal_xac_nhan: null,
+            form_lien_he: {
+                ho_ten: '',
+                sdt: '',
+                email: '',
+                dia_chi: ''
+            }
         }
     },
     mounted() {
         this.loadDataDanhSachHoaDon();
+        this.kiemTraDangNhap();
     },
     methods: {
         loadDataDanhSachHoaDon() {
@@ -149,6 +201,46 @@ export default {
                 .catch((err) => {
                     console.error("Lỗi API tải hóa đơn:", err);
                 });
+        },
+
+        kiemTraDangNhap() {
+            axios
+                .get("http://127.0.0.1:8000/api/account-client/kiem-tra-token-client", {
+                    headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.user_login = res.data.khach_hang || res.data.user;
+                    }
+                })
+                .catch(() => {});
+        },
+
+        moFormXacNhan(hoaDon) {
+            this.hoa_don_dang_chon = hoaDon;
+
+            this.form_lien_he = {
+                ho_ten: this.user_login?.ho_ten || localStorage.getItem('ho_ten_client') || '',
+                sdt: this.user_login?.so_dien_thoai || this.user_login?.sdt || '',
+                email: this.user_login?.email || '',
+                dia_chi: this.user_login?.dia_chi || ''
+            };
+
+            if (!this.modal_xac_nhan) {
+                this.modal_xac_nhan = new window.bootstrap.Modal(document.getElementById('modalXacNhanThanhToan'));
+            }
+            this.modal_xac_nhan.show();
+        },
+
+        tienHanhThanhToanMomo() {
+            if (!this.form_lien_he.ho_ten || !this.form_lien_he.sdt || !this.form_lien_he.email) {
+                toaster.warning("Vui lòng điền đầy đủ Họ tên, Số điện thoại và Email!");
+                return;
+            }
+
+            this.modal_xac_nhan.hide(); // Ẩn Modal đi
+            
+            this.thanhToanATM(this.hoa_don_dang_chon);
         },
 
         thanhToanATM(hoaDon) 
@@ -173,7 +265,7 @@ export default {
                 }
             })
             .catch((error) => {
-                console.error("Chi tiết lỗi:", error.response.data); 
+                console.error("Chi tiết lỗi:", error.response?.data); 
                 toaster.error("Dữ liệu gửi đi không hợp lệ (Lỗi 422)!");
             });
         },
@@ -213,7 +305,7 @@ export default {
 
 .invoice-page {
     font-family: 'Be Vietnam Pro', sans-serif;
-    background-color: #f8f7f4; /* Nền xám nhẹ giống các trang khác */
+    background-color: #f8f7f4; 
 }
 
 /* ── HEADER ── */
@@ -285,11 +377,8 @@ export default {
     align-items: center;
     white-space: nowrap;
 }
-/* Trạng thái Đã thanh toán: Màu xanh lá đậm giống theme */
 .status-paid { background: #e6f5f0; color: #0d7a5f; } 
-/* Trạng thái Chờ: Vàng cam đồng bộ */
 .status-unpaid { background: #fff8eb; color: #e8a020; } 
-/* Trạng thái Hủy: Đỏ nhạt */
 .status-cancel { background: #fee2e2; color: #dc3545; }
 
 /* ── Action Buttons ── */
@@ -317,4 +406,38 @@ export default {
 .action-reload { background: #f3f4f6; color: #6b7280; }
 .action-reload:hover { background: #4b5563; color: #fff; }
 
+/* ── Form Modal Styles ── */
+.bg-light-success { background-color: #e6f5f0 !important; }
+
+.btn-primary-dark {
+    background-color: #0d7a5f;
+    color: #fff;
+    border: none;
+    transition: all 0.2s ease;
+}
+.btn-primary-dark:hover {
+    background-color: #085544;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(13, 122, 95, 0.2);
+}
+
+.form-label-custom {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1f2e;
+}
+.custom-input {
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    padding: 12px 14px;
+    font-size: 14px;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+.custom-input:focus {
+    background-color: #fff;
+    border-color: #0d7a5f;
+    box-shadow: 0 0 0 3px rgba(13, 122, 95, 0.1);
+    outline: none;
+}
 </style>

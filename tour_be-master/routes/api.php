@@ -23,6 +23,12 @@ use App\Http\Controllers\MomoController;
 use App\Http\Controllers\LichTrinhTourController;
 use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\DanhGiaController;
+use App\Http\Controllers\AccountClientController;
+
+Route::prefix('account-client')->group(function () {
+    Route::post('/login', [AccountClientController::class, 'login']);
+    Route::middleware('auth:sanctum')->get('/kiem-tra-token-client', [AccountClientController::class, 'checkTokenClient']);
+});
 
 Route::get('danh-gia/lay-du-lieu/{id_tour}', [DanhGiaController::class, 'getDanhGia']);
 Route::post('danh-gia/them-moi', [DanhGiaController::class, 'store']);
@@ -31,6 +37,7 @@ Route::post('/momo/atm-payment', [MomoController::class, 'atmPayment']);
 Route::post('/client/momo/ipn', [MomoController::class, 'ipnHandler']);
 
 Route::get('/client/ket-qua-thanh-toan', [MomoController::class, 'ketQuaThanhToan']);
+Route::post('/hoa-don/tao-hoa-don-momo', [HoaDonController::class, 'taoHoaDonMoMo'])->middleware('auth:sanctum');
 
 Route::get('/blog/lay-du-lieu', [BlogController::class, 'getDataClient']);
 Route::get('/blog/chi-tiet/{id}', [BlogController::class, 'getChiTietBlog']);
@@ -210,6 +217,7 @@ Route::group(['prefix'  =>  '/client'], function () {
         Route::post('/xoa', [WishlistController::class, 'removeFromWishlist'])->middleware('auth:sanctum');
         Route::post('/kiem-tra', [WishlistController::class, 'checkWishlist'])->middleware('auth:sanctum');
     });
+    
 });
 
 Route::post('/chatbot/question', [ChatbotController::class, 'handleQuestion']);

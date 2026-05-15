@@ -82,9 +82,6 @@
                             <span class="text-muted font-13">
                                 <i class="fas fa-route me-1"></i>{{ lich_trinh.length }} điểm dừng
                             </span>
-                            <button @click="centerMap()" class="btn btn-sm btn-outline-primary rounded-pill">
-                                <i class="fas fa-crosshairs me-1"></i>Căn giữa bản đồ
-                            </button>
                         </div>
                     </div>
 
@@ -244,7 +241,7 @@
                                 </div>
 
                                 <div class="d-grid gap-2">
-                                    <button @click="thanhToanATM()" class="btn-momo-filled w-100 py-2 mb-1 font-14">
+                                    <button @click="moFormXacNhan()" class="btn-momo-filled w-100 py-2 mb-1 font-14">
                                         <img src="https://homepage.momocdn.net/fileuploads/svg/momo-file-240411162904.svg" width="20" alt="">
                                         Thanh toán MoMo
                                     </button>
@@ -383,6 +380,53 @@
             <p class="text-muted fw-medium">Đang tải hành trình tuyệt đẹp của bạn...</p>
         </div>
     </div>
+
+    <div class="modal fade" id="modalXacNhanThanhToan" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold text-dark">
+                        <i class="fa-solid fa-address-card text-primary-dark me-2"></i>Xác nhận thông tin liên lạc
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body p-4">
+                    <div class="alert alert-info border-0 bg-light-success text-dark rounded-3 font-13 mb-4 d-flex align-items-center">
+                        <i class="fa-solid fa-circle-check text-primary-dark fs-5 me-3"></i>
+                        <div>Vui lòng kiểm tra và cập nhật thông tin liên lạc chính xác để chúng tôi có thể hỗ trợ và gửi vé điện tử cho bạn!</div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label-custom font-13 mb-2">Họ và tên (*)</label>
+                            <input v-model="form_lien_he.ho_ten" type="text" class="form-control custom-input py-2" placeholder="Ví dụ: Nguyễn Văn A">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-custom font-13 mb-2">Số điện thoại (*)</label>
+                            <input v-model="form_lien_he.sdt" type="text" class="form-control custom-input py-2" placeholder="Ví dụ: 0901234567">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-custom font-13 mb-2">Email (*)</label>
+                            <input v-model="form_lien_he.email" type="email" class="form-control custom-input py-2" placeholder="Ví dụ: email@example.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-custom font-13 mb-2">Địa chỉ hiện tại</label>
+                            <input v-model="form_lien_he.dia_chi" type="text" class="form-control custom-input py-2" placeholder="Ví dụ: 123 Lê Lợi, TP.HCM">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer border-top-0 pt-0 pb-4 px-4 d-flex justify-content-end">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-medium" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button @click="tienHanhThanhToanMomo()" type="button" class="btn btn-primary-dark rounded-pill px-4 fw-bold">
+                        Tiếp tục thanh toán <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -406,6 +450,7 @@ export default {
             markers: [],
             routeLines: [],
             markerColors: ['#0d7a5f', '#e8a020', '#dc3545', '#6f42c1', '#17a2b8', '#28a745'],
+
             ma_khuyen_mai: '',
             so_tien_giam: 0,
             is_applied: false,
@@ -420,7 +465,15 @@ export default {
                 so_sao: 0,
                 noi_dung: ''
             },
-            user_login: {}
+            user_login: {},
+
+            modal_xac_nhan: null,
+            form_lien_he: {
+                ho_ten: '',
+                sdt: '',
+                email: '',
+                dia_chi: ''
+            }
         }
     },
     computed: {
@@ -438,7 +491,6 @@ export default {
         this.loadDataChiTietTour();
         this.loadDataTour();
         this.kiemTraDangNhap();
-        this.checkLogin();
         this.loadDanhGia();
     },
     watch: {
@@ -796,13 +848,8 @@ export default {
                 }).addTo(this.map);
             }
         },
-        centerMap() {
-            if (this.map) {
-                this.map.invalidateSize();
-            }
-        },
 
-        thanhToanATM() {
+        moFormXacNhan() {
             if (this.so_nguoi_lon === 0 && this.so_tre_em === 0) {
                 toaster.warning("Vui lòng chọn số lượng hành khách!");
                 return;
@@ -814,28 +861,66 @@ export default {
                 return;
             }
 
-            const payload = {
-                id: this.tour[0].id, 
-                tong_tien: this.tong_tien,
+            this.form_lien_he = {
+                ho_ten: this.user_login?.ho_ten || localStorage.getItem('ho_ten_client') || '',
+                sdt: this.user_login?.so_dien_thoai || this.user_login?.sdt || '',
+                email: this.user_login?.email || '',
+                dia_chi: this.user_login?.dia_chi || ''
             };
 
-            axios.post("http://127.0.0.1:8000/api/momo/atm-payment", payload, {
+            if (!this.modal_xac_nhan) {
+                this.modal_xac_nhan = new window.bootstrap.Modal(document.getElementById('modalXacNhanThanhToan'));
+            }
+            this.modal_xac_nhan.show();
+        },
+
+        tienHanhThanhToanMomo() {
+            if (!this.form_lien_he.ho_ten || !this.form_lien_he.sdt || !this.form_lien_he.email) {
+                toaster.warning("Vui lòng điền đầy đủ thông tin liên lạc!");
+                return;
+            }
+
+            const payload_tao_hoa_don = {
+                id: this.tour[0].id || this.tour[0].id_tour, 
+                tong_tien: this.tong_tien_phai_tra || this.tong_tien,
+                so_luong_nguoi_lon: this.so_nguoi_lon,
+                so_luong_tre_em: this.so_tre_em,
+                thong_tin_lien_he: this.form_lien_he
+            };
+
+            axios.post("http://127.0.0.1:8000/api/hoa-don/tao-hoa-don-momo", payload_tao_hoa_don, {
                 headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
             })
             .then((res) => {
-                console.log("RESPONSE MOMO:", res.data);
+                if (res.data.status) {
+                    this.modal_xac_nhan.hide();
+                    const payload_momo = {
+                        id: res.data.hoa_don.id,
+                        tong_tien: res.data.hoa_don.tong_tien
+                    };
 
-                if (res.data.status && res.data.payUrl) {
-                    window.location.href = res.data.payUrl;
+                    axios.post("http://127.0.0.1:8000/api/momo/atm-payment", payload_momo, {
+                        headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+                    })
+                    .then((resMomo) => {
+                        if (resMomo.data.status && resMomo.data.payUrl) {
+                            window.location.href = resMomo.data.payUrl;
+                        } else {
+                            toaster.error("MoMo lỗi: " + (resMomo.data.message || 'Không khởi tạo được thanh toán'));
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Lỗi gọi MoMo:", error.response?.data); 
+                        toaster.error("Không thể kết nối đến cổng thanh toán MoMo!");
+                    });
+
                 } else {
-                    toaster.error(
-                        "MoMo lỗi: " + JSON.stringify(res.data)
-                    );
+                    toaster.error(res.data.message);
                 }
             })
             .catch((error) => {
-                console.error("Chi tiết lỗi:", error.response.data); 
-                toaster.error("Dữ liệu gửi đi không hợp lệ (Lỗi 422)!");
+                console.error("Lỗi lập hóa đơn:", error.response?.data);
+                toaster.error("Có lỗi xảy ra khi tạo hóa đơn! Vui lòng thử lại.");
             });
         },
         apMaKhuyenMai() {
@@ -867,6 +952,8 @@ export default {
                     }
                 })
                 .then((res) => {
+                    this.ten_hien_thi = localStorage.getItem('ho_ten_client');
+                    this.user_login = res.data.khach_hang || res.data.user;
                     this.is_login = res.data.status;
                 });
         },
@@ -938,6 +1025,7 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.ten_hien_thi = localStorage.getItem('ho_ten_client');
+                        this.user_login = res.data.khach_hang || res.data.user;
                     }
                 });
         },
