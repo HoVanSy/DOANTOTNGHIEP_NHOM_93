@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\DanhGia;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\HoaDon;
 
 class DanhGiaController extends Controller
 {
@@ -50,6 +51,20 @@ class DanhGiaController extends Controller
         }
 
         $id_khach_hang = $token->tokenable_id;
+
+        //Kiểm tra khách hàng đã mua tour chưa
+        $da_mua_tour = HoaDon::join('chi_tiet_hoa_dons', 'hoa_dons.id', '=', 'chi_tiet_hoa_dons.id_hoa_don')
+                            ->where('chi_tiet_hoa_dons.id_tour', $request->id_tour) 
+                            ->where('hoa_dons.id_khach_hang', $id_khach_hang)      
+                            ->where('hoa_dons.tinh_trang', 1)
+                            ->exists();
+
+        if (!$da_mua_tour) {
+            return response()->json([
+                'status'  => false, 
+                'message' => 'Bạn chỉ có thể đánh giá sau khi đã đặt và thanh toán thành công tour này!'
+            ]);
+        }
 
         DanhGia::create([
             'id_tour'       => $request->id_tour,
