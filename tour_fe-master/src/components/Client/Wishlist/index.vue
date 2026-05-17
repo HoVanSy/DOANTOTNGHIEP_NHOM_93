@@ -1,12 +1,11 @@
 <template>
   <div class="wishlist-page py-4">
     <div class="container mt-3">
-      <!-- ── SECTION HEADER ── -->
-      <div class="section-header text-center mb-4">
-        <span class="section-tag">Bộ sưu tập của bạn</span>
-        <h2 class="section-title">Tour Yêu Thích</h2>
-        <div class="header-line mx-auto"></div>
-      </div>
+      <div class="section-header mb-4">
+            <span class="section-tag">Bộ sưu tập của bạn</span>
+            <h2 class="section-title">Tour Yêu Thích</h2>
+            <div class="header-line"></div>
+        </div>
 
       <!-- ── TRẠNG THÁI CHƯA ĐĂNG NHẬP ── -->
       <div v-if="!isLoggedIn" class="empty-state text-center py-5 rounded-4">
@@ -25,7 +24,7 @@
         </div>
         <h5 class="fw-bold text-dark">Danh sách đang trống</h5>
         <p class="text-muted small">Hãy dạo quanh một vòng và "thả tim" cho những chuyến đi bạn thích nhé!</p>
-        <router-link to="/danh-sach-tour" class="btn-primary-custom mt-2">Khám phá tour ngay</router-link>
+        <router-link to="/client/danh-sach-tour" class="btn-primary-custom mt-2">Khám phá tour ngay</router-link>
       </div>
 
       <!-- ── DANH SÁCH WISHLIST ── -->

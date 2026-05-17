@@ -25,6 +25,8 @@ use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\DanhGiaController;
 use App\Http\Controllers\AccountClientController;
 
+Route::get('/home/tin-tuc-moi-nhat', [BlogController::class, 'layTinTucMoiNhat']);
+
 Route::post('/account-client/gui-otp-dang-ky', [AccountClientController::class, 'guiOtpDangKy']);
 Route::post('/account-client/register', [AccountClientController::class, 'register']);
 

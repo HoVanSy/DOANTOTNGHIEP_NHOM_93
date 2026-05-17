@@ -88,4 +88,17 @@ class BlogController extends Controller
             'message' => 'Xóa blog thành công!'
         ]);
     }
+
+    public function layTinTucMoiNhat()
+    {
+        $data = Blog::where('tinh_trang', 1) 
+                    ->orderBy('id', 'desc') 
+                    ->take(4)
+                    ->get();
+
+        return response()->json([
+            'status' => true,
+            'data'   => $data
+        ]);
+    }
 }

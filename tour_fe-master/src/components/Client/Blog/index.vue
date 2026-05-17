@@ -1,12 +1,11 @@
 <template>
   <div class="blog-page py-4"> <!-- Giảm py-5 xuống py-4 -->
     <div class="container mt-3"> <!-- Giảm mt-4 xuống mt-3 -->
-      <!-- ── SECTION HEADER ── -->
-      <div class="section-header text-center mb-4"> <!-- Giảm mb-5 xuống mb-4 -->
-        <span class="section-tag">Cảm hứng du lịch</span>
-        <h2 class="section-title">Tin Tức & Blog Du Lịch</h2>
-        <div class="header-line mx-auto"></div>
-      </div>
+      <div class="section-header mb-4">
+            <span class="section-tag">Cảm hứng du lịch</span>
+            <h2 class="section-title">Tin Tức & Blog Du Lịch</h2>
+            <div class="header-line"></div>
+        </div>
       
       <!-- ── BLOG LIST ── -->
       <div class="row g-3"> 

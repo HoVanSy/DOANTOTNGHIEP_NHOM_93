@@ -4,14 +4,13 @@
       <div class="row justify-content-center">
         <div class="col-lg-7">
           <!-- ── SECTION HEADER ── -->
-          <div class="section-header text-center mb-4">
+          <div class="section-header mb-4">
             <span class="section-tag">Quản lý tài khoản</span>
             <h2 class="section-title">Hồ Sơ Cá Nhân</h2>
-            <div class="header-line mx-auto"></div>
           </div>
-
+          
           <!-- ── PROFILE CARD ── -->
-          <div class="profile-card rounded-4 shadow-sm border-0 bg-white overflow-hidden animate__animated animate__fadeIn">
+          <div class="profile-card shadow-sm border-0 bg-white overflow-hidden animate__animated animate__fadeIn">
             <div class="card-accent"></div>
             <div class="p-4 p-md-5">
               <form @submit.prevent="saveProfile">

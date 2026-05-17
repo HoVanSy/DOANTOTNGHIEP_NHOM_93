@@ -1,7 +1,5 @@
 <template>
     <div class="home-page">
-
-        <!-- ── CAROUSEL ── -->
         <div id="carouselExampleControls" class="carousel slide mb-0" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -41,7 +39,6 @@
 
         <div class="container main-container">
 
-            <!-- ── CTA BANNER ── -->
             <div class="row mb-5 mt-4">
                 <div class="col-12">
                     <div class="cta-banner rounded-4 p-5 text-center">
@@ -55,7 +52,6 @@
                 </div>
             </div>
 
-            <!-- ── ƯU ĐÃI HẤP DẪN ── -->
             <div class="mb-5">
                 <div class="section-header text-center mb-4">
                     <span class="section-tag">Dành riêng cho bạn</span>
@@ -89,7 +85,6 @@
                 </div>
             </div>
 
-            <!-- ── KHÁM PHÁ HÀNH TRÌNH ── -->
             <div class="mb-5">
                 <div class="section-header text-center mb-4">
                     <span class="section-tag">Phong cách du lịch</span>
@@ -143,7 +138,6 @@
                 </div>
             </div>
 
-            <!-- ── TOUR MỚI NHẤT ── -->
             <div class="mb-5">
                 <div class="d-flex justify-content-between align-items-end mb-4">
                     <div>
@@ -178,7 +172,41 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="mb-5">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <span class="text-uppercase font-12 fw-bold text-success-dark letter-spacing-1 d-block mb-1">Cập nhật xu hướng</span>
+                        <h3 class="fw-bold text-dark mb-0 section-heading">Tin Tức & Cẩm Nang Du Lịch</h3>
+                    </div>
+                    <router-link to="/blog" class="btn-view-all text-decoration-none fw-bold font-14">
+                        Xem tất cả bài viết <i class="fa-solid fa-arrow-right ms-1"></i>
+                    </router-link>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 col-lg-3" v-for="(blog, index) in list_tin_tuc" :key="index">
+                        <router-link to="/blog" class="card blog-home-card h-100 border-0 shadow-sm rounded-3 overflow-hidden text-decoration-none">
+                            <div class="card-img-wrapper position-relative">
+                                <img :src="blog.hinh_anh || 'https://via.placeholder.com/400x250'" class="card-img-top object-fit-cover w-100 h-100" alt="Blog Thumb">
+                                <span class="date-badge font-11">{{ formatDate(blog.created_at) }}</span>
+                            </div>
+                            <div class="card-body p-3 d-flex flex-column bg-white"> <div class="blog-meta font-12 text-muted mb-2">
+                                    <span><i class="fa-solid fa-user me-1"></i>{{ blog.tac_gia || 'Admin' }}</span>
+                                </div>
+                                <h6 class="card-title fw-bold text-dark text-line-2 mb-2 flex-grow-1 font-15">{{ blog.tieu_de }}</h6>
+                                <p class="card-text text-muted font-13 text-line-2 mb-0">{{ truncateText(blog.noi_dung, 70) }}</p>
+                            </div>
+                        </router-link>
+                    </div>
+                </div>
+
+                <div v-if="list_tin_tuc.length === 0" class="text-center py-4 text-muted font-14">
+                    Đang cập nhật các bài viết mới nhất...
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -186,6 +214,7 @@
 <script>
 import baseRequest from "../../../core/baseRequestClient";
 import { createToaster } from "@meforma/vue-toaster";
+import axios from 'axios';
 import slide1 from '../../../layout/imgaes/ld1.png';
 import slide2 from '../../../layout/imgaes/ld2.png';
 import slide3 from '../../../layout/imgaes/ld3.png';
@@ -206,12 +235,37 @@ export default {
             list_tour: [],
             list_tinh_thanh: [],
             tt_tim: {},
+            list_tin_tuc: [],
         }
     },
     mounted() {
         this.loadDataTour();
+        this.loadTinTucMoiNhat();
     },
     methods: {
+        loadTinTucMoiNhat() {
+            axios.get('http://127.0.0.1:8000/api/home/tin-tuc-moi-nhat')
+                .then((res) => {
+                    if (res.data.status) {
+                        this.list_tin_tuc = res.data.data;
+                    }
+                })
+                .catch((err) => {
+                    console.error("Lỗi tải tin tức trang chủ:", err); // Đã xóa chữ lạ "激" ở đây
+                });
+        },
+
+        truncateText(text, length) {
+            if (!text) return '';
+            const plainText = text.replace(/<[^>]*>?/gm, '');
+            return plainText.length > length ? plainText.substring(0, length) + '...' : plainText;
+        },
+
+        formatDate(date) {
+            if (!date) return '';
+            return new Date(date).toLocaleDateString('vi-VN');
+        },
+
         loadDataTour() {
             baseRequest
                 .get('tour/lay-du-lieu-client')
@@ -271,7 +325,7 @@ export default {
     border-radius: 50px;
     margin-bottom: 12px;
 }
-.caption-title {
+.carousel-caption-custom h2 {
     font-size: 42px;
     font-weight: 700;
     color: #fff;
@@ -533,4 +587,80 @@ export default {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* ── LATEST BLOG ── */
+.text-success-dark {
+    color: #0d7a5f;
+}
+.letter-spacing-1 {
+    letter-spacing: 1px;
+}
+.section-heading {
+    position: relative;
+    padding-bottom: 5px;
+}
+
+/* Hiệu ứng mượt cho Card */
+.blog-home-card {
+    transition: all 0.3s ease-in-out;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+.blog-home-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+.card-img-wrapper {
+    height: 180px;
+    overflow: hidden;
+}
+.card-img-wrapper img {
+    transition: transform 0.5s ease;
+}
+.blog-home-card:hover .card-img-wrapper img {
+    transform: scale(1.08);
+}
+
+/* Badge hiển thị ngày tháng đè lên ảnh */
+.date-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(2px);
+    color: #0d7a5f;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+/* Giới hạn text hiển thị đúng 2 dòng không bị vỡ layout */
+.text-line-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Nút Xem tất cả bài viết */
+.btn-view-all {
+    color: #0d7a5f;
+    transition: color 0.2s;
+}
+.btn-view-all:hover {
+    color: #e8a020;
+}
+.btn-view-all:hover i {
+    transform: translateX(3px);
+    transition: transform 0.2s;
+}
+
+/* Định dạng kích thước chữ */
+.font-11 { font-size: 11px; }
+.font-12 { font-size: 12px; }
+.font-13 { font-size: 13px; }
+.font-14 { font-size: 14px; }
 </style>
