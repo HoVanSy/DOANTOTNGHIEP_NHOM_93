@@ -25,6 +25,9 @@ use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\DanhGiaController;
 use App\Http\Controllers\AccountClientController;
 
+Route::get('/auth/google/redirect', [AccountClientController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [AccountClientController::class, 'handleGoogleCallback']);
+
 Route::prefix('account-client')->group(function () {
     Route::post('/login', [AccountClientController::class, 'login']);
     Route::middleware('auth:sanctum')->get('/kiem-tra-token-client', [AccountClientController::class, 'checkTokenClient']);

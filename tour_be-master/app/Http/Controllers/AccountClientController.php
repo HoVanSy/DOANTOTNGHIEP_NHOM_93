@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\KhachHang;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AccountClientController extends Controller
 {
@@ -51,5 +52,36 @@ class AccountClientController extends Controller
             'status'  => false,
             'message' => 'Token không hợp lệ hoặc đã hết hạn'
         ], 401);
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->stateless()->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            
+            $khachHang = KhachHang::updateOrCreate(
+                ['email' => $googleUser->email], 
+                [
+                    'ho_ten'    => $googleUser->name,
+                    'google_id' => $googleUser->id,
+                    // 'password'  => bcrypt(Str::random(16)) 
+                ]
+            );
+
+            $token = $khachHang->createToken('token_client')->plainTextToken;
+
+            $frontend_url = 'https://ability-winking-defendant.ngrok-free.dev/client/google-callback';
+            
+            return redirect()->to($frontend_url . '?token=' . $token . '&name=' . urlencode($khachHang->ho_ten));
+
+        } catch (\Exception $e) {
+            \Log::error('Google Login Error: ' . $e->getMessage());
+            return redirect()->to(' https://ability-winking-defendant.ngrok-free.dev/client/dang-nhap?error=google_failed');
+        }
     }
 }

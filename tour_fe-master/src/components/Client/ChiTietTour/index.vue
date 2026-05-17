@@ -848,7 +848,8 @@ export default {
             }
 
             const payload_tao_hoa_don = {
-                id: this.tour[0].id || this.tour[0].id_tour, 
+                id_tour: this.tour[0].id || this.tour[0].id_tour,
+                id: this.tour[0].id || this.tour[0].id_tour,
                 tong_tien: this.tong_tien_phai_tra || this.tong_tien,
                 so_luong_nguoi_lon: this.so_nguoi_lon,
                 so_luong_tre_em: this.so_tre_em,

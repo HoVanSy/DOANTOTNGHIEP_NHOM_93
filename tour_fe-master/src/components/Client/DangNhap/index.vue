@@ -1,13 +1,11 @@
 <template>
     <div class="login-wrapper min-vh-100 d-flex align-items-center justify-content-center">
-        <!-- Progress bar chạy ngang màn hình giả lập loading -->
         <div class="pace-custom"></div>
         
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-11 col-md-8 col-lg-5 col-xl-4">
                     
-                    <!-- Phần Logo -->
                     <div class="text-center mb-4 animate__animated animate__fadeInDown">
                         <router-link to="/" class="text-decoration-none">
                             <div class="brand-logo-custom">
@@ -20,7 +18,6 @@
                         </router-link>
                     </div>
 
-                    <!-- Khối Form Đăng Nhập -->
                     <div class="card login-card border-0 shadow-lg rounded-4 animate__animated animate__fadeInUp">
                         <div class="card-body p-4 p-md-5">
                             <div class="text-center mb-4">
@@ -29,7 +26,6 @@
                             </div>
 
                             <form @submit.prevent="dangNhap" class="row g-3">
-                                <!-- Email Input -->
                                 <div class="col-12">
                                     <label class="form-label-custom">Email đăng nhập</label>
                                     <div class="input-group-custom">
@@ -39,7 +35,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Password Input -->
                                 <div class="col-12">
                                     <label class="form-label-custom">Mật khẩu</label>
                                     <div class="input-group-custom">
@@ -49,7 +44,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Ghi nhớ & Quên MK -->
                                 <div class="col-12 d-flex justify-content-between align-items-center mt-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="rememberMe" checked>
@@ -62,7 +56,6 @@
                                     </router-link>
                                 </div>
 
-                                <!-- Button Đăng Nhập -->
                                 <div class="col-12 mt-4">
                                     <button type="submit" class="btn btn-login w-100 py-2 rounded-pill fw-bold shadow-sm">
                                         ĐĂNG NHẬP
@@ -71,13 +64,16 @@
                                 </div>
                             </form>
 
-                            <!-- Line chia -->
                             <div class="login-separator my-4">
-                                <span class="bg-white px-3 text-muted small">Hoặc</span>
+                                <span class="bg-white px-3 text-muted small fw-bold">Hoặc tiếp tục với</span>
                             </div>
 
-                            <!-- Footer Register -->
-                            <div class="text-center mt-3 font-14">
+                            <button @click="dangNhapGoogle" type="button" class="btn btn-google w-100 py-2 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" class="me-2 google-icon">
+                                Google
+                            </button>
+
+                            <div class="text-center mt-4 pt-2 font-14">
                                 <span class="text-muted">Bạn chưa có tài khoản?</span>
                                 <router-link to="/client/dang-ky" class="fw-bold ms-1 register-link">
                                     Đăng ký ngay
@@ -133,6 +129,13 @@ export default {
                     toaster.error('Có lỗi xảy ra, vui lòng thử lại sau.');
                 });
         },
+
+        dangNhapGoogle() {
+            // Chuyển hướng trình duyệt sang API của Backend (Laravel Socialite)
+            // Thay đường dẫn này bằng đúng route xử lý đăng nhập Google ở backend của bạn
+            window.location.href = 'http://127.0.0.1:8000/api/auth/google/redirect';
+        },
+
         checkToken() {
             const token = localStorage.getItem('token_client');
             if(!token) return;
@@ -266,6 +269,7 @@ export default {
     background-color: #fff;
     border-color: #0d7a5f;
     box-shadow: 0 0 0 4px rgba(13, 122, 95, 0.1);
+    outline: none;
 }
 
 /* ── Checkbox ── */
@@ -294,7 +298,7 @@ export default {
     color: #0d7a5f;
 }
 
-/* ── BUTTON ── */
+/* ── BUTTONS ── */
 .btn-login {
     background-color: #0d7a5f;
     color: #fff;
@@ -306,6 +310,25 @@ export default {
     background-color: #085544;
     transform: translateY(-2px);
     box-shadow: 0 8px 15px rgba(13, 122, 95, 0.2) !important;
+}
+
+/* CSS cho Nút Google */
+.btn-google {
+    background-color: #fff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+}
+.btn-google:hover {
+    background-color: #f8f9fa;
+    border-color: #d2e3fc;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15) !important;
+    transform: translateY(-1px);
+}
+.google-icon {
+    width: 20px;
+    height: 20px;
 }
 
 /* ── LINE SEPARATOR ── */

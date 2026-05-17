@@ -24,6 +24,7 @@ class KhachHang extends Authenticatable
         "hash_reset",
         "hash_active",
         "dia_chi",
-        "gioi_tinh"
+        "gioi_tinh",
+        "google_id",
     ];
 }

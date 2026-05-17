@@ -4,6 +4,11 @@ import checkLoginClient from "./checkLoginClient";
 
 const routes = [
     {
+        path: '/client/google-callback',
+        component: () => import('../components/Client/GoogleCallback.vue')
+    },
+
+    {
         path : '/',
         alias: '/client/trang-chu',
         component: ()=>import('../components/Client/TrangChu/index.vue'),  
