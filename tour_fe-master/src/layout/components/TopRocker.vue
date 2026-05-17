@@ -15,16 +15,52 @@
             </div>
 
             <div class="top-menu ms-auto d-flex align-items-center gap-3">
-                
                 <div class="d-none d-md-flex align-items-center gap-3 me-3">
-                    <a href="#" class="nav-icon position-relative text-muted">
-                        <i class="fa-regular fa-bell fs-5"></i>
-                        <span class="alert-badge bg-danger">7</span>
-                    </a>
-                    <a href="#" class="nav-icon position-relative text-muted">
-                        <i class="fa-regular fa-comment fs-5"></i>
-                        <span class="alert-badge bg-primary">8</span>
-                    </a>
+                    <div class="dropdown notification-dropdown">
+                        <a href="#" class="nav-icon position-relative text-muted" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-regular fa-bell fs-5"></i>
+                            <span v-if="so_luong_thong_bao > 0" class="alert-badge bg-danger animate__animated animate__heartBeat animate__infinite">{{ so_luong_thong_bao }}</span>
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-3" style="width: 340px; padding: 0; overflow: hidden;">
+                            <li class="bg-primary-dark text-white fw-bold px-4 py-3 d-flex justify-content-between align-items-center">
+                                <span><i class="fa-solid fa-bell me-2"></i>Thông báo mới</span>
+                                <span class="badge bg-white text-dark rounded-pill">{{ so_luong_thong_bao }}</span>
+                            </li>
+                            
+                            <div class="notification-list" style="max-height: 350px; overflow-y: auto;">
+                                <template v-if="so_luong_thong_bao > 0">
+                                    <li v-for="(tb, index) in list_thong_bao" :key="index" class="border-bottom">
+                                        <router-link to="/admin/yeucauhuy" class="dropdown-item py-3 px-4 notification-item text-wrap">
+                                            <div class="d-flex align-items-start">
+                                                <div class="icon-circle bg-light-danger text-danger me-3 flex-shrink-0 mt-1">
+                                                    <i class="fa-solid fa-rotate-left"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 font-13 fw-bold text-dark">Yêu cầu hủy Tour</h6>
+                                                    <p class="mb-1 font-12 text-muted" style="line-height: 1.4;">
+                                                        Khách hàng <b class="text-dark">{{ tb.khach_hang?.ho_ten || 'Không tên' }}</b> vừa gửi yêu cầu hủy hóa đơn <b class="text-danger">#{{ tb.id_hoa_don ? tb.id_hoa_don.toString().substring(0,8) : 'N/A' }}</b>
+                                                    </p>
+                                                    <small class="text-primary font-11"><i class="fa-regular fa-clock me-1"></i>{{ formatDate(tb.created_at) }}</small>
+                                                </div>
+                                            </div>
+                                        </router-link>
+                                    </li>
+                                </template>
+                                
+                                <li v-else class="text-center py-5 text-muted font-13">
+                                    <i class="fa-regular fa-bell-slash fa-3x mb-3 opacity-25 d-block"></i>
+                                    Không có thông báo nào cần xử lý.
+                                </li>
+                            </div>
+                            
+                            <li>
+                                <router-link to="/admin/yeu-cau-huy" class="dropdown-item text-center fw-bold py-3 bg-light border-top view-all-btn">
+                                    Xem tất cả yêu cầu <i class="fa-solid fa-arrow-right ms-1"></i>
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="vr d-none d-md-block text-muted"></div>
@@ -88,12 +124,49 @@ export default {
         return {
             ten_hien_thi: 'Chưa đăng nhập',
             is_check: false,
+            list_thong_bao: [],
+            so_luong_thong_bao: 0,
+            intervalId: null, // Biến lưu bộ đếm thời gian
         }
     },
     mounted() {
         this.checkLogin();
+        this.loadThongBao();
+        this.intervalId = setInterval(this.loadThongBao, 15000);
+    },
+    beforeUnmount() {
+        clearInterval(this.intervalId);
     },
     methods: {
+        loadThongBao() {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            axios.get("http://127.0.0.1:8000/api/admin/yeu-cau-huy/lay-du-lieu", {
+                headers: { Authorization: 'Bearer ' + token }
+            })
+            .then((res) => {
+                if (res.data.status) {
+                    const data = res.data.data || res.data.yeu_cau || [];
+                    
+                    const danhSachCho = data.filter(item => item.trang_thai == 0);
+                    
+                    this.list_thong_bao = danhSachCho;
+                    this.so_luong_thong_bao = danhSachCho.length;
+                }
+            })
+            .catch((err) => {
+                console.error("Lỗi tải thông báo:", err);
+            });
+        },
+        formatDate(date) {
+            if (!date) return ''; 
+            const d = new Date(date);
+            const time = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const day = String(d.getDate()).padStart(2, '0'); 
+            const month = String(d.getMonth() + 1).padStart(2, '0'); 
+            return `${time} - ${day}/${month}`; 
+        },
         dangXuat() {
             baseRequest
                 .get('account-admin/dang-xuat')
@@ -280,4 +353,54 @@ export default {
 }
 
 .font-12 { font-size: 12px; }
+
+.bg-primary-dark {
+    background-color: #0d7a5f !important;
+}
+.text-primary-dark {
+    color: #0d7a5f !important;
+}
+
+/* Biểu tượng chuông rung rinh khi có thông báo */
+.animate__heartBeat {
+    animation-duration: 1.5s;
+}
+
+/* Định dạng các mục thông báo */
+.notification-item {
+    transition: all 0.2s;
+    background-color: #fff;
+}
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.icon-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+.bg-light-danger { background-color: #fee2e2; }
+
+/* Custom Scrollbar cho danh sách thông báo */
+.notification-list::-webkit-scrollbar {
+    width: 5px;
+}
+.notification-list::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+.view-all-btn:hover {
+    background-color: #e6f5f0 !important;
+}
+
+/* Các tiện ích chữ */
+.font-11 { font-size: 11px; }
+.font-12 { font-size: 12px; }
+.font-13 { font-size: 13px; }
 </style>
