@@ -20,11 +20,10 @@ class KhachHang extends Authenticatable
         "password",
         "ngay_sinh",
         "tinh_trang",
-        "is_active",
-        "hash_reset",
-        "hash_active",
         "dia_chi",
         "gioi_tinh",
         "google_id",
+        "otp", 
+        "otp_expire",
     ];
 }

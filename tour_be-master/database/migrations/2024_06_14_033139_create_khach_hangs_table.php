@@ -23,10 +23,6 @@ return new class extends Migration
             $table->integer("gioi_tinh")->nullable();
 
             $table->integer("tinh_trang")->default(1);
-            $table->integer("is_active")->default(0);
-            $table->integer("hash_reset")->default(0)->nullable();
-            $table->integer("hash_active")->default(0)->nullable();
-
             $table->timestamps();
         });
     }

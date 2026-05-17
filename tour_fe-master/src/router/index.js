@@ -91,6 +91,13 @@ const routes = [
         meta: { layout: 'client' }
     },
 
+    {
+        path: '/client/quen-mat-khau',
+        name: 'QuenMatKhau',
+        component: () => import('../components/Client/QuenMatKhau/index.vue'),
+        meta : {layout : 'account'}
+    },
+
     //admin
     {
         path : '/admin/tinh-thanh',

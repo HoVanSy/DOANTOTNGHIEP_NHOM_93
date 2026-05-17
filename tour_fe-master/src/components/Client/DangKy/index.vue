@@ -1,13 +1,11 @@
 <template>
     <div class="login-wrapper min-vh-100 d-flex align-items-center justify-content-center py-5">
-        <!-- Progress bar chạy ngang màn hình giả lập loading -->
         <div class="pace-custom"></div>
         
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-11 col-md-10 col-lg-7 col-xl-6">
                     
-                    <!-- Phần Logo -->
                     <div class="text-center mb-4 animate__animated animate__fadeInDown">
                         <router-link to="/" class="text-decoration-none">
                             <div class="brand-logo-custom">
@@ -20,16 +18,16 @@
                         </router-link>
                     </div>
 
-                    <!-- Khối Form Đăng Ký -->
                     <div class="card login-card border-0 shadow-lg rounded-4 animate__animated animate__fadeInUp">
                         <div class="card-body p-4 p-md-5">
                             <div class="text-center mb-4">
                                 <h4 class="fw-bold text-dark mb-1">Tạo Tài Khoản</h4>
-                                <p class="text-muted small">Chào mừng bạn đến với VietTour - Bắt đầu hành trình ngay!</p>
+                                <p class="text-muted small">
+                                    {{ step === 1 ? 'Chào mừng bạn đến với VietTour - Bắt đầu hành trình ngay!' : 'Vui lòng xác thực email để hoàn tất đăng ký.' }}
+                                </p>
                             </div>
 
-                            <form @submit.prevent="dangKy" class="row g-3">
-                                <!-- Họ và tên -->
+                            <form v-if="step === 1" @submit.prevent="guiOtpDangKy" class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label-custom">Họ và tên</label>
                                     <div class="input-group-custom">
@@ -39,7 +37,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Email -->
                                 <div class="col-12">
                                     <label class="form-label-custom">Email</label>
                                     <div class="input-group-custom">
@@ -49,7 +46,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Số điện thoại -->
                                 <div class="col-md-6">
                                     <label class="form-label-custom">Số điện thoại</label>
                                     <div class="input-group-custom">
@@ -59,7 +55,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Giới tính -->
                                 <div class="col-md-6">
                                     <label class="form-label-custom">Giới tính</label>
                                     <div class="input-group-custom">
@@ -72,7 +67,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Ngày sinh -->
                                 <div class="col-md-6">
                                     <label class="form-label-custom">Ngày sinh</label>
                                     <div class="input-group-custom">
@@ -81,7 +75,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Mật khẩu -->
                                 <div class="col-md-6">
                                     <label class="form-label-custom">Mật khẩu</label>
                                     <div class="input-group-custom">
@@ -91,7 +84,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Địa chỉ / Tỉnh thành -->
                                 <div class="col-12">
                                     <label class="form-label-custom">Tỉnh / Thành phố</label>
                                     <div class="input-group-custom">
@@ -105,7 +97,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Checkbox Đồng ý điều khoản -->
                                 <div class="col-12 mt-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="termsCheck" required>
@@ -115,20 +106,45 @@
                                     </div>
                                 </div>
 
-                                <!-- Button Đăng Ký -->
                                 <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-login w-100 py-2 rounded-pill fw-bold shadow-sm">
-                                        <i class="fa-solid fa-user-plus me-2"></i>TẠO TÀI KHOẢN
+                                    <button type="submit" class="btn btn-login w-100 py-2 rounded-pill fw-bold shadow-sm" :disabled="isLoading">
+                                        <span v-if="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                        <i v-else class="fa-solid fa-envelope-circle-check me-2"></i>GỬI MÃ XÁC NHẬN
                                     </button>
                                 </div>
                             </form>
 
-                            <!-- Line chia -->
+                            <form v-if="step === 2" @submit.prevent="hoanTatDangKy" class="row g-3">
+                                <div class="col-12 text-center mb-3">
+                                    <div class="alert alert-success border-0 bg-light-success text-success font-13 mb-0 rounded-3">
+                                        <i class="fa-solid fa-paper-plane me-2"></i>Mã xác nhận đã được gửi đến <b>{{ dang_ky.email }}</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label-custom text-center w-100">Nhập mã OTP (6 chữ số)</label>
+                                    <input v-model="otp" type="text" class="form-control custom-input text-center fs-3 letter-spacing-5 py-3" 
+                                        maxlength="6" placeholder="------" required>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-login w-100 py-2 rounded-pill fw-bold shadow-sm" :disabled="isLoading">
+                                        <span v-if="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                        <i v-else class="fa-solid fa-user-check me-2"></i>HOÀN TẤT ĐĂNG KÝ
+                                    </button>
+                                </div>
+                                
+                                <div class="col-12 text-center mt-3">
+                                    <span @click="step = 1" class="text-primary font-13 cursor-pointer">
+                                        <i class="fa-solid fa-arrow-left me-1"></i> Quay lại chỉnh sửa thông tin
+                                    </span>
+                                </div>
+                            </form>
+
                             <div class="login-separator my-4">
                                 <span class="bg-white px-3 text-muted small">Hoặc</span>
                             </div>
 
-                            <!-- Footer Login -->
                             <div class="text-center mt-3 font-14">
                                 <span class="text-muted">Đã có tài khoản?</span>
                                 <router-link to="/client/dang-nhap" class="fw-bold ms-1 register-link">
@@ -153,6 +169,9 @@ import baseRequest from "../../../core/baseRequestClient";
 export default {
     data() {
         return {
+            step: 1, // 1: Điền form, 2: Nhập OTP
+            isLoading: false,
+            otp: '', // Biến lưu mã OTP khách nhập
             dang_ky: {
                 ho_ten: '',
                 email: '',
@@ -169,15 +188,18 @@ export default {
         this.loadDataTinhThanh();
     },
     methods: {
-        dangKy() {
+        // HÀM 1: Bấm nút Gửi OTP (Kiểm tra email trùng & Gửi mail)
+        guiOtpDangKy() {
+            this.isLoading = true;
+            // API NÀY BẠN CẦN VIẾT THÊM Ở BACKEND
             axios
-                .post('http://127.0.0.1:8000/api/account-client/register', this.dang_ky)
+                .post('http://127.0.0.1:8000/api/account-client/gui-otp-dang-ky', { email: this.dang_ky.email })
                 .then((res) => {
                     if (res.data.status) {
-                        toaster.success('Thông báo<br>' + res.data.message);
-                        this.$router.push('/client/dang-nhap');
+                        toaster.success('Mã xác nhận đã được gửi!');
+                        this.step = 2; // Chuyển sang màn hình nhập OTP
                     } else {
-                        toaster.error('Thông báo<br>' + res.data.message);
+                        toaster.error(res.data.message);
                     }
                 })
                 .catch((res) => {
@@ -187,8 +209,38 @@ export default {
                             toaster.error(v[1][0]);
                         });
                     } else {
-                        toaster.error("Có lỗi xảy ra trong quá trình đăng ký.");
+                        toaster.error("Không thể gửi mã xác nhận. Vui lòng thử lại.");
                     }
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        },
+
+        // HÀM 2: Gửi kèm data Đăng ký và OTP lên Backend để hoàn tất
+        hoanTatDangKy() {
+            this.isLoading = true;
+            // Gộp data form và otp lại thành 1 cục
+            const payload = {
+                ...this.dang_ky,
+                otp: this.otp
+            };
+
+            axios
+                .post('http://127.0.0.1:8000/api/account-client/register', payload)
+                .then((res) => {
+                    if (res.data.status) {
+                        toaster.success('Tuyệt vời! Đăng ký tài khoản thành công.');
+                        this.$router.push('/client/dang-nhap');
+                    } else {
+                        toaster.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    toaster.error("Mã xác nhận không đúng hoặc đã hết hạn.");
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
         },
 
@@ -205,6 +257,11 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+
+/* Mượn nguyên toàn bộ CSS cũ của bạn, tôi chỉ bổ sung thêm 3 class nhỏ cho đẹp màn OTP */
+.letter-spacing-5 { letter-spacing: 10px; font-weight: bold; }
+.cursor-pointer { cursor: pointer; }
+.bg-light-success { background-color: #e6f5f0; }
 
 .login-wrapper {
     font-family: 'Be Vietnam Pro', sans-serif;
@@ -300,7 +357,7 @@ export default {
 .custom-input {
     border-radius: 12px;
     border: 1px solid #e5e7eb;
-    padding: 10px 10px 10px 42px; /* Dịch text sang phải để nhường chỗ cho icon */
+    padding: 10px 10px 10px 42px;
     font-size: 13px;
     font-weight: 500;
     background-color: #f9fafb;

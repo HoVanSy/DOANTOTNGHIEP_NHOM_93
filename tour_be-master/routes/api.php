@@ -25,6 +25,13 @@ use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\DanhGiaController;
 use App\Http\Controllers\AccountClientController;
 
+Route::post('/account-client/gui-otp-dang-ky', [AccountClientController::class, 'guiOtpDangKy']);
+Route::post('/account-client/register', [AccountClientController::class, 'register']);
+
+Route::post('/account-client/gui-otp', [AccountClientController::class, 'guiOTP']);
+Route::post('/account-client/xac-thuc-otp', [AccountClientController::class, 'xacThucOTP']);
+Route::post('/account-client/tao-mat-khau-moi', [AccountClientController::class, 'taoMatKhauMoi']);
+
 Route::get('/auth/google/redirect', [AccountClientController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [AccountClientController::class, 'handleGoogleCallback']);
 

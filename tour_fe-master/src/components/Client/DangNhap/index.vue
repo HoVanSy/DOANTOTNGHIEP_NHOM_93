@@ -51,7 +51,7 @@
                                             Ghi nhớ đăng nhập
                                         </label>
                                     </div>
-                                    <router-link to="/quen-mat-khau" class="text-decoration-none font-13 fw-semibold forgot-link">
+                                    <router-link to="/client/quen-mat-khau" class="text-decoration-none font-13 fw-semibold forgot-link">
                                         Quên mật khẩu?
                                     </router-link>
                                 </div>
@@ -131,8 +131,6 @@ export default {
         },
 
         dangNhapGoogle() {
-            // Chuyển hướng trình duyệt sang API của Backend (Laravel Socialite)
-            // Thay đường dẫn này bằng đúng route xử lý đăng nhập Google ở backend của bạn
             window.location.href = 'http://127.0.0.1:8000/api/auth/google/redirect';
         },
 

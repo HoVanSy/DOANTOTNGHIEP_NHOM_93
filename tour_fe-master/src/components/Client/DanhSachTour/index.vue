@@ -37,11 +37,6 @@
                             </select>
                         </div>
 
-                        <div class="filter-group mb-4">
-                            <label class="form-label-custom">Ngày khởi hành</label>
-                            <input v-model="thong_tin.ngay_khoi_hanh" @change="searchTour()" type="date" class="form-control custom-input">
-                        </div>
-
                         <button @click="resetFilter()" class="btn-reset w-100">
                             <i class="fa-solid fa-rotate-left me-2"></i>Thiết lập lại
                         </button>
