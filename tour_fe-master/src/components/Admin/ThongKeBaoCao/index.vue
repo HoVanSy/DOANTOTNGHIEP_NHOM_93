@@ -5,7 +5,8 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-2 mb-2">
-            <div class="col">
+    
+            <router-link to="" class="col text-decoration-none">
                 <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
                     <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
                         <div>
@@ -18,9 +19,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </router-link>
             
-            <div class="col">
+            <router-link to="/admin/hoa-don" class="col text-decoration-none">
                 <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
                     <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
                         <div>
@@ -33,9 +34,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </router-link>
 
-            <div class="col">
+            <router-link to="/admin/khach-hang" class="col text-decoration-none">
                 <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
                     <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
                         <div>
@@ -48,9 +49,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </router-link>
 
-            <div class="col">
+            <router-link to="/admin/yeucauhuy" class="col text-decoration-none">
                 <div class="card summary-card radius-8 border-0 shadow-sm h-100 bg-white">
                     <div class="card-body p-2 px-3 d-flex align-items-center justify-content-between">
                         <div>
@@ -63,7 +64,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </router-link>
+
         </div>
 
         <div class="row g-2 chart-row flex-grow-1">

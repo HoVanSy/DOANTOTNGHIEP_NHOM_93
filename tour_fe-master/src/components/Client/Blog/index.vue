@@ -9,9 +9,9 @@
       </div>
       
       <!-- ── BLOG LIST ── -->
-      <div class="row g-3"> <!-- Giảm gap từ g-4 xuống g-3 -->
+      <div class="row g-3"> 
         <div class="col-md-6 col-lg-4" v-for="(blog, index) in list_blog" :key="index">
-          <div class="blog-card h-100 rounded-3 overflow-hidden border-0 shadow-sm"> <!-- Giảm rounded-4 xuống rounded-3 -->
+          <div class="blog-card h-100 rounded-3 overflow-hidden border-0 shadow-sm"> 
             <div class="blog-img-wrapper" @click="xemChiTiet(blog.id)">
               <img :src="blog.hinh_anh || 'https://via.placeholder.com/400x250'" class="blog-img" alt="Blog Thumb">
               <div class="blog-date-badge">
@@ -19,12 +19,12 @@
               </div>
             </div>
             
-            <div class="blog-body p-3"> <!-- Giảm p-4 xuống p-3 -->
-              <div class="blog-meta mb-1"> <!-- Giảm mb-2 xuống mb-1 -->
+            <div class="blog-body p-3">
+              <div class="blog-meta mb-1"> 
                 <span class="meta-item"><i class="fa-solid fa-user me-1"></i> {{ blog.tac_gia || 'Admin' }}</span>
               </div>
               <h5 class="blog-title fw-bold" @click="xemChiTiet(blog.id)">{{ blog.tieu_de }}</h5>
-              <p class="blog-desc text-muted mb-3">{{ truncateText(blog.noi_dung, 90) }}</p> <!-- Giảm mb-4 xuống mb-3 -->
+              <p class="blog-desc text-muted mb-3">{{ truncateText(blog.noi_dung, 90) }}</p>
               
               <button @click="xemChiTiet(blog.id)" class="read-more-btn">
                 Đọc hành trình <i class="fa-solid fa-arrow-right ms-2"></i>
@@ -35,7 +35,6 @@
       </div>
     </div>
 
-    <!-- ── MODAL CHI TIẾT BLOG (Giữ nguyên logic cũ) ── -->
     <div class="modal fade" id="blogModal" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 rounded-3 overflow-hidden shadow-lg">
