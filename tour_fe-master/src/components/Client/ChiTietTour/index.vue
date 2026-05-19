@@ -885,6 +885,13 @@ export default {
                 } else {
                     toaster.error(res.data.message);
                 }
+                // Ghi nhận hành vi xem tour
+                axios.post('http://127.0.0.1:8000/api/tour/ghi-nhan-hanh-vi', {
+                    id_tour: this.$route.params.id,
+                    loai_hanh_vi: 'book'
+                }, {
+                    headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+                }).catch(() => {});
             })
             .catch((error) => {
                 console.error("Lỗi lập hóa đơn:", error.response?.data);
@@ -940,6 +947,12 @@ export default {
                     } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                     }
+                    axios.post('http://127.0.0.1:8000/api/tour/ghi-nhan-hanh-vi', {
+                        id_tour: this.$route.params.id,
+                        loai_hanh_vi: 'view'
+                    }, {
+                        headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+                    }).catch(() => {});
                 });
         },
         loadDataTour() {
@@ -949,6 +962,12 @@ export default {
                     if (res.data.status) {
                         this.list_tour = res.data.tour_client;
                     }
+                    axios.post('http://127.0.0.1:8000/api/tour/ghi-nhan-hanh-vi', {
+                        id_tour: this.$route.params.id,
+                        loai_hanh_vi: 'view'
+                    }, {
+                        headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+                    }).catch(() => {});
                 });
         },
         increase(type) {
@@ -1015,6 +1034,12 @@ export default {
                         } else {
                             toaster.error(res.data.message);
                         }
+                        axios.post('http://127.0.0.1:8000/api/tour/ghi-nhan-hanh-vi', {
+                            id_tour: this.$route.params.id,
+                            loai_hanh_vi: 'favorite'
+                        }, {
+                            headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+                        }).catch(() => {});
                     });
             } else {
                 toaster.error("Bạn cần đăng nhập trước!");
@@ -1053,6 +1078,12 @@ export default {
                         } else {
                             toaster.error(res.data.message);
                         }
+                        axios.post('http://127.0.0.1:8000/api/tour/ghi-nhan-hanh-vi', {
+                            id_tour: this.$route.params.id,
+                            loai_hanh_vi: 'favorite'
+                        }, {
+                            headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+                        }).catch(() => {}); 
                     })
                     .catch((err) => {
                         console.error("Lỗi API:", err.response?.data);

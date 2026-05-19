@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\ChiTietChucNang;
 use App\Models\ChiTietTour;
 use App\Models\LichTrinhTour;
-use App\Models\Tour as ModelsTour;
+use App\Models\Tour;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
-class Tour extends Controller
+class TourController extends Controller
 {
 
     public function getdata()
@@ -27,7 +28,7 @@ class Tour extends Controller
                 'message'   =>  'Bạn không đủ quyền truy cập chức năng này!',
             ]);
         }
-        $data = ModelsTour::get();
+        $data = Tour::get();
         return response()->json([
             'status' => true,
             'tour'  =>  $data
@@ -49,7 +50,7 @@ class Tour extends Controller
         }
         $key = "%" . $request->abc . "%";
 
-        $data   = ModelsTour::where('tieu_de', 'like', $key)
+        $data   = Tour::where('tieu_de', 'like', $key)
             ->get();
         return response()->json([
             'status' => true,
@@ -71,7 +72,7 @@ class Tour extends Controller
             ]);
         }
         $data   =   $request->all();
-        ModelsTour::create($data);
+        Tour::create($data);
         return response()->json([
             'status'    =>  true,
             'message'   =>  'Đã tạo mới tour thành công!'
@@ -92,7 +93,7 @@ class Tour extends Controller
             ]);
         }
         try {
-            ModelsTour::where('id', $id)->delete();
+            Tour::where('id', $id)->delete();
             return response()->json([
                 'status'            =>   true,
                 'message'           =>   'Xóa tour thành công!',
@@ -121,7 +122,7 @@ class Tour extends Controller
         }
         try {
             $data   = $request->all();
-            ModelsTour::find($request->id)->update($data);
+            Tour::find($request->id)->update($data);
             return response()->json([
                 'status'            =>   true,
                 'message'           =>   'Đã cập nhật thành công tour!',
@@ -154,7 +155,7 @@ class Tour extends Controller
             } else {
                 $tinh_trang_moi = 1;
             }
-            ModelsTour::where('id', $request->id)->update([
+            Tour::where('id', $request->id)->update([
                 'tinh_trang'    =>  $tinh_trang_moi
             ]);
             return response()->json([
@@ -209,7 +210,7 @@ class Tour extends Controller
     }
     public function getDataClient()
     {
-        $data = ModelsTour::get();
+        $data = Tour::get();
         return response()->json([
             'status' => true,
             'tour_client'  =>  $data
@@ -223,7 +224,7 @@ class Tour extends Controller
         $minPrice = $request->min_price ?? 0;
         $maxPrice = $request->max_price ?? PHP_INT_MAX;
 
-        $query = ModelsTour::where('tieu_de', 'like', $keyword)
+        $query = Tour::where('tieu_de', 'like', $keyword)
                 ->orWhere('mo_ta', 'like', $keyword)
                 ->whereBetween('gia_nguoi_lon', [$minPrice, $maxPrice]);
 
@@ -239,13 +240,113 @@ class Tour extends Controller
     // Get price range for filter
     public function getTourPriceRange()
     {
-        $minPrice = ModelsTour::min('gia_nguoi_lon') ?? 0;
-        $maxPrice = ModelsTour::max('gia_nguoi_lon') ?? 0;
+        $minPrice = Tour::min('gia_nguoi_lon') ?? 0;
+        $maxPrice = Tour::max('gia_nguoi_lon') ?? 0;
 
         return response()->json([
             'status' => true,
             'min_price' => $minPrice,
             'max_price' => $maxPrice
+        ]);
+    }
+
+    public function ghiNhanHanhVi(Request $request)
+    {
+        $khach_hang = Auth::guard('sanctum')->user();
+        if (!$khach_hang) {
+            return response()->json(['status' => false]); // Khách vãng lai thì không lưu
+        }
+
+        $diem_cong = 1; // Mặc định là view
+        if ($request->loai_hanh_vi == 'favorite') $diem_cong = 3;
+        if ($request->loai_hanh_vi == 'book') $diem_cong = 5;
+
+        // Kiểm tra xem khách đã từng tương tác với tour này chưa
+        $hanh_vi = DB::table('hanh_vi_khach_hangs')
+            ->where('id_khach_hang', $khach_hang->id)
+            ->where('id_tour', $request->id_tour)
+            ->first();
+
+        if ($hanh_vi) {
+            // Nếu đã từng xem/thích, thì CỘNG DỒN điểm lên
+            DB::table('hanh_vi_khach_hangs')
+                ->where('id', $hanh_vi->id)
+                ->update([
+                    'diem_so' => $hanh_vi->diem_so + $diem_cong,
+                    'loai_hanh_vi' => $request->loai_hanh_vi,
+                    'updated_at' => now()
+                ]);
+        } else {
+            // Nếu lần đầu tương tác, tạo mới record
+            DB::table('hanh_vi_khach_hangs')->insert([
+                'id_khach_hang' => $khach_hang->id,
+                'id_tour'       => $request->id_tour,
+                'loai_hanh_vi'  => $request->loai_hanh_vi,
+                'diem_so'       => $diem_cong,
+                'created_at'    => now(),
+                'updated_at'    => now()
+            ]);
+        }
+
+        return response()->json(['status' => true]);
+    }
+
+    public function layTourGoiY()
+    {
+        $khach_hang = Auth::guard('sanctum')->user();
+        
+        if (!$khach_hang) {
+            $tourGoiY = Tour::where('tinh_trang', 1)->orderBy('id', 'desc')->limit(4)->get();
+            return response()->json(['status' => true, 'data' => $tourGoiY]);
+        }
+
+        // tìm Tour khách hàng có ĐIỂM CAO NHẤT trong lịch sử hành vi
+        $tourYeuThichNhat = DB::table('hanh_vi_khach_hangs')
+            ->where('id_khach_hang', $khach_hang->id)
+            ->orderBy('diem_so', 'desc')
+            ->first();
+
+        if (!$tourYeuThichNhat) {
+            $tourGoiY = Tour::where('tinh_trang', 1)->inRandomOrder()->limit(4)->get();
+            return response()->json(['status' => true, 'data' => $tourGoiY]);
+        }
+
+        // Tìm giá tiền của tour được thích nhất đó
+        $tourGoc = Tour::find($tourYeuThichNhat->id_tour);
+        
+        if (!$tourGoc) {
+            $tourGoiY = Tour::where('tinh_trang', 1)->inRandomOrder()->limit(4)->get();
+            return response()->json(['status' => true, 'data' => $tourGoiY]);
+        }
+
+        // Thiết lập vùng giá tương đồng (Biên độ dao động 30% so với giá gốc)
+        $gia_goc = $tourGoc->gia_nguoi_lon;
+        $gia_min = $gia_goc * 0.7; // Rẻ hơn tối đa 30%
+        $gia_max = $gia_goc * 1.3; // Đắt hơn tối đa 30%
+
+        // truy vấn các Tour CÙNG PHÂN KHÚC GIÁ (loại trừ tour đã xem)
+        $tourGoiY = Tour::where('tinh_trang', 1)
+            ->whereBetween('gia_nguoi_lon', [$gia_min, $gia_max])
+            ->where('id', '!=', $tourGoc->id)
+            ->limit(4)
+            ->get();
+
+        //Nếu không đủ 4 tour cùng tầm giá, bù thêm bằng tour mới nhất
+        if ($tourGoiY->count() < 4) {
+            $soLuongCanBu = 4 - $tourGoiY->count();
+            $tourBu = Tour::where('tinh_trang', 1)
+                ->whereNotBetween('gia_nguoi_lon', [$gia_min, $gia_max]) 
+                ->where('id', '!=', $tourGoc->id)
+                ->orderBy('id', 'desc')
+                ->limit($soLuongCanBu)
+                ->get();
+            
+            $tourGoiY = $tourGoiY->merge($tourBu);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data'   => $tourGoiY
         ]);
     }
 }

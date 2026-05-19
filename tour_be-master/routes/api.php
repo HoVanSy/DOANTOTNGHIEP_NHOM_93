@@ -10,7 +10,7 @@ use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\QuanHuyenController;
 use App\Http\Controllers\TinhThanhController;
-use App\Http\Controllers\Tour;
+use App\Http\Controllers\TourController;
 use App\Models\HoaDon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +24,9 @@ use App\Http\Controllers\LichTrinhTourController;
 use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\DanhGiaController;
 use App\Http\Controllers\AccountClientController;
+
+Route::post('/tour/ghi-nhan-hanh-vi', [TourController::class, 'ghiNhanHanhVi']);
+Route::get('/tour/lay-tour-goi-y', [TourController::class, 'layTourGoiY']);
 
 Route::get('/home/tin-tuc-moi-nhat', [BlogController::class, 'layTinTucMoiNhat']);
 
@@ -138,12 +141,12 @@ Route::group(['prefix'  =>  '/admin'], function () {
         Route::post('/doi-tinh-trang-khach-hang', [KhachHangController::class, 'doiTinhTrangKhachHang']);
     });
     Route::group(['prefix'  =>  '/tour'], function () {
-        Route::get('/lay-du-lieu', [Tour::class, 'getData']);
-        Route::post('/tim-tour', [Tour::class, 'searchTour']);
-        Route::post('/them-moi-tour', [Tour::class, 'createTour']);
-        Route::delete('/xoa-tour/{id}', [Tour::class, 'deleteTour']);
-        Route::post('/cap-nhat-tour', [Tour::class, 'updateTour']);
-        Route::post('/doi-tinh-trang-tour', [Tour::class, 'doiTinhTrangTour']);
+        Route::get('/lay-du-lieu', [TourController::class, 'getData']);
+        Route::post('/tim-tour', [TourController::class, 'searchTour']);
+        Route::post('/them-moi-tour', [TourController::class, 'createTour']);
+        Route::delete('/xoa-tour/{id}', [TourController::class, 'deleteTour']);
+        Route::post('/cap-nhat-tour', [TourController::class, 'updateTour']);
+        Route::post('/doi-tinh-trang-tour', [TourController::class, 'doiTinhTrangTour']);
     });
 
     Route::group(['prefix'  =>  '/lich-trinh'], function () {
@@ -191,7 +194,7 @@ Route::group(['prefix'  =>  '/account-client'], function () {
 });
 
 Route::get('/client/lay-du-lieu-tinh-thanh', [TinhThanhController::class, 'getDataClient']);
-Route::get('/tour/lay-du-lieu-client', [Tour::class, 'getDataClient']);
+Route::get('/tour/lay-du-lieu-client', [TourController::class, 'getDataClient']);
 
 // client
 Route::group(['prefix'  =>  '/client'], function () {
@@ -202,11 +205,11 @@ Route::group(['prefix'  =>  '/client'], function () {
         Route::post('/huy-hoa-don-client', [HoaDonController::class, 'huyHoaDon']);
     });
     Route::group(['prefix'  =>  '/tour'], function () {
-        Route::get('/lay-du-lieu', [Tour::class, 'getDataClient']);
-        Route::post('/lay-chi-tiet-tour/data', [Tour::class, 'clientGetChiTietTour']);
+        Route::get('/lay-du-lieu', [TourController::class, 'getDataClient']);
+        Route::post('/lay-chi-tiet-tour/data', [TourController::class, 'clientGetChiTietTour']);
         Route::post('/thanh-toan', [HoaDonController::class, 'thanhToan']);
-        Route::post('/tim-kiem', [Tour::class, 'searchTourClient']);
-        Route::get('/gia-tour-range', [Tour::class, 'getTourPriceRange']);
+        Route::post('/tim-kiem', [TourController::class, 'searchTourClient']);
+        Route::get('/gia-tour-range', [TourController::class, 'getTourPriceRange']);
     });
     Route::group(['prefix'  =>  '/tinh-thanh'], function () {
         Route::get('/lay-du-lieu', [TinhThanhController::class, 'getDataClient']);

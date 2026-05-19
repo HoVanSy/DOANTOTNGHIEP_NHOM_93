@@ -137,7 +137,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="mb-5">
                 <div class="d-flex justify-content-between align-items-end mb-4">
                     <div>
@@ -172,39 +171,77 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mb-5">
-            <div class="container">
+            <div class="mb-5">
                 <div class="d-flex justify-content-between align-items-end mb-4">
                     <div>
-                        <span class="text-uppercase font-12 fw-bold text-success-dark letter-spacing-1 d-block mb-1">Cập nhật xu hướng</span>
-                        <h3 class="fw-bold text-dark mb-0 section-heading">Tin Tức & Cẩm Nang Du Lịch</h3>
+                        <span class="section-tag d-block mb-1" style="color: #e8a020;">Dành riêng cho bạn</span>
+                        <h3 class="section-title mb-0">Gợi Ý Đề Xuất</h3>
                     </div>
-                    <router-link to="/blog" class="btn-view-all text-decoration-none fw-bold font-14">
-                        Xem tất cả bài viết <i class="fa-solid fa-arrow-right ms-1"></i>
+                    <router-link to="/client/danh-sach-tour" class="view-all-link">
+                        Khám phá thêm <i class="fa-solid fa-arrow-right ms-1"></i>
                     </router-link>
                 </div>
 
-                <div class="row g-3">
-                    <div class="col-12 col-md-6 col-lg-3" v-for="(blog, index) in list_tin_tuc" :key="index">
-                        <router-link to="/blog" class="card blog-home-card h-100 border-0 shadow-sm rounded-3 overflow-hidden text-decoration-none">
-                            <div class="card-img-wrapper position-relative">
-                                <img :src="blog.hinh_anh || 'https://via.placeholder.com/400x250'" class="card-img-top object-fit-cover w-100 h-100" alt="Blog Thumb">
-                                <span class="date-badge font-11">{{ formatDate(blog.created_at) }}</span>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                    <div class="col" v-for="(v, k) in list_tour_goi_y" :key="'goiy_' + (v.id || k)">
+                        <div class="tour-card h-100 rounded-4 overflow-hidden">
+                            <div class="tour-img-wrapper">
+                                <img :src="v.link_anh" class="tour-img" alt="Ảnh Tour">
                             </div>
-                            <div class="card-body p-3 d-flex flex-column bg-white"> <div class="blog-meta font-12 text-muted mb-2">
-                                    <span><i class="fa-solid fa-user me-1"></i>{{ blog.tac_gia || 'Admin' }}</span>
+                            <div class="tour-body d-flex flex-column p-3">
+                                <h6 class="tour-title fw-bold mb-2">
+                                    <router-link :to="'/client/chi-tiet-tour/' + v.id" class="text-decoration-none text-dark hover-primary">
+                                        {{ v.tieu_de }}
+                                    </router-link>
+                                </h6>
+                                <p class="tour-desc text-clamp-3 mb-3">{{ v.mo_ta }}</p>
+                                <div class="mt-auto pt-3 border-top text-center">
+                                    <router-link :to="'/client/chi-tiet-tour/' + v.id" class="tour-btn w-100">
+                                        Xem Chi Tiết
+                                    </router-link>
                                 </div>
-                                <h6 class="card-title fw-bold text-dark text-line-2 mb-2 flex-grow-1 font-15">{{ blog.tieu_de }}</h6>
-                                <p class="card-text text-muted font-13 text-line-2 mb-0">{{ truncateText(blog.noi_dung, 70) }}</p>
                             </div>
-                        </router-link>
+                        </div>
                     </div>
                 </div>
-
-                <div v-if="list_tin_tuc.length === 0" class="text-center py-4 text-muted font-14">
-                    Đang cập nhật các bài viết mới nhất...
+                
+                <div v-if="!list_tour_goi_y || list_tour_goi_y.length === 0" class="text-center py-4 text-muted font-14">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Đang phân tích sở thích của bạn...
+                </div>
+            </div>
+            
+            <div class="mb-5">
+                <div class="container">
+                    <div class="d-flex justify-content-between align-items-end mb-4">
+                        <div>
+                            <span class="text-uppercase font-12 fw-bold text-success-dark letter-spacing-1 d-block mb-1">Cập nhật xu hướng</span>
+                            <h3 class="fw-bold text-dark mb-0 section-heading">Tin Tức & Cẩm Nang Du Lịch</h3>
+                        </div>
+                        <router-link to="/blog" class="btn-view-all text-decoration-none fw-bold font-14">
+                            Xem tất cả bài viết <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </router-link>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6 col-lg-3" v-for="(blog, index) in list_tin_tuc" :key="index">
+                            <router-link to="/blog" class="card blog-home-card h-100 border-0 shadow-sm rounded-3 overflow-hidden text-decoration-none">
+                                <div class="card-img-wrapper position-relative">
+                                    <img :src="blog.hinh_anh || 'https://via.placeholder.com/400x250'" class="card-img-top object-fit-cover w-100 h-100" alt="Blog Thumb">
+                                    <span class="date-badge font-11">{{ formatDate(blog.created_at) }}</span>
+                                </div>
+                                <div class="card-body p-3 d-flex flex-column bg-white"> <div class="blog-meta font-12 text-muted mb-2">
+                                        <span><i class="fa-solid fa-user me-1"></i>{{ blog.tac_gia || 'Admin' }}</span>
+                                    </div>
+                                    <h6 class="card-title fw-bold text-dark text-line-2 mb-2 flex-grow-1 font-15">{{ blog.tieu_de }}</h6>
+                                    <p class="card-text text-muted font-13 text-line-2 mb-0">{{ truncateText(blog.noi_dung, 70) }}</p>
+                                </div>
+                            </router-link>
+                        </div>
+                    </div>
+                    <div v-if="list_tin_tuc.length === 0" class="text-center py-4 text-muted font-14">
+                        Đang cập nhật các bài viết mới nhất...
+                    </div>
                 </div>
             </div>
         </div>
@@ -236,13 +273,25 @@ export default {
             list_tinh_thanh: [],
             tt_tim: {},
             list_tin_tuc: [],
+            list_tour_goi_y: [],
         }
     },
     mounted() {
         this.loadDataTour();
         this.loadTinTucMoiNhat();
+        this.loadTourGoiY();
     },
     methods: {
+        loadTourGoiY() {
+            axios.get('http://127.0.0.1:8000/api/tour/lay-tour-goi-y', {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem("token_client") }
+            })
+            .then((res) => {
+                if (res.data.status) {
+                    this.list_tour_goi_y = res.data.data;
+                }
+            });
+        },
         loadTinTucMoiNhat() {
             axios.get('http://127.0.0.1:8000/api/home/tin-tuc-moi-nhat')
                 .then((res) => {
