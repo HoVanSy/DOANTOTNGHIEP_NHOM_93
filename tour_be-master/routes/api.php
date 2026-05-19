@@ -59,7 +59,7 @@ Route::get('/client/yeu-cau-huy/lay-danh-sach', [YeuCauHuyController::class, 'ge
 
 Route::post('/client/check-coupon', [KhuyenMaiController::class, 'checkCoupon']);
 
-Route::group(['prefix' => 'admin/khuyen-mai'], function () {
+Route::group(['prefix' => 'admin/khuyen-mai', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/data', [KhuyenMaiController::class, 'getData']);
     Route::post('/create', [KhuyenMaiController::class, 'createKhuyenMai']);
     Route::post('/update', [KhuyenMaiController::class, 'updateKhuyenMai']);
@@ -80,7 +80,7 @@ Route::group(['prefix'  =>  '/account-admin'], function () {
     Route::get('/kiem-tra-token-client', [NhanVienController::class, 'checkToken']);
 });
 
-Route::group(['prefix'  =>  '/admin'], function () {
+Route::group(['prefix'  =>  '/admin', 'middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix'  =>  '/tinh-thanh'], function () {
         Route::get('/lay-du-lieu', [TinhThanhController::class, 'getData']);
         Route::post('/tim-tinh-thanh', [TinhThanhController::class, 'searchTinhThanh']);
